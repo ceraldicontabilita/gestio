@@ -52,7 +52,7 @@ def _run_scheduled_drive_sync() -> None:
         db.close()
 
 
-if settings.google_service_account_json and settings.drive_sync_interval_minutes > 0:
+if drive_sync_service.is_configured() and settings.drive_sync_interval_minutes > 0:
     scheduler = BackgroundScheduler()
     scheduler.add_job(
         _run_scheduled_drive_sync,

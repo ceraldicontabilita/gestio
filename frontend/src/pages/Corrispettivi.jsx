@@ -70,12 +70,15 @@ export default function Corrispettivi() {
   async function sincronizza() {
     setSync({ stato: 'in-corso', messaggio: null })
     try {
-      const risultato = await sincronizzaDriveCorrispettivi()
-      setSync({
-        stato: 'ok',
-        messaggio: `${risultato.importati} nuovi, ${risultato.gia_presenti} già presenti su ${risultato.trovati} file trovati su Drive.`,
-      })
-      await carica()
+      const risposta = await sincronizzaDriveCorrispettivi()
+      setSync({ stato: 'ok', messaggio: risposta.messaggio })
+      // La sincronizzazione gira in background sul server (una cartella con
+      // centinaia di file richiede più di una richiesta HTTP): aggiorniamo
+      // l'elenco periodicamente invece di aspettare un risultato immediato.
+      for (let i = 0; i < 15; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 4000))
+        await carica()
+      }
     } catch (err) {
       setSync({ stato: 'non-configurato', messaggio: err.message })
     }

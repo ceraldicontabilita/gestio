@@ -44,6 +44,11 @@ class DriveSyncResult:
     errori: list[str]
 
 
+def is_configured() -> bool:
+    settings = get_settings()
+    return bool(settings.google_service_account_json and settings.google_drive_corrispettivi_folder_id)
+
+
 def _load_credentials() -> service_account.Credentials:
     settings = get_settings()
     if not settings.google_service_account_json:
