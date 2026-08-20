@@ -55,6 +55,27 @@ def test_importa_corrispettivo_crea_cassa_e_pos_atteso(db_session):
     assert cassa.documento_id == corrispettivo.canonical_id
 
 
+def test_elimina_corrispettivo_rimuove_giornata_e_movimenti(db_session):
+    corrispettivo = corrispettivi_service.importa_corrispettivo_xml(
+        db_session, xml_bytes=FIXTURE.read_bytes()
+    )
+    db_session.commit()
+
+    rimosso = corrispettivi_service.elimina_corrispettivo(db_session, canonical_id=corrispettivo.canonical_id)
+    db_session.commit()
+
+    assert rimosso is True
+    assert db_session.scalar(select(Corrispettivo).where(Corrispettivo.canonical_id == corrispettivo.canonical_id)) is None
+    movimenti = db_session.scalars(
+        select(PrimaNotaMovimento).where(PrimaNotaMovimento.operation_id == corrispettivo.operation_id)
+    ).all()
+    assert movimenti == []
+
+
+def test_elimina_corrispettivo_inesistente_ritorna_false(db_session):
+    assert corrispettivi_service.elimina_corrispettivo(db_session, canonical_id="non-esiste") is False
+
+
 def test_importa_corrispettivo_idempotente(db_session):
     corrispettivi_service.importa_corrispettivo_xml(db_session, xml_bytes=FIXTURE.read_bytes())
     db_session.commit()

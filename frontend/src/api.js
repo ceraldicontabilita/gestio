@@ -38,6 +38,11 @@ export function getCorrispettivi() {
   return request('/corrispettivi')
 }
 
+export async function eliminaCorrispettivo(canonicalId) {
+  const response = await fetch(`${BASE_URL}/corrispettivi/${canonicalId}`, { method: 'DELETE' })
+  if (!response.ok) await raiseForStatus(response)
+}
+
 export function sincronizzaDriveCorrispettivi() {
   return request('/drive-sync/corrispettivi', { method: 'POST' })
 }

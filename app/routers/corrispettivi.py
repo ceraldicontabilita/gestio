@@ -58,3 +58,11 @@ async def importa_corrispettivo(file: UploadFile = File(...), db: Session = Depe
     db.commit()
     db.refresh(corrispettivo)
     return corrispettivo
+
+
+@router.delete("/{canonical_id}", status_code=204)
+def elimina_corrispettivo(canonical_id: str, db: Session = Depends(get_db)):
+    trovato = corrispettivi_service.elimina_corrispettivo(db, canonical_id=canonical_id)
+    if not trovato:
+        raise HTTPException(status_code=404, detail="Giornata non trovata")
+    db.commit()

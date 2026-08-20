@@ -316,3 +316,18 @@ body {
   font-size: 0.85rem;
   color: var(--color-text-muted);
 }
+
+.btn-link-danger {
+  border: none;
+  background: none;
+  color: var(--color-danger);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 12px;
+  padding: 2px 4px;
+}
+
+.btn-link-danger:hover {
+  text-decoration: underline;
+}

@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import { getCorrispettivi, importaCorrispettivo, sincronizzaDriveCorrispettivi } from '../api.js'
+import {
+  eliminaCorrispettivo,
+  getCorrispettivi,
+  importaCorrispettivo,
+  sincronizzaDriveCorrispettivi,
+} from '../api.js'
 
 function formatEuro(valore) {
   return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(valore)
@@ -46,6 +51,19 @@ export default function Corrispettivi() {
     } finally {
       setCaricamento(false)
       event.target.value = ''
+    }
+  }
+
+  async function elimina(canonicalId) {
+    if (!window.confirm('Annullare questa giornata? Verranno rimosse anche le scritture di Prima Nota collegate.')) {
+      return
+    }
+    setErrore(null)
+    try {
+      await eliminaCorrispettivo(canonicalId)
+      await carica()
+    } catch (err) {
+      setErrore(err.message)
     }
   }
 
@@ -100,7 +118,12 @@ export default function Corrispettivi() {
             <span>
               {formatData(g.data_rilevazione)} — {g.id_dispositivo}
             </span>
-            <span className="muted">{g.numero_doc_commerciali} documenti</span>
+            <span>
+              <span className="muted">{g.numero_doc_commerciali} documenti</span>
+              <button className="btn-link-danger" onClick={() => elimina(g.canonical_id)} title="Annulla importazione">
+                Annulla
+              </button>
+            </span>
           </header>
           <ul className="movement-list">
             <li>
