@@ -14,7 +14,19 @@ services:
         generateValue: true
       - key: DOCUMENT_STORAGE_PATH
         value: /var/data/storage
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://gestio-frontend.onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: gestio-db
           property: connectionString
+
+  - type: web
+    name: gestio-frontend
+    runtime: static
+    region: frankfurt
+    buildCommand: cd frontend && npm install --include=dev && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://gestio-api-crlo.onrender.com
