@@ -4,10 +4,43 @@ Specifica di ricostruzione per **Gestio**, il gestionale contabile interno
 (ex "GestionaleCloud / Ceraldi ERP"): documenti, fatture, fornitori, Prima
 Nota, riconciliazioni, fisco, personale e flotta in un unico grafo operativo.
 
-Questo repository contiene per ora la **documentazione di specifica**
-(`docs/spec/`), adattata da un kit di ricostruzione più ampio. Il codice
-applicativo (backend FastAPI, frontend React) non è ancora stato scritto:
-si costruisce modulo per modulo a partire da questa specifica.
+Il repository contiene la **documentazione di specifica** (`docs/spec/`),
+adattata da un kit di ricostruzione più ampio, e il **codice applicativo**
+(backend FastAPI, frontend React), costruito modulo verticale per modulo
+verticale a partire da questa specifica.
+
+## Stato del codice
+
+Primo modulo verticale completo: **Prima Nota** (Cassa/Banca).
+
+- Schema dati e motore unico di scrittura (`app/services/scritture_contabili.py`):
+  nessun altro punto del codice può creare movimenti di Prima Nota.
+- Versamento contanti → coppia collegata Cassa/Banca con lo stesso
+  `operation_id`, idempotente, riconciliabile con l'estratto conto.
+- API REST (`app/routers/prima_nota.py`) e pagina React collegata
+  (`frontend/src/pages/PrimaNota.jsx`) con saldo progressivo per giorno.
+- Test automatici sul servizio e sull'API (`tests/`), verificati anche dal
+  vivo (backend + frontend avviati, form compilato in browser).
+
+Tutti gli altri moduli descritti in `docs/spec/03_PAGINE/` sono ancora da
+costruire, uno alla volta, con lo stesso schema: schema → servizio → API →
+pagina → test.
+
+### Avvio locale
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r backend/requirements.txt
+.venv/bin/python -m pytest -q
+.venv/bin/python -m uvicorn app.main:app --reload   # http://localhost:8000
+
+cd frontend
+npm install --include=dev   # necessario se l'ambiente forza NODE_ENV=production
+npm run dev                 # http://localhost:5173, proxy verso l'API su :8000
+```
+
+Il database di default è un file SQLite (`gestio.db`, escluso da git). Le
+variabili sono in `docs/spec/06_CONFIG/ENV_TEMPLATE.example`.
 
 ## Scelte architetturali per questo repository
 
