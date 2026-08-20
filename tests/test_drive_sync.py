@@ -54,6 +54,29 @@ def test_sync_e_idempotente_su_file_gia_importato(db_session, monkeypatch):
     assert len(giornate) == 1
 
 
+def test_list_xml_files_segue_la_paginazione(monkeypatch):
+    pagine = [
+        {"nextPageToken": "pagina-2", "files": [{"id": "a", "name": "a.xml"}]},
+        {"files": [{"id": "b", "name": "b.xml"}]},
+    ]
+
+    def fake_get(url, params, headers, timeout):
+        class FakeResponse:
+            ok = True
+
+            def json(self):
+                return pagine.pop(0)
+
+        assert ("pageToken" in params) == (len(pagine) == 1)
+        return FakeResponse()
+
+    monkeypatch.setattr(drive_sync_service.requests, "get", fake_get)
+
+    files = drive_sync_service._list_xml_files("cartella-test", "fake-token")
+
+    assert [f["id"] for f in files] == ["a", "b"]
+
+
 def test_sync_registra_errori_di_parsing_senza_interrompersi(db_session, monkeypatch):
     monkeypatch.setattr(drive_sync_service, "_access_token", lambda: "fake-token")
     monkeypatch.setattr(

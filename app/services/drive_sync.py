@@ -64,16 +64,30 @@ def _access_token() -> str:
 
 
 def _list_xml_files(folder_id: str, access_token: str) -> list[dict]:
+    """Elenca tutti gli XML nella cartella, con paginazione: l'API Drive
+    limita ogni risposta a un massimo di 100 file, e una cartella con
+    centinaia di corrispettivi supera facilmente quel limite."""
     query = f"'{folder_id}' in parents and trashed = false and name contains '.xml'"
-    response = requests.get(
-        f"{DRIVE_API_BASE}/files",
-        params={"q": query, "fields": "files(id,name,modifiedTime)", "pageSize": 100},
-        headers={"Authorization": f"Bearer {access_token}"},
-        timeout=30,
-    )
-    if not response.ok:
-        raise DriveSyncError(f"Drive API files.list fallita: {response.status_code} {response.text}")
-    return response.json().get("files", [])
+    files: list[dict] = []
+    page_token: str | None = None
+    while True:
+        params = {"q": query, "fields": "nextPageToken,files(id,name,modifiedTime)", "pageSize": 100}
+        if page_token:
+            params["pageToken"] = page_token
+        response = requests.get(
+            f"{DRIVE_API_BASE}/files",
+            params=params,
+            headers={"Authorization": f"Bearer {access_token}"},
+            timeout=30,
+        )
+        if not response.ok:
+            raise DriveSyncError(f"Drive API files.list fallita: {response.status_code} {response.text}")
+        payload = response.json()
+        files.extend(payload.get("files", []))
+        page_token = payload.get("nextPageToken")
+        if not page_token:
+            break
+    return files
 
 
 def _download_file(file_id: str, access_token: str) -> bytes:
