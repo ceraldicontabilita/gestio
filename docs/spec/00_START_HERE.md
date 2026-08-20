@@ -14,9 +14,12 @@ Non contiene dati reali, credenziali, allegati fiscali o una copia del vecchio c
 - fingerprint fonti: `4b6ea6e27c9ce4a487a5847a3312a56ce2ff7e15d6b2b7e83107fa414c521daa`.
 
 Adattamento per il repository `gestio`: rispetto al kit originale sono
-esclusi MongoDB e Google Drive/Sheets come persistenza. Il target usa un
-unico database SQL monoutente (SQLite) e storage file locale per gli
-originali. Sono state rimosse anche le parti morte/ridondanti del kit:
+esclusi MongoDB e Google Sheets come registro/persistenza. Il target usa un
+unico database PostgreSQL (gestito su Render) e storage file locale per gli
+originali. Google Drive resta ammesso come *fonte* da cui importare i
+documenti (cartelle configurate, sola lettura), non come archivio: vedi
+`02_ARCHITETTURA/ARCHITETTURA.md`. Sono state rimosse anche le parti
+morte/ridondanti del kit:
 60 variabili Mongo/Drive dall'inventario, la mappa tecnica duplicata
 `03_PAGINE/MAPPE_JSON/` (assorbita dalle schede pagina e da `LOGICA_JSON/`),
 le mappe in quarantena e la documentazione di audit del vecchio repository

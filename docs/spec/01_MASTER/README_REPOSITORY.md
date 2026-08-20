@@ -3,7 +3,7 @@
 <!-- gestio-doc
 status: current
 reviewed_at: 2026-08-20
-storage_architecture: database-sql-monoutente
+storage_architecture: database-sql-postgres
 -->
 
 ERP interno di Ceraldi Group S.R.L. per documenti, fatture, fornitori, Prima
@@ -19,9 +19,9 @@ Gli altri documenti sono guide di lettura, riferimenti di dominio o mappe genera
 
 ## Stato aggiornato al 20/08/2026
 
-La produzione usa un unico database SQL monoutente (SQLite) attivo fin dal
-primo avvio. Non esiste un backend transitorio né un cutover da completare:
-`DATA_BACKEND=sql` è l'unica configurazione supportata.
+La produzione usa un unico database PostgreSQL (gestito su Render) attivo
+fin dal primo avvio. Non esiste un backend transitorio né un cutover da
+completare: `DATA_BACKEND=sql` è l'unica configurazione supportata.
 
 Il registro applicativo organizza i dati secondo questa struttura logica:
 
@@ -39,7 +39,7 @@ DICHIARAZIONI/
 Browser React/Vite
   -> API FastAPI same-origin
      -> servizi di dominio e motore unico Prima Nota
-        -> database applicativo SQLite (DATA_BACKEND=sql)
+        -> database applicativo PostgreSQL (DATA_BACKEND=sql)
 
 Gmail autorizzato / banche / POS / PayPal / PagoPA / import manuale
   -> import, parser, deduplica, identità canonica
@@ -50,8 +50,8 @@ Gmail autorizzato / banche / POS / PayPal / PagoPA / import manuale
 
 - Backend: Python 3.12, FastAPI, SQLAlchemy (async), APScheduler.
 - Frontend: React 18, Vite 5, React Router 6, TanStack Query, Zustand.
-- Persistenza: database applicativo SQLite monoutente; storage file locale
-  per gli originali, indicizzato per hash e provenienza.
+- Persistenza: database applicativo PostgreSQL (gestito su Render); storage
+  file locale per gli originali, indicizzato per hash e provenienza.
 - Deploy: un servizio Render avviato con `python -m app.process_supervisor`.
 - CI: pytest, Vitest, build Vite, audit statici, runtime smoke ed E2E isolato.
 
@@ -88,7 +88,7 @@ avvio in `render.yaml` e il lifecycle importato dai test correnti.
 
 ### Database applicativo
 
-- `DATABASE_URL` (percorso del file SQLite)
+- `DATABASE_URL` (stringa di connessione PostgreSQL, es. istanza Render)
 - `DOCUMENT_STORAGE_PATH` (percorso/volume per gli originali indicizzati)
 
 ### Gmail (ingestione email autorizzata)
@@ -101,7 +101,8 @@ service account, token o password nel repository.
 
 ## Backup e ripristino
 
-1. backup periodico del file database SQLite e dello storage file;
+1. backup periodico del database PostgreSQL (gestiti da Render) e dello
+   storage file;
 2. verifica di integrità (conteggi, hash) dopo ogni ripristino;
 3. verifica live del commit in produzione dopo un deploy.
 
@@ -114,7 +115,7 @@ app/
 ├── parsers/                    XML, PDF, CSV e formati fiscali
 ├── knowledge/                  base di conoscenza della chat
 ├── config.py                   configurazione e feature flag
-└── database.py                 connessione e sessione al database SQLite
+└── database.py                 connessione e sessione al database PostgreSQL
 backend/
 └── requirements.txt
 frontend/

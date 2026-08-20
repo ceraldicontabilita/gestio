@@ -19,8 +19,12 @@ Primo modulo verticale completo: **Prima Nota** (Cassa/Banca).
   `operation_id`, idempotente, riconciliabile con l'estratto conto.
 - API REST (`app/routers/prima_nota.py`) e pagina React collegata
   (`frontend/src/pages/PrimaNota.jsx`) con saldo progressivo per giorno.
-- Test automatici sul servizio e sull'API (`tests/`), verificati anche dal
-  vivo (backend + frontend avviati, form compilato in browser).
+- Test automatici sul servizio e sull'API (`tests/`, girano su SQLite
+  in-memory per velocità) — **verificati anche dal vivo su Postgres reale**
+  (server locale, non l'istanza Render): schema, versamento, idempotenza,
+  riconciliazione e saldo progressivo, poi l'intera API con `curl`.
+- Verificato anche dal vivo in browser: backend + frontend avviati, form
+  compilato, versamento visibile diviso Cassa/Banca.
 
 Tutti gli altri moduli descritti in `docs/spec/03_PAGINE/` sono ancora da
 costruire, uno alla volta, con lo stesso schema: schema → servizio → API →
@@ -39,23 +43,41 @@ npm install --include=dev   # necessario se l'ambiente forza NODE_ENV=production
 npm run dev                 # http://localhost:5173, proxy verso l'API su :8000
 ```
 
-Il database di default è un file SQLite (`gestio.db`, escluso da git). Le
-variabili sono in `docs/spec/06_CONFIG/ENV_TEMPLATE.example`.
+Il database è **PostgreSQL**, provisionato su Render (istanza `gestio-db`,
+piano free — vedi nota sotto). In locale, se `DATABASE_URL` non è
+impostata, l'app usa un file SQLite (`gestio.db`, escluso da git) solo per
+comodità di sviluppo: non è il database di destinazione. Le variabili sono
+in `docs/spec/06_CONFIG/ENV_TEMPLATE.example`.
+
+> **Nota**: l'istanza Render Postgres `gestio-db` (piano free) **scade il
+> 19/09/2026** — è un limite del piano gratuito, non una scelta di design.
+> Prima di quella data va portata su un piano a pagamento o ricreata.
+> La stringa di connessione con la password non è recuperabile dagli
+> strumenti usati per crearla (per sicurezza): va copiata dalla dashboard
+> Render → `https://dashboard.render.com/d/dpg-da3fue37uimc73ajcai0-a` →
+> "Connect", e impostata come `DATABASE_URL` nell'ambiente locale/di deploy.
 
 ## Scelte architetturali per questo repository
 
 Rispetto al kit di origine sono stati esclusi:
 
 - **MongoDB** — nessun backend Mongo, né transitorio né di fallback.
-- **Google Drive / Google Sheets** come persistenza — nessun registro su
-  fogli, nessun archivio originali su Drive.
+- **Google Sheets** come registro — nessun archivio dati su fogli.
 - I nomi storici del prodotto (GestionaleCloud, Gestionale Cloud, ecc.) sono
   stati sostituiti con **Gestio**.
 
-Al loro posto, il target è un **unico database SQL monoutente (SQLite)**,
-attivo dal primo avvio (nessuna migrazione o cutover da gestire), con
-**storage file locale** per gli originali (fatture, F24, verbali, estratti
-conto...), indicizzato per hash e provenienza nel database stesso.
+Al loro posto, il target è un **unico database PostgreSQL**, attivo dal
+primo avvio (nessuna migrazione o cutover da gestire), con **storage file
+locale** per gli originali (fatture, F24, verbali, estratti conto...),
+indicizzato per hash e provenienza nel database.
+
+**Google Drive** resta ammesso, ma con un ruolo diverso da quello del kit
+originale: non è l'archivio dell'applicazione, è una **fonte esterna da cui
+importare** (come Gmail) — cartelle configurate, lette in sola lettura,
+i cui documenti vengono acquisiti e indicizzati nel database Postgres. La
+struttura reale delle cartelle del cliente (radice
+`1tmVu6fl7qhJbLcGCHT3wEQzrvFAElc9h` su Drive) è mappata via via che si
+costruiscono i moduli di import.
 
 ## Pulizia del kit
 

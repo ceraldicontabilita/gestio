@@ -6,8 +6,8 @@
   "source_revision": "26d23d8652d25dbe1f49734a66f24d0a61846513",
   "description": "Catalogo canonico delle 65 schermate. HTTP 200 non prova il funzionamento: componenti, route, dati e relazioni devono essere collaudati.",
   "storage_state": {
-    "current": "sqlite_single_db",
-    "target": "sqlite_single_db",
+    "current": "postgresql_render",
+    "target": "postgresql_render",
     "cutover": "not_applicable_single_backend_from_start"
   },
   "pages": [

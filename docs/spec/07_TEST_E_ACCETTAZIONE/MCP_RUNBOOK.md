@@ -3,7 +3,7 @@
 <!-- gestio-doc
 status: current
 reviewed_at: 2026-08-20
-storage_architecture: database-sql-monoutente
+storage_architecture: database-sql-postgres
 -->
 
 ## Installazione isolata

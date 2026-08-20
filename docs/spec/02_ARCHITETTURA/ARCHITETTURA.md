@@ -3,15 +3,15 @@
 ## Obiettivo
 
 Un monolite modulare semplice: frontend React, API FastAPI, servizi di dominio,
-adapter per Gmail/banche/provider e un unico database SQL monoutente. Ogni
+adapter per Gmail/Drive/banche/provider e un unico database PostgreSQL. Ogni
 funzione ha un solo writer canonico e un solo contratto pubblico.
 
 ```text
-Fonti esterne (Gmail, banche, POS, PayPal, PagoPA)
+Fonti esterne (Gmail, cartelle Drive configurate, banche, POS, PayPal, PagoPA)
         ↓ ingest idempotente + hash + source_external_id
 Originali immutabili su storage file (tracciati per hash e provenienza)
         ↓ parser versionato
-Database applicativo (SQLite) + entity_relations
+Database applicativo (PostgreSQL) + entity_relations
         ↓ servizi di dominio / writer contabile unico
 API autenticate e versionate
         ↓
@@ -23,9 +23,13 @@ API autenticate e versionate
 - UI: presentazione, filtri, conferme e scelta dei candidati; niente regole contabili duplicate.
 - Router: validazione, auth/RBAC e contratto HTTP; niente query dirette sparse.
 - Servizi: regole di dominio, idempotenza, matching e scritture atomiche.
-- Adapter: Gmail, banche/provider e file di import; retry, rate limit, watermark e lock.
-- Archivio: originali su storage file locale; registri e indici sul database SQL applicativo,
-  unico e definitivo dal primo avvio (nessun Mongo, nessun Google Drive/Sheets nel target).
+- Adapter: Gmail, cartelle Drive configurate (sola lettura, come fonte da cui
+  importare — non come archivio), banche/provider e file di import; retry,
+  rate limit, watermark e lock.
+- Archivio: originali su storage file locale; registri e indici sul database
+  PostgreSQL applicativo, unico e definitivo dal primo avvio (nessun Mongo,
+  nessun Google Sheets come registro, nessun Drive come persistenza nel
+  target).
 - Osservabilità: `run_id`, contatori, errori strutturati, durata, watermark e audit trail.
 
 ## Regole di dipendenza

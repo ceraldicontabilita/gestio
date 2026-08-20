@@ -3,7 +3,7 @@
 <!-- gestio-doc
 status: current
 reviewed_at: 2026-08-20
-storage_architecture: database-sql-monoutente
+storage_architecture: database-sql-postgres
 -->
 
 Aggiornato il 20/08/2026 sul codice corrente di `main`. Il commit esatto della
@@ -48,15 +48,15 @@ Documento originale
 5. Un alert senza lista dei record interessati non è utile.
 6. Le pagine collegate devono mostrare lo stesso stato senza ricaricamenti o
    manutenzioni manuali.
-7. Il database applicativo (SQLite, monoutente) è l'unica fonte di verità;
-   gli originali restano su storage file locale, tracciati per hash e
-   provenienza.
+7. Il database applicativo (PostgreSQL, gestito su Render) è l'unica fonte
+   di verità; gli originali restano su storage file locale, tracciati per
+   hash e provenienza.
 
 ## Stato dell'architettura dati
 
 Il codice usa un solo backend, attivo dal primo avvio: `DATA_BACKEND=sql`
-su database SQLite. Non esistono backend alternativi né una migrazione da
-completare.
+su database PostgreSQL. Non esistono backend alternativi né una migrazione
+da completare.
 
 Tassonomia degli archivi logici nel database applicativo:
 

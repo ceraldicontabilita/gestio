@@ -3,7 +3,7 @@
 <!-- gestio-doc
 status: current
 reviewed_at: 2026-08-20
-storage_architecture: database-sql-monoutente
+storage_architecture: database-sql-postgres
 -->
 
 Questo documento descrive le regole operative correnti di Ceraldi ERP. Il
@@ -33,12 +33,13 @@ Prima Nota, riconciliazione, stato e prove
 L'automazione esegue solo operazioni deterministiche. Se più candidati sono
 plausibili, conserva il documento, mostra l'elenco e richiede una scelta.
 
-## 2. Archivio: database SQL monoutente
+## 2. Archivio: database PostgreSQL
 
 La destinazione operativa, unica dal primo avvio, è:
 
 - storage file locale per documenti originali e allegati;
-- database applicativo (SQLite) per tutti i registri strutturati;
+- database applicativo (PostgreSQL, gestito su Render) per tutti i registri
+  strutturati;
 - una tabella per entità, con chiave primaria stabile e identificativo canonico;
 - relazioni tra entità tramite `operation_id` e ID specifici.
 
@@ -75,8 +76,8 @@ data di acquisizione.
 Il codice usa `DATA_BACKEND=sql` in ogni ambiente fin dal primo avvio: non
 esiste un backend precedente né un cutover da completare. Ogni scrittura
 avviene in transazione atomica sul database applicativo, che resta sempre la
-sorgente persistente. Backup periodici del file database e dello storage
-file coprono il ripristino in caso di guasto.
+sorgente persistente. Backup periodici del database (gestiti da Render) e
+dello storage file coprono il ripristino in caso di guasto.
 
 ## 3. Identità, hash e duplicati
 
