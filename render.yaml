@@ -15,7 +15,7 @@ services:
       - key: DOCUMENT_STORAGE_PATH
         value: /var/data/storage
       - key: CORS_ALLOWED_ORIGINS
-        value: https://gestio-frontend.onrender.com
+        value: https://gestio-gw59.onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: gestio-db
