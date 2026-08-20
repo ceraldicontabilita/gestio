@@ -11,7 +11,7 @@
     "variables": 164,
     "database_tables": 22
   },
-  "storage_target": "sqlite_single_db",
+  "storage_target": "postgresql_render",
   "canonical_pages": [
     "/login",
     "/gestione-riservata",

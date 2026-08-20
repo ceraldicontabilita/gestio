@@ -5,6 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     environment: str = "development"
+    # Target: PostgreSQL (istanza gestita su Render). Il default SQLite
+    # vale solo per sviluppo locale senza DATABASE_URL configurata.
     database_url: str = "sqlite:///./gestio.db"
     document_storage_path: str = "./storage"
     secret_key: str = "dev-secret-change-me"

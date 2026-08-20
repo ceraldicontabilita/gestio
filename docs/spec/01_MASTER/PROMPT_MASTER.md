@@ -3,7 +3,7 @@
 <!-- gestio-doc
 status: current
 reviewed_at: 2026-08-20
-storage_architecture: database-sql-monoutente
+storage_architecture: database-sql-postgres
 -->
 
 > Questa è l'unica specifica normativa e atomica del progetto. Codice, test e
@@ -54,7 +54,7 @@ Ordine di verità:
 
 1. originali immutabili nello storage file applicativo e identificatori dei
    sistemi esterni;
-2. registri strutturati nel database applicativo canonico (SQL, monoutente);
+2. registri strutturati nel database applicativo canonico (PostgreSQL);
 3. codice e test del `main` canonico;
 4. configurazione effettivamente attiva in Render e job scheduler;
 5. `page_catalog.json`, OpenAPI e mappe generate dal codice;
@@ -64,15 +64,16 @@ Email, allegato, fattura, disposizione, ricevuta, quietanza, transazione provide
 movimento bancario e scrittura contabile sono prove distinte. Possono condividere
 `operation_id`, ma non devono essere fuse o sovrascritte.
 
-## 5. Architettura dati: database SQL monoutente
+## 5. Architettura dati: database PostgreSQL
 
 La destinazione definitiva, unica dal primo avvio, usa **storage file
-applicativo per gli originali** (locale o volume dedicato) e **un database SQL
-monoutente (SQLite) per registri, progressivi, indici e relazioni**. Non
-esistono backend alternativi, cutover o compatibilità transitoria da
-mantenere: non ci sono Mongo, Google Drive né Google Sheets nel target.
+applicativo per gli originali** (locale o volume dedicato) e **un database
+PostgreSQL (gestito su Render) per registri, progressivi, indici e
+relazioni**. Non esistono backend alternativi, cutover o compatibilità
+transitoria da mantenere: non ci sono Mongo, Google Drive né Google Sheets
+nel target.
 
-Database: `Ceraldi ERP - Registro dati` (file SQLite singolo).
+Database: `Ceraldi ERP - Registro dati` (istanza PostgreSQL gestita).
 
 Categorie logiche dell'archivio (tabelle/aree del database, non cartelle):
 
@@ -358,7 +359,7 @@ Gate release: lint, unit, integration, contract, build, E2E isolato, scansione
 segreti, zero riferimenti obsoleti, migrazioni idempotenti, backup/rollback,
 CI verde, commit servito in `/api/health`, controllo live di dati e job.
 
-Gate database SQL monoutente: tutte le tabelle presenti e versionate (migrazioni
+Gate database PostgreSQL: tutte le tabelle presenti e versionate (migrazioni
 Alembic); conteggi, digest e somme verificati dopo ogni import massivo;
 scrittura/lettura riuscite; ricostruzione completa da backup in ambiente
 isolato; rollback provato; produzione `DATA_BACKEND=sql`.

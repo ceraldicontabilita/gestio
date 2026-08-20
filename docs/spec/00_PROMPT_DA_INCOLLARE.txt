@@ -2,12 +2,12 @@ Devi ricostruire da zero Gestio usando questo ZIP come specifica.
 
 1. Leggi 00_START_HERE.md e poi integralmente 01_MASTER/PROMPT_MASTER.md.
 2. Implementa esclusivamente le 65 pagine in 03_PAGINE e gli endpoint marcati attivi in 05_API; conserva gli endpoint in quarantena solo come decision log, senza esporli.
-3. Usa un unico database SQL monoutente (SQLite) per tutti i registri e storage file locale, indicizzato per hash, per gli originali. MongoDB e Google Drive/Sheets non fanno parte del target.
+3. Usa un unico database PostgreSQL (gestito su Render) per tutti i registri e storage file locale, indicizzato per hash, per gli originali. MongoDB e Google Sheets come registro non fanno parte del target; Google Drive resta ammesso solo come fonte da cui importare i documenti (cartelle configurate, sola lettura).
 4. Mantieni un solo writer per concetto, canonical_id, operation_id, relazioni bidirezionali, centesimi esatti, provenienza e idempotenza.
 5. Gmail deve usare in:anywhere, paginazione completa, Europe/Rome, Gmail IDs e SHA-256 senza spostare o eliminare gli originali.
 6. Non eseguire pagamenti, non eliminare originali e non associare definitivamente casi ambigui. Mostra candidati e scelta manuale.
 7. L'interfaccia deve essere semplice: poche azioni utili, automazioni ordinarie invisibili, alert sempre espandibili in liste, modali accessibili e dati raggruppati per contesto/giorno.
 8. Procedi per moduli verticali completi: schema → servizio → API → pagina → test → flusso end-to-end. Non creare pagine vuote o pulsanti senza comportamento.
-9. Considera completato solo con tutti i gate di 07_TEST_E_ACCETTAZIONE e con il database SQL monoutente verificato (integrità, backup e ripristino provati).
+9. Considera completato solo con tutti i gate di 07_TEST_E_ACCETTAZIONE e con il database PostgreSQL verificato (integrità, backup e ripristino provati).
 
 Non inventare dati, importi, credenziali, cartelle o regole. Se manca un fatto, dichiaralo e crea uno stato da verificare; non colmare il vuoto con una supposizione.

@@ -3,7 +3,7 @@
 <!-- gestio-doc
 status: current
 reviewed_at: 2026-08-20
-storage_architecture: database-sql-monoutente
+storage_architecture: database-sql-postgres
 -->
 
 Aggiornato il 20/08/2026 sul codice di `main` del repository canonico
@@ -48,10 +48,10 @@ si aggiornano con `scripts/refresh_json_docs.py`, non a mano.
 
 ## Archivio dati: architettura definitiva
 
-Il database applicativo è un unico database SQL monoutente (SQLite), attivo
-dal primo avvio con `DATA_BACKEND=sql`. Non esistono backend transitori né
-un cutover da completare: ogni ambiente (sviluppo, test, produzione) usa lo
-stesso motore fin dall'inizio.
+Il database applicativo è un unico database PostgreSQL (gestito su Render),
+attivo dal primo avvio con `DATA_BACKEND=sql`. Non esistono backend
+transitori né un cutover da completare: ogni ambiente (sviluppo, test,
+produzione) usa lo stesso motore fin dall'inizio.
 
 Le categorie logiche dell'archivio restano:
 
