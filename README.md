@@ -9,6 +9,14 @@ adattata da un kit di ricostruzione più ampio, e il **codice applicativo**
 (backend FastAPI, frontend React), costruito modulo verticale per modulo
 verticale a partire da questa specifica.
 
+## Online
+
+- App: https://gestio-gw59.onrender.com
+- API: https://gestio-api-crlo.onrender.com (`/api/health`)
+
+Entrambi su Render, piano free (vedi nota sulla scadenza del database più
+sotto).
+
 ## Stato del codice
 
 Due moduli verticali completi.
@@ -33,6 +41,14 @@ Due moduli verticali completi.
   l'accredito reale del gestore è il prossimo modulo, Coerenza POS).
 - API REST (`app/routers/corrispettivi.py`) e pagina React
   (`frontend/src/pages/Corrispettivi.jsx`) con upload XML.
+- Import **automatico da Google Drive** (`app/services/drive_sync.py`):
+  un account di servizio Google legge in sola lettura la cartella
+  condivisa e importa gli XML nuovi con la stessa logica idempotente
+  dell'upload manuale. Gira sia su richiesta (pulsante "Sincronizza ora"
+  in UI / `POST /api/drive-sync/corrispettivi`) sia in background ogni
+  `DRIVE_SYNC_INTERVAL_MINUTES` minuti finché l'app è attiva. Disattivato
+  finché `GOOGLE_SERVICE_ACCOUNT_JSON` non è configurata (nessun errore,
+  la UI mostra perché è spento).
 
 Entrambi: test automatici sul servizio e sull'API (`tests/`, girano su
 SQLite in-memory per velocità) — **verificati anche dal vivo su Postgres
@@ -44,6 +60,26 @@ visibile).
 Tutti gli altri moduli descritti in `docs/spec/03_PAGINE/` sono ancora da
 costruire, uno alla volta, con lo stesso schema: schema → servizio → API →
 pagina → test.
+
+### Attivare l'import automatico da Google Drive
+
+1. [Google Cloud Console](https://console.cloud.google.com/) → crea (o
+   riusa) un progetto → **IAM e amministrazione → Account di servizio** →
+   crea un account di servizio (es. `gestio-drive-sync`).
+2. Nella sua scheda → **Chiavi** → **Aggiungi chiave** → **JSON**: scarica
+   il file, è il valore di `GOOGLE_SERVICE_ACCOUNT_JSON` (il JSON intero, su
+   una riga).
+3. Su Google Drive, apri la cartella con gli XML dei corrispettivi →
+   **Condividi** → incolla l'email dell'account di servizio (finisce in
+   `.iam.gserviceaccount.com`) come **Visualizzatore**.
+4. Prendi l'ID della cartella dall'URL di Drive (la parte dopo
+   `folders/`): è `GOOGLE_DRIVE_CORRISPETTIVI_FOLDER_ID`.
+5. Su Render → `gestio-api` → **Environment**, imposta entrambe le
+   variabili e salva (redeploy automatico).
+
+Da quel momento il backend importa da solo, ogni
+`DRIVE_SYNC_INTERVAL_MINUTES` (default 15) minuti mentre è attivo, oltre
+che a richiesta dal pulsante "Sincronizza ora" nella pagina Corrispettivi.
 
 ### Avvio locale
 

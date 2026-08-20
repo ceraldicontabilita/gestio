@@ -16,6 +16,13 @@ services:
         value: /var/data/storage
       - key: CORS_ALLOWED_ORIGINS
         value: https://gestio-gw59.onrender.com
+      # Import automatico Corrispettivi da Google Drive (opzionale): da
+      # impostare manualmente in dashboard, non generabili automaticamente.
+      # Vuoti = sync disattivata, nessun errore. Vedi README.md.
+      - key: GOOGLE_SERVICE_ACCOUNT_JSON
+        sync: false
+      - key: GOOGLE_DRIVE_CORRISPETTIVI_FOLDER_ID
+        sync: false
       - key: DATABASE_URL
         fromDatabase:
           name: gestio-db

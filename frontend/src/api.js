@@ -3,15 +3,23 @@
 // l'URL assoluto del backend, passato a build time.
 const BASE_URL = `${import.meta.env.VITE_API_BASE_URL ?? ''}/api`
 
+async function raiseForStatus(response) {
+  const body = await response.text()
+  try {
+    const parsed = JSON.parse(body)
+    throw new Error(parsed.detail ?? body)
+  } catch (err) {
+    if (err instanceof SyntaxError) throw new Error(body || `Errore ${response.status}`)
+    throw err
+  }
+}
+
 async function request(path, options = {}) {
   const response = await fetch(`${BASE_URL}${path}`, {
     headers: { 'Content-Type': 'application/json' },
     ...options,
   })
-  if (!response.ok) {
-    const body = await response.text()
-    throw new Error(`${response.status} ${body}`)
-  }
+  if (!response.ok) await raiseForStatus(response)
   return response.json()
 }
 
@@ -30,6 +38,10 @@ export function getCorrispettivi() {
   return request('/corrispettivi')
 }
 
+export function sincronizzaDriveCorrispettivi() {
+  return request('/drive-sync/corrispettivi', { method: 'POST' })
+}
+
 export async function importaCorrispettivo(file) {
   const formData = new FormData()
   formData.append('file', file)
@@ -37,9 +49,6 @@ export async function importaCorrispettivo(file) {
     method: 'POST',
     body: formData,
   })
-  if (!response.ok) {
-    const body = await response.text()
-    throw new Error(`${response.status} ${body}`)
-  }
+  if (!response.ok) await raiseForStatus(response)
   return response.json()
 }
