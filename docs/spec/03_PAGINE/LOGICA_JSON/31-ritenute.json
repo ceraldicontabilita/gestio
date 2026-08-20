@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 31,
+  "label": "Ritenute",
+  "route": "/ritenute",
+  "purpose": "Ritenute per percipiente, periodo, aliquota, F24 e quadratura annuale.",
+  "sources": [
+    "fatture/compensi con ritenuta",
+    "percipienti",
+    "F24 e codici tributo",
+    "quietanze"
+  ],
+  "writes": [
+    "ritenuta per documento/periodo",
+    "relazioni F24",
+    "stato versamento documentale/bancario"
+  ],
+  "flow": [
+    "Estrarre base, aliquota, importo, causale e percipiente dalla fattura o inserimento verificato.",
+    "Aggregare per periodo/codice tributo mantenendo sempre il legame alle singole ritenute.",
+    "Collegare modello F24 e quietanza come prove distinte; pagato banca richiede movimento compatibile."
+  ],
+  "automations": [
+    "Proposta del codice tributo da regole fiscali versionate e controllo quadratura annuale."
+  ],
+  "links": [
+    "Ritenuta ↔ fattura ↔ percipiente ↔ riga F24 ↔ PDF ↔ quietanza ↔ banca."
+  ],
+  "guards": [
+    "Non creare F24 dal solo totale; non trattare quietanza come movimento bancario."
+  ],
+  "acceptance": [
+    "Somma ritenute per codice/periodo coincide con righe F24 collegate e differenze sono elencate."
+  ]
+}

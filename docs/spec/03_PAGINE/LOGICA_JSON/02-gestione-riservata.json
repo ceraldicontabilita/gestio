@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 2,
+  "label": "Gestione riservata",
+  "route": "/gestione-riservata",
+  "purpose": "Area riservata separata, con accesso dedicato e movimenti auditabili.",
+  "sources": [
+    "sessione autenticata",
+    "permessi area riservata",
+    "registro operazioni riservate"
+  ],
+  "writes": [
+    "operazioni riservate tramite servizio dedicato",
+    "audit prima/dopo"
+  ],
+  "flow": [
+    "Eseguire uno step-up di autenticazione prima di mostrare dati o comandi sensibili.",
+    "Mostrare solo le funzioni concesse dal ruolo e spiegare perché una funzione non è disponibile.",
+    "Per ogni mutazione mostrare anteprima, conseguenze, conferma forte ed esito verificabile."
+  ],
+  "automations": [
+    "Timeout breve e nuova autenticazione dopo inattività o cambio di contesto sensibile."
+  ],
+  "links": [
+    "Ogni azione rimanda al record modificato e alla relativa voce di audit."
+  ],
+  "guards": [
+    "Nessun pagamento, cancellazione definitiva o elevazione di ruolo può partire implicitamente."
+  ],
+  "acceptance": [
+    "Accesso negato fail-closed; ogni comando consentito produce un audit completo e un risultato rileggibile."
+  ]
+}

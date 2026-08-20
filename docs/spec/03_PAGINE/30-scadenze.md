@@ -7,14 +7,53 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/Scadenze.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/scadenze.json`](MAPPE_JSON/scadenze.json)
+- Contratto logico macchina: [`LOGICA_JSON/30-scadenze.json`](LOGICA_JSON/30-scadenze.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Scadenziario fornitori con residui, parziali, prove e alert navigabili.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- fatture e note credito
+- pagamenti confermati/parziali
+- fornitori
+- scadenze
+
+## Scritture ed effetti consentiti
+
+- scadenza, sollecito/promemoria interno, relazione a pagamento
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Calcolare residuo per fattura da totale meno pagamenti confermati e note credito compatibili.
+2. Raggruppare per fornitore e scadenza, distinguendo previsto, scaduto, parziale, pagato e da verificare.
+3. Ogni alert apre le fatture esatte; l'utente può annotare o associare una prova, non forzare il saldo senza evidenza.
+
+## Automazioni previste
+
+- Aggiornamento automatico quando fattura/pagamento cambia e promemoria sulle scadenze effettive.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Scadenza ↔ fattura ↔ fornitore ↔ pagamento/prova ↔ Prima Nota.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Metodo previsto o disposizione non azzerano il residuo; importo simile non associa automaticamente.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Scadenziario fornitori con residui, parziali, prove e alert navigabili.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Residui sommati coincidono con archivio fatture e ogni stato apre le prove che lo giustificano.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

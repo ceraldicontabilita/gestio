@@ -7,14 +7,52 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/Bilancio.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-bilancio.json`](MAPPE_JSON/contabilita-bilancio.json)
+- Contratto logico macchina: [`LOGICA_JSON/16-contabilita-bilancio.json`](LOGICA_JSON/16-contabilita-bilancio.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Bilancio calcolato da scritture valide, quadratura e drill-down.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- scritture giornale valide
+- piano dei conti
+- periodo/anno globale
+
+## Scritture ed effetti consentiti
+
+- Nessuna scrittura primaria; eventuale snapshot firmato solo come report.
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Calcolare Stato patrimoniale e Conto economico dalle righe bilanciate e dai conti validi nel periodo.
+2. Mostrare saldi iniziali, movimenti, saldi finali e quadratura Dare/Avere con formule esplicite.
+3. Ogni riga consente drill-down al conto, alla scrittura e al documento origine.
+
+## Automazioni previste
+
+- Ricalcolo read-only quando cambiano scritture aperte; periodi chiusi usano la versione approvata.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Bilancio ↔ piano conti ↔ giornale ↔ documento/prova origine.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non usare totali Prima Nota non contabilizzati come bilancio; errore fonte non diventa zero.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Bilancio calcolato da scritture valide, quadratura e drill-down.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Dare uguale Avere e utile/perdita riconciliabile al centesimo con il giornale.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

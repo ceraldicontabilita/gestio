@@ -7,14 +7,56 @@
 - Modulo: `documenti`
 - Componente corrente: `frontend/src/pages/ImportDocumenti.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/DocumentiHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/documenti-import.json`](MAPPE_JSON/documenti-import.json)
+- Contratto logico macchina: [`LOGICA_JSON/41-documenti-import.json`](LOGICA_JSON/41-documenti-import.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Import documenti/ZIP con validazione, salvataggio reale, hash e report.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- file/ZIP caricati
+- catalogo parser
+- storage file e document inbox
+
+## Scritture ed effetti consentiti
+
+- originali (storage file)
+- Documenti
+- import run
+- record di dominio tramite servizi
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Anteprima identifica file, tipo probabile, hash, duplicati certi, parser e problemi senza scrivere.
+2. Il comando principale deve caricare e salvare davvero: espandere ZIP in sicurezza, archiviare originali e processare ogni elemento.
+3. Instradare F24, quietanze, fatture, corrispettivi, estratti, cedolini e altri tipi ai servizi canonici, mai a writer paralleli.
+4. Restituire report per file con nuovo/già presente/elaborato/da verificare/errore e link al risultato.
+
+## Automazioni previste
+
+- Hash e source_external_id rendono ogni reimport idempotente; corrispettivi elaborati sincronizzano Prima Nota Cassa.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Import run ↔ originale sullo storage file ↔ documento inbox ↔ entità creata ↔ eventuale Prima Nota/riconciliazione.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Protezione ZIP traversal/bombe; nessun 'carica senza salvare'; un errore non annulla i file validi né elimina originali.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ Import documenti/ZIP con validazione, salvataggio reale, hash e report.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Reimport dello stesso ZIP: nuovi=0; ogni file ha esito e i corrispettivi validi compaiono una volta in Cassa.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

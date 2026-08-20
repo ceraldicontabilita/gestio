@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 35,
+  "label": "Riconciliazione stipendi",
+  "route": "/riconciliazione/stipendi",
+  "purpose": "Riconciliazione stipendi per dipendente, IBAN, periodo e regola del giorno 25.",
+  "sources": [
+    "Cedolini",
+    "Dipendenti/IBAN",
+    "Bonifici",
+    "Movimenti bancari",
+    "Prima Nota salari"
+  ],
+  "writes": [
+    "candidati periodo/dipendente",
+    "relazioni confermate e stato pagamento"
+  ],
+  "flow": [
+    "Partire dal bonifico o movimento e identificare il dipendente con beneficiario/IBAN normalizzati.",
+    "Proporre periodo precedente se data <25, stesso mese se data ≥25; il periodo resta visibile dopo refresh.",
+    "Verificare importo e documenti disponibili, mantenere più cedolini legittimi e chiedere scelta se più candidati."
+  ],
+  "automations": [
+    "Riprocessare casi aperti quando arriva il cedolino del mese corrente."
+  ],
+  "links": [
+    "Bonifico ↔ movimento banca ↔ dipendente ↔ cedolino ↔ Prima Nota salari/PDF."
+  ],
+  "guards": [
+    "La regola del giorno 25 propone, non conferma; importo solo o nome parziale non bastano."
+  ],
+  "acceptance": [
+    "Periodo/descrizione persistono; pagamento confermato apre cedolino e banca in entrambe le direzioni."
+  ]
+}

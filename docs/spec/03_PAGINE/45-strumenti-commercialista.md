@@ -7,14 +7,52 @@
 - Modulo: `strumenti`
 - Componente corrente: `frontend/src/pages/Commercialista.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/StrumentiHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/strumenti-commercialista.json`](MAPPE_JSON/strumenti-commercialista.json)
+- Contratto logico macchina: [`LOGICA_JSON/45-strumenti-commercialista.json`](LOGICA_JSON/45-strumenti-commercialista.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Fascicolo per commercialista con registri, documenti, manifest e quadrature.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- registri contabili/fiscali
+- documenti (storage file)
+- quadrature e periodo selezionato
+
+## Scritture ed effetti consentiti
+
+- fascicolo/export immutabile con manifest, non modifiche ai dati origine
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Selezionare esercizio/periodo e mostrare checklist dei registri e documenti inclusi/mancanti.
+2. Generare struttura navigabile con file, indici, totali e SHA-256, preservando identificatori come testo.
+3. Bloccare l'export se quadrature essenziali falliscono oppure etichettarlo chiaramente come bozza incompleta.
+
+## Automazioni previste
+
+- Rigenerazione deterministica dello stesso fascicolo e report differenze rispetto alla versione precedente.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Indice export ↔ registro ↔ riga ↔ documento originale; manifest bidirezionale.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun dato inventato, segreto o duplicato; export non modifica né sposta gli originali.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Fascicolo per commercialista con registri, documenti, manifest e quadrature.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- ZIP/fascicolo integro, una radice, hash validi, totali uguali alle fonti e documenti apribili.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

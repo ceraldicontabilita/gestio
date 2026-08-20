@@ -7,14 +7,50 @@
 - Modulo: `admin`
 - Componente corrente: `frontend/src/pages/hub/AdminElaborazioni.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/AdminHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/admin-batch-processor.json`](MAPPE_JSON/admin-batch-processor.json)
+- Contratto logico macchina: [`LOGICA_JSON/57-admin-batch-processor.json`](LOGICA_JSON/57-admin-batch-processor.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Alias legacy temporaneo verso elaborazioni, senza componente o router duplicato.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- route legacy e mappa di redirect
+- permessi utente
+
+## Scritture ed effetti consentiti
+
+- Nessuna scrittura; solo audit del redirect se necessario.
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Risolvere la route legacy verso /admin/batch-reprocessing mantenendo parametri sicuri supportati.
+2. Mostrare un avviso di percorso aggiornato solo se utile, poi usare lo stesso componente e gli stessi endpoint canonici.
+
+## Automazioni previste
+
+- Telemetry del traffico legacy per decidere la rimozione futura.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Route legacy → pagina elaborazioni canonica, senza duplicare stato o logica.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun componente, router o writer duplicato; parametri sconosciuti vengono scartati.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +58,13 @@ Alias legacy temporaneo verso elaborazioni, senza componente o router duplicato.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Stesso contenuto e autorizzazioni della pagina canonica; nessuna chiamata a endpoint legacy paralleli.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

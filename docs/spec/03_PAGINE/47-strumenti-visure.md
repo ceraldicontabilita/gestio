@@ -7,14 +7,52 @@
 - Modulo: `strumenti`
 - Componente corrente: `frontend/src/pages/Visure.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/StrumentiHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/strumenti-visure.json`](MAPPE_JSON/strumenti-visure.json)
+- Contratto logico macchina: [`LOGICA_JSON/47-strumenti-visure.json`](LOGICA_JSON/47-strumenti-visure.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Visure con soggetto, tipo, stato e documento, senza richieste esterne automatiche.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- soggetti/fornitori
+- visure già archiviate
+- metadati e scadenza documento
+
+## Scritture ed effetti consentiti
+
+- richiesta preparata o documento visura importato; nessun acquisto automatico
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Ricercare soggetto e mostrare visure esistenti con tipo, data, fonte, validità e PDF.
+2. Una nuova richiesta prepara parametri/costo e richiede conferma separata nel provider autorizzato.
+3. Il documento ricevuto viene archiviato e collegato al soggetto conservando protocollo/hash.
+
+## Automazioni previste
+
+- Promemoria di scadenza; nessuna chiamata a pagamento senza azione esplicita.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Visura ↔ soggetto/fornitore ↔ documento (storage file) ↔ eventuale richiesta provider.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non eseguire richieste esterne o addebiti automaticamente; non mostrare una richiesta come documento ricevuto.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Visure con soggetto, tipo, stato e documento, senza richieste esterne automatich
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Documenti esistenti apribili; richiesta e ricevuta hanno stati distinti e audit completi.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

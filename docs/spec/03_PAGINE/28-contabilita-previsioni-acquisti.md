@@ -7,14 +7,54 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/PrevisioniAcquisti.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-previsioni-acquisti.json`](MAPPE_JSON/contabilita-previsioni-acquisti.json)
+- Contratto logico macchina: [`LOGICA_JSON/28-contabilita-previsioni-acquisti.json`](LOGICA_JSON/28-contabilita-previsioni-acquisti.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Previsioni acquisti basate su storico e scadenze, senza ordini automatici.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- storico acquisti
+- fatture/scadenze
+- budget
+- fornitori
+- parametri previsionali
+
+## Scritture ed effetti consentiti
+
+- scenario/previsione e note, non ordini o scritture
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Costruire la base da fatture confermate e periodicità riconoscibili, escludendo duplicati e storni.
+2. Mostrare per fornitore/mese importo previsto, intervallo, motivazione e dati storici utilizzati.
+3. Consentire correzioni di scenario e confronto con budget/consuntivo.
+
+## Automazioni previste
+
+- Ricalcolo periodico delle proposte con versione del modello e confidenza.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Previsione ↔ fatture storiche ↔ fornitore ↔ budget e scadenze.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non creare ordini, pagamenti o fatture; valori con storico insufficiente restano non stimati.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +62,13 @@ Previsioni acquisti basate su storico e scadenze, senza ordini automatici.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni previsione espone la serie origine e la somma per periodo è riproducibile.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

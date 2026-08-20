@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 59,
+  "label": "Mappa gestionale",
+  "route": "/mappa-gestionale",
+  "purpose": "Mappa gestionale generata dal catalogo con moduli, route, flussi e health.",
+  "sources": [
+    "page_catalog",
+    "router frontend/backend",
+    "health e stato audit"
+  ],
+  "writes": [
+    "Nessuna scrittura applicativa; artefatto generato e fingerprint."
+  ],
+  "flow": [
+    "Generare albero per modulo dalle route canoniche con accesso, componente e stato verifica.",
+    "Ogni nodo apre la pagina e mostra dipendenze/endpoint principali; alias legacy sono marcati.",
+    "Separare raggiungibile, testato staticamente e verificato end-to-end."
+  ],
+  "automations": [
+    "Rigenerazione in CI e fallimento se catalogo/router/documentazione divergono."
+  ],
+  "links": [
+    "Nodo pagina ↔ scheda logica ↔ componente ↔ endpoint ↔ test/health."
+  ],
+  "guards": [
+    "HTTP 200 non equivale a funzionamento; nessuna pagina scoperta fuori catalogo."
+  ],
+  "acceptance": [
+    "Catalogo contiene esattamente le route canoniche e ogni link risolve con il ruolo previsto."
+  ]
+}

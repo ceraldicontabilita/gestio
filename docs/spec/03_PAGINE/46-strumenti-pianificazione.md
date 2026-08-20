@@ -7,14 +7,53 @@
 - Modulo: `strumenti`
 - Componente corrente: `frontend/src/pages/Pianificazione.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/StrumentiHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/strumenti-pianificazione.json`](MAPPE_JSON/strumenti-pianificazione.json)
+- Contratto logico macchina: [`LOGICA_JSON/46-strumenti-pianificazione.json`](LOGICA_JSON/46-strumenti-pianificazione.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Pianificazione di attivita e adempimenti derivati, assegnati e notificati.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- scadenze e anomalie
+- atti/documenti
+- utenti/assegnatari
+- notifiche
+
+## Scritture ed effetti consentiti
+
+- attività, assegnazione, stato, nota e promemoria
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Creare attività da evento reale o manuale indicando fonte, scadenza, responsabile e risultato atteso.
+2. Mostrare agenda/lista con priorità spiegata e link al documento o caso originario.
+3. Completare solo con nota o prova richiesta; rinvio e riassegnazione restano nell'audit.
+
+## Automazioni previste
+
+- Promemoria idempotenti; evitare notifiche duplicate per stesso evento/scadenza.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Attività ↔ scadenza/alert/documento ↔ responsabile ↔ notifica e audit.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessuna operazione esterna o pagamento automatico; una notifica inviata non completa l'attività.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Pianificazione di attivita e adempimenti derivati, assegnati e notificati.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni attività ha fonte e proprietario; promemoria una sola volta per finestra configurata.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

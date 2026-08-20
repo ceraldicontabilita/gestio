@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 21,
+  "label": "Cespiti",
+  "route": "/contabilita/cespiti",
+  "purpose": "Cespiti, documento origine, ammortamenti Decimal, dismissioni e storia.",
+  "sources": [
+    "fatture cespitabili",
+    "cespiti",
+    "categorie e aliquote",
+    "documenti origine"
+  ],
+  "writes": [
+    "scheda cespite",
+    "piano ammortamento",
+    "dismissione",
+    "scritture collegate"
+  ],
+  "flow": [
+    "Proporre cespiti da fatture con criteri espliciti; l'utente conferma categoria, data entrata in funzione e quota detraibile.",
+    "Calcolare ammortamenti con Decimal, pro-rata e versione delle regole, mostrando piano completo.",
+    "Registrazione e dismissione generano eventi contabili tramite writer unico e conservano documento/fonte."
+  ],
+  "automations": [
+    "Scansione nuove fatture idempotente e verifica annuale tra piano e scritture."
+  ],
+  "links": [
+    "Cespite ↔ fattura/PDF ↔ piano rate ↔ scritture giornale ↔ bilancio."
+  ],
+  "guards": [
+    "Non capitalizzare automaticamente per parola/importo; non modificare rate di esercizi chiusi senza rettifica."
+  ],
+  "acceptance": [
+    "Costo storico, fondo, quota e residuo quadrano al centesimo; ogni cespite ha documento e data di entrata in funzione."
+  ]
+}

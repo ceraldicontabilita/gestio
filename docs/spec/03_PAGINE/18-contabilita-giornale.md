@@ -7,14 +7,54 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/LibroGiornale.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-giornale.json`](MAPPE_JSON/contabilita-giornale.json)
+- Contratto logico macchina: [`LOGICA_JSON/18-contabilita-giornale.json`](LOGICA_JSON/18-contabilita-giornale.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Libro giornale progressivo, bilanciato, filtrabile, esportabile e auditabile.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- scritture giornale
+- righe Dare/Avere
+- piano conti
+- documenti e operation_id
+
+## Scritture ed effetti consentiti
+
+- scritture manuali bilanciate
+- storni e rettifiche, mai sovrascrittura dello storico
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Assegnare numero progressivo per esercizio solo al momento della registrazione valida.
+2. Mostrare data competenza/registrazione, causale, righe Dare/Avere, stato e documento origine.
+3. Le rettifiche creano nuove scritture collegate; export conserva filtri, numerazione e totali.
+
+## Automazioni previste
+
+- Generazione dal writer contabile unico dopo eventi di dominio confermati.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Scrittura ↔ evento/fattura/pagamento/F24 ↔ piano conti ↔ bilancio.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Una scrittura sbilanciata o priva di conto valido non può essere registrata; progressivi non si riciclano.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +62,13 @@ Libro giornale progressivo, bilanciato, filtrabile, esportabile e auditabile.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Per ogni scrittura Dare=Avere e sequenza progressiva senza duplicati; storno navigabile in entrambe le direzioni.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

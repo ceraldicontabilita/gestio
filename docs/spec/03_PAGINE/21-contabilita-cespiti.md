@@ -7,14 +7,56 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/GestioneCespiti.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-cespiti.json`](MAPPE_JSON/contabilita-cespiti.json)
+- Contratto logico macchina: [`LOGICA_JSON/21-contabilita-cespiti.json`](LOGICA_JSON/21-contabilita-cespiti.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Cespiti, documento origine, ammortamenti Decimal, dismissioni e storia.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- fatture cespitabili
+- cespiti
+- categorie e aliquote
+- documenti origine
+
+## Scritture ed effetti consentiti
+
+- scheda cespite
+- piano ammortamento
+- dismissione
+- scritture collegate
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Proporre cespiti da fatture con criteri espliciti; l'utente conferma categoria, data entrata in funzione e quota detraibile.
+2. Calcolare ammortamenti con Decimal, pro-rata e versione delle regole, mostrando piano completo.
+3. Registrazione e dismissione generano eventi contabili tramite writer unico e conservano documento/fonte.
+
+## Automazioni previste
+
+- Scansione nuove fatture idempotente e verifica annuale tra piano e scritture.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Cespite ↔ fattura/PDF ↔ piano rate ↔ scritture giornale ↔ bilancio.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non capitalizzare automaticamente per parola/importo; non modificare rate di esercizi chiusi senza rettifica.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ Cespiti, documento origine, ammortamenti Decimal, dismissioni e storia.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Costo storico, fondo, quota e residuo quadrano al centesimo; ogni cespite ha documento e data di entrata in funzione.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

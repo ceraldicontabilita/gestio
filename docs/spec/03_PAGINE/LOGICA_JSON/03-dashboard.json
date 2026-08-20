@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 3,
+  "label": "Dashboard",
+  "route": "/",
+  "purpose": "Dashboard derivata dai registri, con indicatori cliccabili e nessun saldo hardcoded.",
+  "sources": [
+    "viste aggregate dei registri canonici",
+    "stato importazioni e riconciliazioni",
+    "anno globale"
+  ],
+  "writes": [
+    "Nessuna scrittura contabile; solo preferenze di visualizzazione non sensibili."
+  ],
+  "flow": [
+    "Caricare anno e permessi, poi KPI calcolati dai registri e non da valori salvati nella pagina.",
+    "Ogni KPI deve dichiarare formula, periodo, ultimo aggiornamento e stato della fonte.",
+    "Il clic su una card apre la lista esatta che compone il numero, con gli stessi filtri."
+  ],
+  "automations": [
+    "Aggiornamento periodico read-only e invalidazione quando termina un'importazione."
+  ],
+  "links": [
+    "KPI verso Fatture, Prima Nota, Riconciliazioni, Scadenze e anomalie filtrate."
+  ],
+  "guards": [
+    "Errore o fonte indisponibile non diventano zero; totali di documenti, pagamenti e saldi restano semanticamente distinti."
+  ],
+  "acceptance": [
+    "Somma delle righe di drill-down uguale alla card al centesimo; cambio anno aggiorna card e destinazione."
+  ]
+}

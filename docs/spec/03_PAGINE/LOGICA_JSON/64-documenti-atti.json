@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 64,
+  "label": "Atti amministrativi",
+  "route": "/documenti/atti",
+  "purpose": "Atti amministrativi con ente, protocollo, originale, scadenze e notifiche.",
+  "sources": [
+    "documenti atti",
+    "enti/protocolli",
+    "scadenze",
+    "notifiche e relazioni"
+  ],
+  "writes": [
+    "atto canonico, metadati verificati, scadenze e stato pratica"
+  ],
+  "flow": [
+    "Importare originale e ricavare ente, tipo, protocollo, date, soggetto e scadenze con fonte per campo.",
+    "Mostrare fascicolo con documento, eventi, note, responsabile e azioni richieste.",
+    "Le scadenze generano attività/promemoria; stato completato richiede prova o nota coerente."
+  ],
+  "automations": [
+    "Classificazione e promemoria automatici solo su dati certi; OCR incerto resta in revisione."
+  ],
+  "links": [
+    "Atto ↔ originale sullo storage file ↔ ente/soggetto ↔ scadenze ↔ attività/notifiche."
+  ],
+  "guards": [
+    "Nessuna risposta/invio esterno automatico; non cancellare l'originale dopo elaborazione."
+  ],
+  "acceptance": [
+    "Ogni atto ha originale, protocollo e stato; alert apre l'atto e scompare solo a condizione risolta."
+  ]
+}

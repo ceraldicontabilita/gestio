@@ -7,14 +7,57 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/RiconciliazioneUnificata.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/riconciliazione-f24.json`](MAPPE_JSON/riconciliazione-f24.json)
+- Contratto logico macchina: [`LOGICA_JSON/34-riconciliazione-f24.json`](LOGICA_JSON/34-riconciliazione-f24.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 F24 con PDF, righe tributo, quietanza, banca e ricerca per codice.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- F24 unificato
+- righe tributo
+- PDF
+- Quietanze F24
+- movimenti bancari
+- codici tributo
+
+## Scritture ed effetti consentiti
+
+- relazioni F24-quietanza-banca
+- stato per modello e riga tributo
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare tutti i modelli, non solo pendenti, con periodo, totale e PDF originale.
+2. Espandere le righe per sezione/codice/periodo/debito/credito e permettere ricerca codice tributo → F24 → PDF e percorso inverso.
+3. Collegare quietanza solo con codici, periodi e importi compatibili; indicare QUIETANZA PRESENTE - BANCA DA VERIFICARE finché manca il movimento.
+4. Il pagamento bancario confermato aggiorna il modello senza fondere F24, quietanza e movimento.
+
+## Automazioni previste
+
+- Import da Gmail/Import documenti idempotente e nuovo tentativo di riconciliazione su evidenze aggiunte.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Codice tributo ↔ riga F24 ↔ PDF ↔ quietanza ↔ banca ↔ dichiarazione compatibile.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non ricostruire un F24 dalla sola quietanza; non mostrare pagato banca senza movimento; crediti e debiti conservano segno.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +65,13 @@ F24 con PDF, righe tributo, quietanza, banca e ricerca per codice.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni F24 indicizzato compare nella pagina, ricerca bidirezionale funziona e somme righe quadrano col totale documento.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

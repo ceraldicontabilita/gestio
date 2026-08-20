@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "page_id": 28,
+  "label": "Previsioni acquisti",
+  "route": "/contabilita/previsioni-acquisti",
+  "purpose": "Previsioni acquisti basate su storico e scadenze, senza ordini automatici.",
+  "sources": [
+    "storico acquisti",
+    "fatture/scadenze",
+    "budget",
+    "fornitori",
+    "parametri previsionali"
+  ],
+  "writes": [
+    "scenario/previsione e note, non ordini o scritture"
+  ],
+  "flow": [
+    "Costruire la base da fatture confermate e periodicità riconoscibili, escludendo duplicati e storni.",
+    "Mostrare per fornitore/mese importo previsto, intervallo, motivazione e dati storici utilizzati.",
+    "Consentire correzioni di scenario e confronto con budget/consuntivo."
+  ],
+  "automations": [
+    "Ricalcolo periodico delle proposte con versione del modello e confidenza."
+  ],
+  "links": [
+    "Previsione ↔ fatture storiche ↔ fornitore ↔ budget e scadenze."
+  ],
+  "guards": [
+    "Non creare ordini, pagamenti o fatture; valori con storico insufficiente restano non stimati."
+  ],
+  "acceptance": [
+    "Ogni previsione espone la serie origine e la somma per periodo è riproducibile."
+  ]
+}

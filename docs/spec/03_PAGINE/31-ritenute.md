@@ -7,14 +7,55 @@
 - Modulo: `personale`
 - Componente corrente: `frontend/src/pages/Ritenute.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/ritenute.json`](MAPPE_JSON/ritenute.json)
+- Contratto logico macchina: [`LOGICA_JSON/31-ritenute.json`](LOGICA_JSON/31-ritenute.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Ritenute per percipiente, periodo, aliquota, F24 e quadratura annuale.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- fatture/compensi con ritenuta
+- percipienti
+- F24 e codici tributo
+- quietanze
+
+## Scritture ed effetti consentiti
+
+- ritenuta per documento/periodo
+- relazioni F24
+- stato versamento documentale/bancario
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Estrarre base, aliquota, importo, causale e percipiente dalla fattura o inserimento verificato.
+2. Aggregare per periodo/codice tributo mantenendo sempre il legame alle singole ritenute.
+3. Collegare modello F24 e quietanza come prove distinte; pagato banca richiede movimento compatibile.
+
+## Automazioni previste
+
+- Proposta del codice tributo da regole fiscali versionate e controllo quadratura annuale.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Ritenuta ↔ fattura ↔ percipiente ↔ riga F24 ↔ PDF ↔ quietanza ↔ banca.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non creare F24 dal solo totale; non trattare quietanza come movimento bancario.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Ritenute per percipiente, periodo, aliquota, F24 e quadratura annuale.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Somma ritenute per codice/periodo coincide con righe F24 collegate e differenze sono elencate.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

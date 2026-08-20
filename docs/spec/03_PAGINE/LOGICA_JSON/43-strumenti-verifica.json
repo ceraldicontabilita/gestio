@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 43,
+  "label": "Verifica coerenza",
+  "route": "/strumenti",
+  "purpose": "Controlli di coerenza riproducibili con query, lista, severita e risoluzione.",
+  "sources": [
+    "risultati di controlli versionati",
+    "registri canonici",
+    "stato risoluzioni"
+  ],
+  "writes": [
+    "presa in carico, nota, eccezione motivata e audit"
+  ],
+  "flow": [
+    "Presentare controlli per severità/dominio con regola, query/versione, data e fonte.",
+    "Ogni badge/numero apre la lista esatta delle righe e il collegamento alla pagina operativa corretta.",
+    "Dopo una correzione rieseguire la regola; l'utente può documentare un'eccezione, non cancellare l'evidenza."
+  ],
+  "automations": [
+    "Esecuzione schedulata e dopo import; dedup degli alert sulla stessa regola/entità."
+  ],
+  "links": [
+    "Controllo ↔ entità/righe origine ↔ azione correttiva ↔ audit della risoluzione."
+  ],
+  "guards": [
+    "Nessun alert solo numerico; nessun comando distruttivo generico; errore tecnico separato da anomalia dati."
+  ],
+  "acceptance": [
+    "Ogni alert è navigabile e riproducibile; contatori coincidono con liste dopo refresh."
+  ]
+}

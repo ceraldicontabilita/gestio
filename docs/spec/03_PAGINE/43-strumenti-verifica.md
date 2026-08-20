@@ -7,14 +7,52 @@
 - Modulo: `strumenti`
 - Componente corrente: `frontend/src/pages/VerificaCoerenza.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/StrumentiHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/strumenti-verifica.json`](MAPPE_JSON/strumenti-verifica.json)
+- Contratto logico macchina: [`LOGICA_JSON/43-strumenti-verifica.json`](LOGICA_JSON/43-strumenti-verifica.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Controlli di coerenza riproducibili con query, lista, severita e risoluzione.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- risultati di controlli versionati
+- registri canonici
+- stato risoluzioni
+
+## Scritture ed effetti consentiti
+
+- presa in carico, nota, eccezione motivata e audit
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Presentare controlli per severità/dominio con regola, query/versione, data e fonte.
+2. Ogni badge/numero apre la lista esatta delle righe e il collegamento alla pagina operativa corretta.
+3. Dopo una correzione rieseguire la regola; l'utente può documentare un'eccezione, non cancellare l'evidenza.
+
+## Automazioni previste
+
+- Esecuzione schedulata e dopo import; dedup degli alert sulla stessa regola/entità.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Controllo ↔ entità/righe origine ↔ azione correttiva ↔ audit della risoluzione.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun alert solo numerico; nessun comando distruttivo generico; errore tecnico separato da anomalia dati.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Controlli di coerenza riproducibili con query, lista, severita e risoluzione.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni alert è navigabile e riproducibile; contatori coincidono con liste dopo refresh.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

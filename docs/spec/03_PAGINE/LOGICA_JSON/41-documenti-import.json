@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 41,
+  "label": "Import documenti",
+  "route": "/documenti/import",
+  "purpose": "Import documenti/ZIP con validazione, salvataggio reale, hash e report.",
+  "sources": [
+    "file/ZIP caricati",
+    "catalogo parser",
+    "storage file e document inbox"
+  ],
+  "writes": [
+    "originali (storage file)",
+    "Documenti",
+    "import run",
+    "record di dominio tramite servizi"
+  ],
+  "flow": [
+    "Anteprima identifica file, tipo probabile, hash, duplicati certi, parser e problemi senza scrivere.",
+    "Il comando principale deve caricare e salvare davvero: espandere ZIP in sicurezza, archiviare originali e processare ogni elemento.",
+    "Instradare F24, quietanze, fatture, corrispettivi, estratti, cedolini e altri tipi ai servizi canonici, mai a writer paralleli.",
+    "Restituire report per file con nuovo/già presente/elaborato/da verificare/errore e link al risultato."
+  ],
+  "automations": [
+    "Hash e source_external_id rendono ogni reimport idempotente; corrispettivi elaborati sincronizzano Prima Nota Cassa."
+  ],
+  "links": [
+    "Import run ↔ originale sullo storage file ↔ documento inbox ↔ entità creata ↔ eventuale Prima Nota/riconciliazione."
+  ],
+  "guards": [
+    "Protezione ZIP traversal/bombe; nessun 'carica senza salvare'; un errore non annulla i file validi né elimina originali."
+  ],
+  "acceptance": [
+    "Reimport dello stesso ZIP: nuovi=0; ogni file ha esito e i corrispettivi validi compaiono una volta in Cassa."
+  ]
+}

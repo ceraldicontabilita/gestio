@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 46,
+  "label": "Pianificazione",
+  "route": "/strumenti/pianificazione",
+  "purpose": "Pianificazione di attivita e adempimenti derivati, assegnati e notificati.",
+  "sources": [
+    "scadenze e anomalie",
+    "atti/documenti",
+    "utenti/assegnatari",
+    "notifiche"
+  ],
+  "writes": [
+    "attività, assegnazione, stato, nota e promemoria"
+  ],
+  "flow": [
+    "Creare attività da evento reale o manuale indicando fonte, scadenza, responsabile e risultato atteso.",
+    "Mostrare agenda/lista con priorità spiegata e link al documento o caso originario.",
+    "Completare solo con nota o prova richiesta; rinvio e riassegnazione restano nell'audit."
+  ],
+  "automations": [
+    "Promemoria idempotenti; evitare notifiche duplicate per stesso evento/scadenza."
+  ],
+  "links": [
+    "Attività ↔ scadenza/alert/documento ↔ responsabile ↔ notifica e audit."
+  ],
+  "guards": [
+    "Nessuna operazione esterna o pagamento automatico; una notifica inviata non completa l'attività."
+  ],
+  "acceptance": [
+    "Ogni attività ha fonte e proprietario; promemoria una sola volta per finestra configurata."
+  ]
+}

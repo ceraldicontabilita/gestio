@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "page_id": 20,
+  "label": "Calendario fiscale",
+  "route": "/contabilita/calendario",
+  "purpose": "Calendario fiscale con fonte, scadenza, stato, promemoria e documento collegato.",
+  "sources": [
+    "scadenze fiscali",
+    "F24",
+    "dichiarazioni",
+    "quietanze",
+    "atti e notifiche"
+  ],
+  "writes": [
+    "stato operativo, promemoria e relazione al documento; non il pagamento"
+  ],
+  "flow": [
+    "Generare scadenze da regole versionate e documenti effettivi, indicando fonte e periodo.",
+    "Mostrare per data: adempimento, importo se noto, stato, documento, responsabile e promemoria.",
+    "Completato richiede prova prevista dal tipo: invio, F24, quietanza o altra evidenza, senza confonderle."
+  ],
+  "automations": [
+    "Promemoria configurabili e aggiornamento quando arriva una prova; mai invio/pagamento automatico."
+  ],
+  "links": [
+    "Scadenza ↔ F24/dichiarazione/atto ↔ quietanza ↔ eventuale movimento banca."
+  ],
+  "guards": [
+    "Non inventare importi o scadenze da OCR incerto; fonte assente resta da verificare."
+  ],
+  "acceptance": [
+    "Ogni scadenza apre la prova e il calendario distingue scaduto, imminente, completato e da verificare."
+  ]
+}

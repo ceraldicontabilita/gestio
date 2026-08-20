@@ -476,127 +476,96 @@ si rigenerano dal codice e non si correggono a mano.
 ## Appendice C — Tutte le variabili rilevate
 
 > Inventario dei nomi, non dei valori. I valori sensibili devono restare nel secret store.
-> Le variabili di gruppo `drive-sheets` e quelle marcate
-> `transitorie-vietate-nel-target` documentano il codice legacy (Mongo, Google
-> Drive, Google Sheets) come riferimento storico: sono escluse dal target
-> `gestio` e non vanno reintrodotte. Il target usa solo `DATA_BACKEND=sql`,
-> `DATABASE_URL` e `DOCUMENT_STORAGE_PATH`.
+> Le variabili storiche di Mongo e Google Drive/Sheets (60 nomi) sono state rimosse
+> da questo inventario: appartengono al codice legacy ed escluse dal target `gestio`.
 
 | Variabile | Gruppo | Sensibilità | Tipo/default dichiarato | Sorgenti |
 |---|---|---|---|---|
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | sicurezza | segreta | `int` / valore non riportato | `app/config.py` |
 | `ADER_MICRO_RESIDUAL_THRESHOLD_CENTS` | azienda-fiscale | configurazione | `int` / `500` | `app/config.py` |
-| `ADMIN_EMAIL` | sicurezza | configurazione | non dichiarato in Settings | `app/routers/auth.py`, `app/routers/pin_login.py`, `scripts/e2e_distruttivo_server.py` |
-| `ADMIN_PASSWORD` | sicurezza | segreta | non dichiarato in Settings | `app/routers/auth.py`, `scripts/e2e_distruttivo_server.py` |
-| `ADMIN_PASSWORD_HASH` | sicurezza | segreta | non dichiarato in Settings | `app/routers/auth.py` |
-| `ADMIN_PIN` | sicurezza | segreta | non dichiarato in Settings | `app/routers/pin_login.py`, `app/services/utenti_pin.py` |
-| `AI_L2_MAX_FINANCIAL_IMPACT` | app-runtime | configurazione | non dichiarato in Settings | `app/agents/decision_engine.py` |
-| `AI_L2_MIN_CONFIDENCE` | app-runtime | configurazione | non dichiarato in Settings | `app/agents/decision_engine.py` |
+| `ADMIN_EMAIL` | sicurezza | configurazione | `` / non dichiarato in Settings | `app/routers/auth.py`, `app/routers/pin_login.py`, `scripts/e2e_distruttivo_server.py` |
+| `ADMIN_PASSWORD` | sicurezza | segreta | `` / valore non riportato | `app/routers/auth.py`, `scripts/e2e_distruttivo_server.py` |
+| `ADMIN_PASSWORD_HASH` | sicurezza | segreta | `` / valore non riportato | `app/routers/auth.py` |
+| `ADMIN_PIN` | sicurezza | segreta | `` / valore non riportato | `app/routers/pin_login.py`, `app/services/utenti_pin.py` |
+| `AI_L2_MAX_FINANCIAL_IMPACT` | app-runtime | configurazione | `` / non dichiarato in Settings | `app/agents/decision_engine.py` |
+| `AI_L2_MIN_CONFIDENCE` | app-runtime | configurazione | `` / non dichiarato in Settings | `app/agents/decision_engine.py` |
 | `ALGORITHM` | app-runtime | configurazione | `str` / `'HS256'` | `app/config.py` |
 | `ALLOWED_EXTENSIONS` | sicurezza | configurazione | `str` / `'.xml,.xlsx,.xls,.pdf,.csv'` | `app/config.py` |
 | `ALLOWED_HEADERS` | sicurezza | configurazione | `str` / `'*'` | `app/config.py` |
 | `ALLOWED_METHODS` | sicurezza | configurazione | `str` / `'*'` | `app/config.py` |
 | `ALLOWED_ORIGINS` | sicurezza | configurazione | `str` / `'*'` | `app/config.py` |
 | `ALLOW_CREDENTIALS` | sicurezza | configurazione | `bool` / `True` | `app/config.py` |
-| `ANTHROPIC_API_KEY` | ai | segreta | non dichiarato in Settings | `app/routers/ai_parser.py`, `app/routers/fornitori_learning.py`, `app/routers/settings_router.py`, `app/services/ai_categorizzazione.py`, `app/services/ai_document_parser.py`, `app/services/chat_ai_engine.py`, `app/services/document_ai_extractor.py`, `app/services/enhanced_document_parser.py`, `app/services/llm_document_parser.py` |
-| `ANTHROPIC_DOCUMENT_MODEL` | ai | configurazione | non dichiarato in Settings | `app/services/anthropic_llm_client.py` |
-| `ANTHROPIC_MODEL` | ai | configurazione | non dichiarato in Settings | `app/routers/settings_router.py`, `app/services/anthropic_llm_client.py`, `app/services/chat_ai_engine.py` |
+| `ANTHROPIC_API_KEY` | ai | segreta | `` / valore non riportato | `app/routers/ai_parser.py`, `app/routers/fornitori_learning.py`, `app/routers/settings_router.py`, `app/services/ai_categorizzazione.py`, `app/services/ai_document_parser.py`, `app/services/chat_ai_engine.py`, `app/services/document_ai_extractor.py`, `app/services/enhanced_document_parser.py`, `app/services/llm_document_parser.py` |
+| `ANTHROPIC_DOCUMENT_MODEL` | ai | configurazione | `` / non dichiarato in Settings | `app/services/anthropic_llm_client.py` |
+| `ANTHROPIC_MODEL` | ai | configurazione | `` / non dichiarato in Settings | `app/routers/settings_router.py`, `app/services/anthropic_llm_client.py`, `app/services/chat_ai_engine.py` |
 | `APP_NAME` | app-runtime | configurazione | `str` / `'Azienda in Cloud ERP'` | `app/config.py` |
 | `APP_VERSION` | app-runtime | configurazione | `str` / `'2.0.0'` | `app/config.py` |
-| `AUDIT_BASE_URL` | app-runtime | configurazione | non dichiarato in Settings | `frontend/scripts/audit-layout.cjs`, `frontend/scripts/audit-operation-index.cjs`, `frontend/scripts/audit-viewer.cjs` |
-| `AUTH_TOKEN` | test-tooling | segreta | non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
-| `AZIENDA_BANCA` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_BIC` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_CAP` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_CF` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_CITTA` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_EMAIL` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_IBAN` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_INDIRIZZO` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_PEC` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_PIVA` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_PROVINCIA` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_RAGIONE_SOCIALE` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `AZIENDA_TEL` | azienda-fiscale | configurazione | non dichiarato in Settings | `app/config/azienda.py` |
-| `BACKEND_URL` | app-runtime | configurazione | non dichiarato in Settings | `scripts/smoke_app.py` |
-| `BASE_URL` | test-tooling | configurazione | non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
+| `AUDIT_BASE_URL` | app-runtime | configurazione | `` / non dichiarato in Settings | `frontend/scripts/audit-layout.cjs`, `frontend/scripts/audit-operation-index.cjs`, `frontend/scripts/audit-viewer.cjs` |
+| `AUTH_TOKEN` | test-tooling | segreta | `` / valore non riportato | `scripts/collaudo_ui.mjs` |
+| `AZIENDA_BANCA` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_BIC` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_CAP` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_CF` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_CITTA` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_EMAIL` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_IBAN` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_INDIRIZZO` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_PEC` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_PIVA` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_PROVINCIA` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_RAGIONE_SOCIALE` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `AZIENDA_TEL` | azienda-fiscale | configurazione | `` / non dichiarato in Settings | `app/config/azienda.py` |
+| `BACKEND_URL` | app-runtime | configurazione | `` / non dichiarato in Settings | `scripts/smoke_app.py` |
+| `BASE_URL` | test-tooling | configurazione | `` / non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
 | `CACHE_TTL_SECONDS` | app-runtime | configurazione | `int` / `3600` | `app/config.py` |
-| `CHROMIUM_PATH` | test-tooling | configurazione | non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
+| `CHROMIUM_PATH` | test-tooling | configurazione | `` / non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
 | `CORS_ALLOWED_ORIGINS` | sicurezza | configurazione | `str` / `''` | `app/config.py` |
 | `CORS_ORIGINS` | sicurezza | configurazione | `str` / `'*'` | `app/config.py` |
-| `DATA_BACKEND` | app-runtime | configurazione | `str` / `'mongodb'` | `app/config.py` |
+| `DATA_BACKEND` | app-runtime | configurazione | `str` / `'sql'` | `app/config.py` |
 | `DB_NAME` | app-runtime | configurazione | `str` / `'Gestionale'` | `app/config.py`, `app/scripts/create_indexes.py`, `backend/tests/test_corrispettivi_ingest.py`, `scripts/archivia_prima_nota_salari_fuori_periodo.py`, `scripts/bonifica_pos_numia.py`, `scripts/e2e_distruttivo_server.py` |
 | `DEBUG` | app-runtime | configurazione | `bool` / `False` | `app/config.py` |
 | `DEFAULT_USER_EMAIL` | app-runtime | configurazione | `str` / `'admin@ceraldi.it'` | `app/config.py` |
 | `DEFAULT_USER_ID` | app-runtime | configurazione | `str` / `'admin'` | `app/config.py` |
-| `DEV` | app-runtime | configurazione | non dichiarato in Settings | `frontend/src/components/ErrorBoundary.jsx` |
-| `DRIVE_AVVISI_ESATTORIALI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_CARTE_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_CEDOLINI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_CORRISPETTIVI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_DOCUMENT_INDEX_ROOT_FOLDER_ID` | drive-sheets | configurazione | `str` / `'1tmVu6fl7qhJbLcGCHT3wEQzrvFAElc9h'` | `app/config.py` |
-| `DRIVE_ESTRATTI_ANNO_MINIMO` | drive-sheets | configurazione | `int` / `2026` | `app/config.py` |
-| `DRIVE_ESTRATTI_CONTO_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_ESTRATTI_CONTO_FOLDER_IDS` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_F24_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FATTURE_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FISCAL_ROOT_FOLDER_ID` | drive-sheets | configurazione | `str` / `'1f48bounfoOyHL_kqpHAp2GAnFfEpHvVa'` | `app/config.py` |
-| `DRIVE_FOLDER_AVVISI_BONARI_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_BONIFICI_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_CARTELLE_ESATTORIALI_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_CEDOLINI_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_CORRISPETTIVI_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_DICHIARAZIONI_IVA_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_ESTRATTI_CONTO_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_ESTRATTI_CONTO_IDS` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_FATTURE_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_QUIETANZE_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_FOLDER_REGISTRY_JSON` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_NOLEGGIO_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_PAYPAL_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_PRESENZE_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_QUIETANZE_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DRIVE_VERBALI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `DR_SOURCE_DB_NAME` | transitorie-vietate-nel-target | configurazione | non dichiarato in Settings | `scripts/verifica_ripristino_mongodb.py` |
-| `E2E_BASE_URL` | test-tooling | configurazione | non dichiarato in Settings | `frontend/scripts/audit-destructive-e2e.cjs`, `frontend/scripts/audit-pages-e2e.cjs` |
-| `E2E_FRONTEND_DIST` | test-tooling | configurazione | non dichiarato in Settings | `scripts/e2e_distruttivo_server.py` |
+| `DEV` | app-runtime | configurazione | `` / non dichiarato in Settings | `frontend/src/components/ErrorBoundary.jsx` |
+| `E2E_BASE_URL` | test-tooling | configurazione | `` / non dichiarato in Settings | `frontend/scripts/audit-destructive-e2e.cjs`, `frontend/scripts/audit-pages-e2e.cjs` |
+| `E2E_FRONTEND_DIST` | test-tooling | configurazione | `` / non dichiarato in Settings | `scripts/e2e_distruttivo_server.py` |
 | `EMAIL_ADDRESS` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/configurazioni.py`, `app/routers/learning_machine.py`, `app/services/gmail_search.py` |
 | `EMAIL_APP_PASSWORD` | gmail-email | segreta | `Optional[str]` / valore non riportato | `app/config.py`, `app/routers/configurazioni.py`, `app/routers/learning_machine.py`, `app/services/gmail_search.py` |
 | `EMAIL_PASSWORD` | gmail-email | segreta | `Optional[str]` / valore non riportato | `app/config.py`, `app/routers/commercialista.py`, `app/routers/configurazioni.py`, `app/routers/learning_machine.py`, `app/services/gmail_search.py`, `app/services/pagopa_scanner.py` |
 | `EMAIL_USER` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/commercialista.py`, `app/routers/configurazioni.py`, `app/services/gmail_search.py`, `app/services/pagopa_scanner.py` |
 | `ENABLE_ASYNC_IMPORTS` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_AVVISI_BONARI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_BONIFICI_SYNC` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
 | `ENABLE_CACHING` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_CARTELLE_ESATTORIALI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_CEDOLINI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_CORRISPETTIVI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_DICHIARAZIONI_IVA_SYNC` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
 | `ENABLE_DOCUMENT_AI` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
-| `ENABLE_DRIVE_AVVISI_BONARI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
-| `ENABLE_DRIVE_BONIFICI_SYNC` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
-| `ENABLE_DRIVE_CARTELLE_ESATTORIALI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
-| `ENABLE_DRIVE_CEDOLINI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
-| `ENABLE_DRIVE_CORRISPETTIVI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
-| `ENABLE_DRIVE_DICHIARAZIONI_IVA_SYNC` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
-| `ENABLE_DRIVE_ESTRATTI_CONTO_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
-| `ENABLE_DRIVE_FATTURE_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
-| `ENABLE_DRIVE_QUIETANZE_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
-| `ENABLE_DRIVE_VERBALI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
 | `ENABLE_EMAIL_F24_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
 | `ENABLE_EMAIL_VERBALI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_ESTRATTI_CONTO_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_FATTURE_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
 | `ENABLE_GMAIL_IMAP` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
+| `ENABLE_QUIETANZE_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
 | `ENABLE_SCHEDULER` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
 | `ENABLE_SMTP_EMAIL` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
+| `ENABLE_VERBALI_SYNC` | feature-job | configurazione | `bool` / `True` | `app/config.py` |
 | `ENVIRONMENT` | app-runtime | configurazione | `str` / `'production'` | `app/config.py`, `app/utils/session_cookie.py`, `scripts/e2e_distruttivo_server.py` |
-| `ERP_BRIDGE_SECRET` | app-runtime | segreta | non dichiarato in Settings | `app/routers/erp_bridge.py` |
-| `FAIL_FAST_SECRETS` | app-runtime | segreta | non dichiarato in Settings | `app/config.py`, `render.yaml` |
+| `ERP_BRIDGE_SECRET` | app-runtime | segreta | `` / valore non riportato | `app/routers/erp_bridge.py` |
+| `FAIL_FAST_SECRETS` | app-runtime | segreta | `` / valore non riportato | `app/config.py`, `render.yaml` |
 | `FISCAL_COMPANY_ID` | azienda-fiscale | configurazione | `str` / `'04523831214'` | `app/config.py` |
 | `FONTS_DIR` | app-runtime | configurazione | `Path` / `Path('fonts')` | `app/config.py` |
 | `FROM_EMAIL` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/commercialista.py` |
 | `FRONTEND_URL` | app-runtime | configurazione | `Optional[str]` / `None` | `app/config.py`, `scripts/smoke_app.py` |
 | `GEMINI_API_KEY` | ai | segreta | `Optional[str]` / valore non riportato | `app/config.py` |
-| `GESTIONALE_MCP_API_BASE_URL` | mcp | configurazione | non dichiarato in Settings | `gestionale_mcp/config.py` |
-| `GESTIONALE_MCP_API_TOKEN` | mcp | segreta | non dichiarato in Settings | `gestionale_mcp/config.py` |
-| `GESTIONALE_MCP_HOST` | mcp | configurazione | non dichiarato in Settings | `gestionale_mcp/config.py` |
-| `GESTIONALE_MCP_ISSUER_URL` | mcp | configurazione | non dichiarato in Settings | `gestionale_mcp/config.py` |
-| `GESTIONALE_MCP_LOG_LEVEL` | mcp | configurazione | non dichiarato in Settings | `gestionale_mcp/config.py` |
-| `GESTIONALE_MCP_RESOURCE_SERVER_URL` | mcp | configurazione | non dichiarato in Settings | `gestionale_mcp/config.py` |
-| `GESTIONE_RISERVATA_CODE` | app-runtime | configurazione | non dichiarato in Settings | `app/routers/gestione_riservata.py`, `scripts/e2e_distruttivo_server.py` |
+| `GESTIONALE_MCP_API_BASE_URL` | mcp | configurazione | `` / non dichiarato in Settings | `gestionale_mcp/config.py` |
+| `GESTIONALE_MCP_API_TOKEN` | mcp | segreta | `` / valore non riportato | `gestionale_mcp/config.py` |
+| `GESTIONALE_MCP_HOST` | mcp | configurazione | `` / non dichiarato in Settings | `gestionale_mcp/config.py` |
+| `GESTIONALE_MCP_ISSUER_URL` | mcp | configurazione | `` / non dichiarato in Settings | `gestionale_mcp/config.py` |
+| `GESTIONALE_MCP_LOG_LEVEL` | mcp | configurazione | `` / non dichiarato in Settings | `gestionale_mcp/config.py` |
+| `GESTIONALE_MCP_RESOURCE_SERVER_URL` | mcp | configurazione | `` / non dichiarato in Settings | `gestionale_mcp/config.py` |
+| `GESTIONE_RISERVATA_CODE` | app-runtime | configurazione | `` / non dichiarato in Settings | `app/routers/gestione_riservata.py`, `scripts/e2e_distruttivo_server.py` |
 | `GMAIL_ACCOUNT_AMMINISTRATIVO` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py` |
 | `GMAIL_APP_PASSWORD` | gmail-email | segreta | `Optional[str]` / valore non riportato | `app/config.py` |
 | `GMAIL_APP_PASSWORD_AMMINISTRATIVO` | gmail-email | segreta | `Optional[str]` / valore non riportato | `app/config.py` |
@@ -605,28 +574,7 @@ si rigenerano dal codice e non si correggono a mano.
 | `GOOGLE_API_KEY` | ai | segreta | `Optional[str]` / valore non riportato | `app/config.py` |
 | `GOOGLE_CLIENT_ID` | app-runtime | configurazione | `Optional[str]` / `None` | `app/config.py` |
 | `GOOGLE_CLIENT_SECRET` | app-runtime | segreta | `Optional[str]` / valore non riportato | `app/config.py` |
-| `GOOGLE_DRIVE_AVVISI_BONARI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_BONIFICI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_CARTELLE_ESATTORIALI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_CEDOLINI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_CORRISPETTIVI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_DICHIARAZIONI_IVA_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_ESTRATTI_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_ESTRATTI_FOLDER_IDS` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_FATTURE_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_QUIETANZE_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_SA_FILE` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_SA_JSON` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
 | `GOOGLE_REDIRECT_URI` | app-runtime | configurazione | `str` / `'/api/auth/google/callback'` | `app/config.py` |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_BONIFICI` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_CEDOLINI` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_CORRISPETTIVI` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_ESTRATTI_CONTO` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_FATTURE` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_QUIETANZE` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_SHEETS_LEDGER_FOLDER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
-| `GOOGLE_SHEETS_LEDGER_ID` | drive-sheets | configurazione | `Optional[str]` / `None` | `app/config.py` |
 | `HOST` | app-runtime | configurazione | `str` / `'0.0.0.0'` | `app/config.py` |
 | `IMAP_HOST` | gmail-email | configurazione | `str` / `'imap.gmail.com'` | `app/config.py`, `app/routers/settings_router.py`, `app/services/pagopa_scanner.py` |
 | `IMAP_PASSWORD` | gmail-email | segreta | `Optional[str]` / valore non riportato | `app/config.py`, `app/routers/settings_router.py`, `app/services/pagopa_scanner.py` |
@@ -634,61 +582,50 @@ si rigenerano dal codice e non si correggono a mano.
 | `IMAP_SERVER` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/learning_machine.py`, `app/services/email_full_download.py`, `app/services/verbali_email_scanner.py` |
 | `IMAP_USER` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/settings_router.py`, `app/services/pagopa_scanner.py` |
 | `IVA_ALIQUOTE` | app-runtime | configurazione | `list[float]` / `[4.0, 5.0, 10.0, 22.0]` | `app/config.py` |
-| `LOCALAPPDATA` | app-runtime | configurazione | non dichiarato in Settings | `scripts/sync_rt_to_drive.py` |
+| `LOCALAPPDATA` | app-runtime | configurazione | `` / non dichiarato in Settings | `scripts/sync_rt_import.py` |
 | `LOG_FILE` | app-runtime | configurazione | `Optional[Path]` / `None` | `app/config.py` |
 | `LOG_FORMAT` | app-runtime | configurazione | `str` / `'json'` | `app/config.py` |
 | `LOG_LEVEL` | app-runtime | configurazione | `str` / `'INFO'` | `app/config.py` |
 | `MAX_CONCURRENT_IMPORTS` | app-runtime | configurazione | `int` / `5` | `app/config.py` |
 | `MAX_UPLOAD_SIZE_MB` | app-runtime | configurazione | `int` / `50` | `app/config.py` |
-| `MONGODB_ATLAS_URI` | transitorie-vietate-nel-target | configurazione | `Optional[str]` / `None` | `app/config.py`, `scripts/bonifica_pos_numia.py`, `scripts/e2e_distruttivo_server.py` |
-| `MONGODB_CONNECT_TIMEOUT_MS` | transitorie-vietate-nel-target | configurazione | `int` / `5000` | `app/config.py` |
-| `MONGODB_MAX_IDLE_TIME_MS` | transitorie-vietate-nel-target | configurazione | `int` / `120000` | `app/config.py` |
-| `MONGODB_MAX_POOL_SIZE` | transitorie-vietate-nel-target | configurazione | `int` / `50` | `app/config.py` |
-| `MONGODB_MIN_POOL_SIZE` | transitorie-vietate-nel-target | configurazione | `int` / `0` | `app/config.py` |
-| `MONGODB_SOCKET_TIMEOUT_MS` | transitorie-vietate-nel-target | configurazione | `int` / `20000` | `app/config.py` |
-| `MONGODB_TIMEOUT_MS` | transitorie-vietate-nel-target | configurazione | `int` / `5000` | `app/config.py` |
-| `MONGODB_URI` | transitorie-vietate-nel-target | configurazione | non dichiarato in Settings | `scripts/archivia_prima_nota_salari_fuori_periodo.py` |
-| `MONGODB_WAIT_QUEUE_TIMEOUT_MS` | transitorie-vietate-nel-target | configurazione | `int` / `5000` | `app/config.py` |
-| `MONGO_URI` | transitorie-vietate-nel-target | configurazione | non dichiarato in Settings | `scripts/archivia_prima_nota_salari_fuori_periodo.py` |
-| `MONGO_URL` | transitorie-vietate-nel-target | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/scripts/create_indexes.py`, `app/utils/crypto.py`, `backend/tests/test_corrispettivi_ingest.py`, `scripts/archivia_prima_nota_salari_fuori_periodo.py`, `scripts/bonifica_pos_numia.py`, `scripts/e2e_distruttivo_server.py` |
-| `NODE_ENV` | app-runtime | configurazione | non dichiarato in Settings | `frontend/plugins/health-check/health-endpoints.js` |
-| `NOLEGGIO_GIORNI_SENZA_FATTURA` | feature-job | configurazione | non dichiarato in Settings | `app/services/noleggio/controlli.py` |
+| `NODE_ENV` | app-runtime | configurazione | `` / non dichiarato in Settings | `frontend/plugins/health-check/health-endpoints.js` |
+| `NOLEGGIO_GIORNI_SENZA_FATTURA` | feature-job | configurazione | `` / non dichiarato in Settings | `app/services/noleggio/controlli.py` |
 | `OPENAI_API_KEY` | ai | segreta | `Optional[str]` / valore non riportato | `app/config.py`, `app/routers/settings_router.py`, `app/services/chat_ai_engine.py` |
-| `OPENAI_MODEL` | ai | configurazione | non dichiarato in Settings | `app/routers/settings_router.py`, `app/services/chat_ai_engine.py` |
-| `OPENAPI_COMPANY_TOKEN` | integrazioni | segreta | non dichiarato in Settings | `app/routers/openapi_automotive.py`, `app/routers/openapi_imprese.py` |
+| `OPENAI_MODEL` | ai | configurazione | `` / non dichiarato in Settings | `app/routers/settings_router.py`, `app/services/chat_ai_engine.py` |
+| `OPENAPI_COMPANY_TOKEN` | integrazioni | segreta | `` / valore non riportato | `app/routers/openapi_automotive.py`, `app/routers/openapi_imprese.py` |
 | `OPENAPI_IMPRESE_TOKEN` | integrazioni | segreta | `Optional[str]` / valore non riportato | `app/config.py` |
 | `OPENAPI_IT_ENV` | integrazioni | configurazione | `str` / `'production'` | `app/config.py`, `app/routers/openapi_it.py` |
 | `OPENAPI_IT_KEY` | integrazioni | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/openapi_it.py` |
-| `OUT_DIR` | test-tooling | configurazione | non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
+| `OUT_DIR` | test-tooling | configurazione | `` / non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
 | `PAYPAL_CLIENT_ID` | integrazioni | configurazione | `str` / `''` | `app/config.py`, `app/services/paypal_integration.py` |
 | `PAYPAL_CLIENT_SECRET` | integrazioni | segreta | `str` / valore non riportato | `app/config.py` |
-| `PAYPAL_MODE` | integrazioni | configurazione | non dichiarato in Settings | `app/services/paypal_integration.py` |
-| `PAYPAL_SECRET_KEY` | integrazioni | segreta | non dichiarato in Settings | `app/services/paypal_integration.py` |
-| `PAYPAL_WEBHOOK_ID` | integrazioni | configurazione | non dichiarato in Settings | `app/routers/paypal_api.py` |
-| `PIN_HASH_ADMIN` | sicurezza | segreta | non dichiarato in Settings | `app/routers/pin_login.py` |
-| `PLAYWRIGHT_CHROMIUM` | app-runtime | configurazione | non dichiarato in Settings | `frontend/scripts/audit-destructive-e2e.cjs`, `frontend/scripts/audit-layout.cjs`, `frontend/scripts/audit-operation-index.cjs`, `frontend/scripts/audit-pages-e2e.cjs`, `frontend/scripts/audit-viewer.cjs` |
+| `PAYPAL_MODE` | integrazioni | configurazione | `` / non dichiarato in Settings | `app/services/paypal_integration.py` |
+| `PAYPAL_SECRET_KEY` | integrazioni | segreta | `` / valore non riportato | `app/services/paypal_integration.py` |
+| `PAYPAL_WEBHOOK_ID` | integrazioni | configurazione | `` / non dichiarato in Settings | `app/routers/paypal_api.py` |
+| `PIN_HASH_ADMIN` | sicurezza | segreta | `` / valore non riportato | `app/routers/pin_login.py` |
+| `PLAYWRIGHT_CHROMIUM` | app-runtime | configurazione | `` / non dichiarato in Settings | `frontend/scripts/audit-destructive-e2e.cjs`, `frontend/scripts/audit-layout.cjs`, `frontend/scripts/audit-operation-index.cjs`, `frontend/scripts/audit-pages-e2e.cjs`, `frontend/scripts/audit-viewer.cjs` |
 | `PORT` | app-runtime | configurazione | `int` / `8000` | `app/config.py` |
-| `POS_ACCREDITO_WEEKEND` | feature-job | configurazione | non dichiarato in Settings | `app/utils/pos_accredito.py` |
-| `PROCESS_ROLE` | app-runtime | configurazione | non dichiarato in Settings | `app/main.py` |
-| `PYTHONUTF8` | app-runtime | configurazione | non dichiarato in Settings | `render.yaml` |
-| `PYTHON_VERSION` | app-runtime | configurazione | non dichiarato in Settings | `render.yaml` |
-| `REACT_APP_BACKEND_URL` | app-runtime | configurazione | non dichiarato in Settings | `backend/tests/test_corrispettivi_ingest.py`, `backend/tests/test_fase2_fase3_fase4.py` |
+| `POS_ACCREDITO_WEEKEND` | feature-job | configurazione | `` / non dichiarato in Settings | `app/utils/pos_accredito.py` |
+| `PROCESS_ROLE` | app-runtime | configurazione | `` / non dichiarato in Settings | `app/main.py` |
+| `PYTHONUTF8` | app-runtime | configurazione | `` / non dichiarato in Settings | `render.yaml` |
+| `PYTHON_VERSION` | app-runtime | configurazione | `` / non dichiarato in Settings | `render.yaml` |
+| `REACT_APP_BACKEND_URL` | app-runtime | configurazione | `` / non dichiarato in Settings | `backend/tests/test_corrispettivi_ingest.py`, `backend/tests/test_fase2_fase3_fase4.py` |
 | `RELOAD` | app-runtime | configurazione | `bool` / `False` | `app/config.py` |
-| `RENDER` | app-runtime | configurazione | non dichiarato in Settings | `app/main.py`, `app/utils/session_cookie.py` |
-| `RENDER_GIT_COMMIT` | app-runtime | configurazione | non dichiarato in Settings | `app/main.py` |
-| `RENDER_SERVICE_ID` | app-runtime | configurazione | non dichiarato in Settings | `app/main.py`, `app/utils/session_cookie.py` |
+| `RENDER` | app-runtime | configurazione | `` / non dichiarato in Settings | `app/main.py`, `app/utils/session_cookie.py` |
+| `RENDER_GIT_COMMIT` | app-runtime | configurazione | `` / non dichiarato in Settings | `app/main.py` |
+| `RENDER_SERVICE_ID` | app-runtime | configurazione | `` / non dichiarato in Settings | `app/main.py`, `app/utils/session_cookie.py` |
 | `REQUEST_TIMEOUT_SECONDS` | app-runtime | configurazione | `int` / `300` | `app/config.py` |
-| `RT_DRIVE_INBOX` | app-runtime | configurazione | non dichiarato in Settings | `scripts/sync_rt_to_drive.py` |
-| `RT_LOCAL_BASE_URL` | app-runtime | configurazione | non dichiarato in Settings | `scripts/sync_rt_to_drive.py` |
-| `RT_SYNC_STATE_FILE` | app-runtime | configurazione | non dichiarato in Settings | `scripts/sync_rt_to_drive.py` |
+| `RT_IMPORT_INBOX` | app-runtime | configurazione | `` / non dichiarato in Settings | `scripts/sync_rt_import.py` |
+| `RT_LOCAL_BASE_URL` | app-runtime | configurazione | `` / non dichiarato in Settings | `scripts/sync_rt_import.py` |
+| `RT_SYNC_STATE_FILE` | app-runtime | configurazione | `` / non dichiarato in Settings | `scripts/sync_rt_import.py` |
 | `RUN_STARTUP_DATA_REPAIRS` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
 | `RUN_STARTUP_INDEX_MIGRATIONS` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
 | `RUN_STARTUP_SEED_DATA` | feature-job | configurazione | `bool` / `False` | `app/config.py` |
 | `SCHEDULER_LEASE_SECONDS` | feature-job | configurazione | `int` / `21600` | `app/config.py` |
 | `SECRET_KEY` | sicurezza | segreta | `Optional[str]` / valore non riportato | `app/config.py`, `app/routers/auth.py`, `scripts/e2e_distruttivo_server.py` |
-| `SMOKE_ANNO` | test-tooling | configurazione | non dichiarato in Settings | `scripts/smoke_app.py` |
-| `SMOKE_AUTH_TOKEN` | test-tooling | segreta | non dichiarato in Settings | `scripts/smoke_app.py` |
-| `SMOKE_TIMEOUT` | test-tooling | configurazione | non dichiarato in Settings | `scripts/smoke_app.py` |
+| `SMOKE_ANNO` | test-tooling | configurazione | `` / non dichiarato in Settings | `scripts/smoke_app.py` |
+| `SMOKE_AUTH_TOKEN` | test-tooling | segreta | `` / valore non riportato | `scripts/smoke_app.py` |
+| `SMOKE_TIMEOUT` | test-tooling | configurazione | `` / non dichiarato in Settings | `scripts/smoke_app.py` |
 | `SMTP_ENABLED` | gmail-email | configurazione | `bool` / `False` | `app/config.py` |
 | `SMTP_FROM_EMAIL` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/commercialista.py` |
 | `SMTP_HOST` | gmail-email | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/routers/commercialista.py` |
@@ -704,62 +641,13 @@ si rigenerano dal codice e non si correggono a mano.
 | `TELEGRAM_CHAT_ID` | integrazioni | configurazione | `Optional[str]` / `None` | `app/config.py`, `app/services/telegram_notifications.py` |
 | `TEMPLATES_DIR` | app-runtime | configurazione | `Path` / `Path('templates')` | `app/config.py` |
 | `UPLOAD_FOLDER` | app-runtime | configurazione | `Path` / `Path('uploads')` | `app/config.py` |
-| `VERBALE_TEST_ID` | test-tooling | configurazione | non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
+| `VERBALE_TEST_ID` | test-tooling | configurazione | `` / non dichiarato in Settings | `scripts/collaudo_ui.mjs` |
 | `VERBALI_EMAIL_SCAN_HOUR` | feature-job | configurazione | `int` / `6` | `app/config.py` |
-| `VITE_BACKEND_URL` | app-runtime | configurazione | non dichiarato in Settings | `frontend/vite.config.js` |
-| `WHATSAPP_VERIFY_TOKEN` | integrazioni | segreta | non dichiarato in Settings | `app/routers/whatsapp_webhook.py` |
+| `VITE_BACKEND_URL` | app-runtime | configurazione | `` / non dichiarato in Settings | `frontend/vite.config.js` |
+| `WHATSAPP_VERIFY_TOKEN` | integrazioni | segreta | `` / valore non riportato | `app/routers/whatsapp_webhook.py` |
 
-Regole: alias duplicati vanno migrati verso un nome canonico e poi rimossi; una variabile senza consumer non va mantenuta; tutte le variabili `transitorie-vietate-nel-target` sono escluse dalla ricostruzione database SQL monoutente.
+Regole: alias duplicati vanno migrati verso un nome canonico e poi rimossi; una variabile senza consumer non va mantenuta.
 
-## Appendice C.1 — Cartelle Google Drive del codice legacy (escluse dal target)
-
-> Riferimento storico, non normativo. Nel target `gestio` non esiste
-> integrazione con Google Drive: gli originali vivono sullo storage file
-> applicativo, indicizzato nel database SQL. Questa tabella resta solo come
-> mappa di cosa il codice legacy sincronizzava, utile a non perdere requisiti
-> funzionali durante la ricostruzione; nessuna di queste variabili va
-> reintrodotta.
-
-| Variabile cartella | Default dichiarato | Sorgenti/consumer |
-|---|---|---|
-| `DRIVE_AVVISI_ESATTORIALI_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_CARTE_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_CEDOLINI_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_CORRISPETTIVI_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_DOCUMENT_INDEX_ROOT_FOLDER_ID` | `'1tmVu6fl7qhJbLcGCHT3wEQzrvFAElc9h'` | `app/config.py` |
-| `DRIVE_ESTRATTI_CONTO_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_ESTRATTI_CONTO_FOLDER_IDS` | `None` | `app/config.py` |
-| `DRIVE_F24_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_FATTURE_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_FISCAL_ROOT_FOLDER_ID` | `'1f48bounfoOyHL_kqpHAp2GAnFfEpHvVa'` | `app/config.py` |
-| `DRIVE_FOLDER_AVVISI_BONARI_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_BONIFICI_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_CARTELLE_ESATTORIALI_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_CEDOLINI_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_CORRISPETTIVI_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_DICHIARAZIONI_IVA_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_ESTRATTI_CONTO_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_ESTRATTI_CONTO_IDS` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_FATTURE_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_QUIETANZE_ID` | `None` | `app/config.py` |
-| `DRIVE_FOLDER_REGISTRY_JSON` | `None` | `app/config.py` |
-| `DRIVE_NOLEGGIO_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_PAYPAL_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_PRESENZE_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_QUIETANZE_FOLDER_ID` | `None` | `app/config.py` |
-| `DRIVE_VERBALI_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_AVVISI_BONARI_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_BONIFICI_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_CARTELLE_ESATTORIALI_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_CEDOLINI_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_CORRISPETTIVI_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_DICHIARAZIONI_IVA_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_ESTRATTI_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_ESTRATTI_FOLDER_IDS` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_FATTURE_FOLDER_ID` | `None` | `app/config.py` |
-| `GOOGLE_DRIVE_QUIETANZE_FOLDER_ID` | `None` | `app/config.py` |
-
-Gli alias senza valore vanno configurati nel secret/config store di Render. Non creare cartelle parallele per aggirare un alias mancante; risolvere e documentare la cartella canonica.
 
 ## Appendice D — Tutti i router e tutti gli endpoint
 

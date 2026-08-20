@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 13,
+  "label": "Costi noleggio",
+  "route": "/noleggio/costi",
+  "purpose": "Costi noleggio per veicolo: canoni, pedaggi, verbali, bollo e riparazioni.",
+  "sources": [
+    "veicoli",
+    "fatture noleggio",
+    "pedaggi",
+    "verbali",
+    "bolli",
+    "riparazioni"
+  ],
+  "writes": [
+    "Nessuna scrittura primaria: vista costi derivata ed eventuali classificazioni con audit."
+  ],
+  "flow": [
+    "Aggregare per targa e periodo solo costi collegati da relazioni confermate.",
+    "Separare canone, servizi, pedaggi, verbali, bollo, riparazioni e altri costi, mostrando documento e formula.",
+    "Consentire drill-down da ogni totale alle righe origine e confronto tra veicoli/periodi omogenei."
+  ],
+  "automations": [
+    "Ricalcolo della vista quando arriva o cambia una relazione documentale."
+  ],
+  "links": [
+    "Costo ↔ veicolo ↔ fattura/documento ↔ eventuale pagamento e Prima Nota."
+  ],
+  "guards": [
+    "Non duplicare lo stesso costo presente in fattura e pagamento; un pagamento non è una nuova componente di costo."
+  ],
+  "acceptance": [
+    "Somma categorie uguale al totale veicolo e ogni centesimo è spiegato da una riga origine."
+  ]
+}

@@ -7,14 +7,56 @@
 - Modulo: `admin`
 - Componente corrente: `frontend/src/pages/Admin.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/AdminHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/admin.json`](MAPPE_JSON/admin.json)
+- Contratto logico macchina: [`LOGICA_JSON/54-admin.json`](LOGICA_JSON/54-admin.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Admin con salute, job, errori, configurazione non sensibile e azioni protette.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- health servizi/provider
+- job/run
+- errori
+- configurazione non sensibile
+- audit
+
+## Scritture ed effetti consentiti
+
+- comandi amministrativi protetti
+- retry/cancel controllato
+- note operative
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare stato per servizio con timestamp, versione/commit, dipendenze e ultimo errore strutturato.
+2. Ogni contatore apre lista di job/errori; retry è selettivo e idempotente.
+3. Azioni distruttive o migrazioni mostrano dry-run, target esatti, conferma forte e rollback.
+
+## Automazioni previste
+
+- Refresh health e alert su errori persistenti, senza tempeste di notifiche.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Servizio/job ↔ run ↔ record coinvolti ↔ log/audit e pagina operativa.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun segreto, stack trace sensibile o pulsante inutilizzabile; admin non significa autorizzazione automatica al pagamento.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ Admin con salute, job, errori, configurazione non sensibile e azioni protette.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni stato è datato e verificabile; retry non duplica record e un errore apre il dettaglio utile.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

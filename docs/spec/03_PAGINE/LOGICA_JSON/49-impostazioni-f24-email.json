@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 49,
+  "label": "Impostazioni F24 email",
+  "route": "/impostazioni-f24-email",
+  "purpose": "Configurazione ingest email F24, query, mittenti, test e ultima scansione.",
+  "sources": [
+    "configurazione query/mittenti F24",
+    "stato connessione Gmail",
+    "ultimo watermark/run"
+  ],
+  "writes": [
+    "query e mittenti validati",
+    "configurazione scheduler non segreta"
+  ],
+  "flow": [
+    "Configurare ricerca in:anywhere, alias/wrapper PEC e tipi allegato attesi senza esporre credenziali.",
+    "Testare in sola lettura mostrando messaggi trovati, pagine percorse e potenziali allegati senza importarli.",
+    "Salvare configurazione versionata e mostrare ultimo run, watermark, nuovi/duplicati/errori."
+  ],
+  "automations": [
+    "Controllo giornaliero Europe/Rome con paginazione, Gmail IDs, SHA-256, lock e retry."
+  ],
+  "links": [
+    "Configurazione ↔ run Gmail ↔ documenti F24/quietanze importati ↔ audit."
+  ],
+  "guards": [
+    "Mai spostare/eliminare/segnare lette le email; nessuna password/token restituita alla UI."
+  ],
+  "acceptance": [
+    "Test trova gli stessi messaggi della query completa; secondo run senza novità importa zero allegati."
+  ]
+}

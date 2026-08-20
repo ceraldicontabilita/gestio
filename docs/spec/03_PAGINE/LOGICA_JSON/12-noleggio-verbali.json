@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "page_id": 12,
+  "label": "Verbali noleggio",
+  "route": "/noleggio/verbali",
+  "purpose": "Riconciliazione verbali, veicoli, driver, pagamenti, quietanze e documenti.",
+  "sources": [
+    "Verbali PartenoPay/Gmail",
+    "veicoli",
+    "storico driver",
+    "pagamenti",
+    "quietanze"
+  ],
+  "writes": [
+    "verbale canonico",
+    "associazione veicolo/driver",
+    "stato pagamento",
+    "attesa quietanza"
+  ],
+  "flow": [
+    "Importare e leggere il PDF originale, estraendo numero, data/ora infrazione, targa, ente, trasgressore, scadenza e importo esatto.",
+    "Associare automaticamente il veicolo per targa e il driver solo se l'assegnazione copre data/ora del verbale; altrimenti mostrare candidati.",
+    "Accettare Ceraldi Group S.r.l. come trasgressore quando risulta dal documento, senza inventare un driver.",
+    "Dopo prova di pagamento usare PAGATO - ATTESA QUIETANZA; collegare la quietanza quando arriva e mantenere distinta la prova bancaria."
+  ],
+  "automations": [
+    "Controllo Gmail giornaliero idempotente e promemoria su scadenze/quietanze mancanti."
+  ],
+  "links": [
+    "Verbale ↔ PDF ↔ targa ↔ driver storico ↔ pagamento ↔ quietanza ↔ movimento banca."
+  ],
+  "guards": [
+    "Mai associare driver per importo; mai chiamare fattura la quietanza; originali Gmail e file non vengono spostati o eliminati."
+  ],
+  "acceptance": [
+    "Importo mostrato coincide col PDF; casi certi si completano da soli, ambigui restano nella lista con candidati e motivo."
+  ]
+}

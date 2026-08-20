@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 27,
+  "label": "Utile obiettivo",
+  "route": "/contabilita/utile",
+  "purpose": "Simulazione utile obiettivo separata dai consuntivi e senza scritture reali.",
+  "sources": [
+    "consuntivi",
+    "budget",
+    "costi/ricavi ricorrenti",
+    "parametri utente"
+  ],
+  "writes": [
+    "scenario di simulazione separato, mai scritture o budget approvati"
+  ],
+  "flow": [
+    "Partire da un periodo/base dichiarato e permettere ipotesi su ricavi, margini, costi e imposte.",
+    "Calcolare il fatturato/margine necessario all'utile obiettivo con formule e sensibilità visibili.",
+    "Salvare o confrontare scenari nominati senza mescolarli ai consuntivi."
+  ],
+  "automations": [
+    "Aggiornamento immediato della simulazione nel browser o servizio read-only."
+  ],
+  "links": [
+    "Scenario ↔ budget/consuntivo usato come base, con link ma senza relazione contabile."
+  ],
+  "guards": [
+    "Nessuna scrittura, ordine o pagamento; risultati sono simulazioni e devono essere etichettati."
+  ],
+  "acceptance": [
+    "Stessi input producono stesso risultato; esportazione riporta tutte le ipotesi e la data base."
+  ]
+}

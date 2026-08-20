@@ -7,14 +7,56 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/RiconciliazioneUnificata.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/riconciliazione-banca.json`](MAPPE_JSON/riconciliazione-banca.json)
+- Contratto logico macchina: [`LOGICA_JSON/33-riconciliazione-banca.json`](LOGICA_JSON/33-riconciliazione-banca.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Riconciliazione bancaria deterministica, candidati motivati e operation_id.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- movimenti bancari immutabili
+- fatture
+- Prima Nota
+- PayPal/assegni/bonifici/F24/PagoPA
+
+## Scritture ed effetti consentiti
+
+- caso/candidati
+- relazione confermata
+- scrittura contabile tramite writer unico
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Importare ogni riga con fingerprint di banca/conto/data/importo/causale/riferimento e non modificarne il contenuto originale.
+2. Generare candidati con motivazione: identità, riferimenti, centesimi, finestra data e provenienza; mostrare punteggio per criterio.
+3. Confermare automaticamente solo una corrispondenza univoca e forte; altrimenti Scegli fattura/entità o classifica senza documento.
+4. Assegnare lo stesso operation_id alle prove dello stesso evento mantenendo record distinti e collegamenti reciproci.
+
+## Automazioni previste
+
+- Nuovo estratto riprocessa solo righe nuove e tenta nuovamente i casi aperti senza duplicare relazioni.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Movimento ↔ caso ↔ fattura/PayPal/assegno/F24/bonifico ↔ Prima Nota e documento.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Mai associare per importo solo; commissione ignorata è riconciliazione classificata, non pagamento fattura.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ Riconciliazione bancaria deterministica, candidati motivati e operation_id.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Secondo import nuovi=0; ogni conferma è visibile in entrambe le pagine e l'importo resta al centesimo.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

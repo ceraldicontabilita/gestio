@@ -7,14 +7,53 @@
 - Modulo: `admin`
 - Componente corrente: `frontend/src/pages/hub/AdminElaborazioni.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/AdminHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/admin-batch-reprocessing.json`](MAPPE_JSON/admin-batch-reprocessing.json)
+- Contratto logico macchina: [`LOGICA_JSON/56-admin-batch-reprocessing.json`](LOGICA_JSON/56-admin-batch-reprocessing.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Elaborazioni batch idempotenti con progresso, errori per record e retry selettivo.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- definizioni job
+- import run
+- record/errori per elemento
+- checkpoint
+
+## Scritture ed effetti consentiti
+
+- run batch, progresso, risultato per record e retry selettivo
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Creare un run con tipo, parametri validati, idempotency key, totale e checkpoint.
+2. Mostrare progresso reale, nuovi/aggiornati/duplicati/da verificare/errori e lista dei record.
+3. Retry elabora solo errori selezionati e conserva i successi; cancel interrompe in modo consistente.
+
+## Automazioni previste
+
+- Lock per job/sorgente, heartbeat, ripresa da checkpoint e backoff.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Run ↔ record origine/destinazione ↔ errori ↔ audit e pagina dominio.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun batch senza dettaglio; retry totale non duplica successi; errori di un file non cancellano altri risultati.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Elaborazioni batch idempotenti con progresso, errori per record e retry selettiv
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Secondo run identico non crea nuovi record; progresso e conteggi finali coincidono con il dettaglio.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 65,
+  "label": "Situazione fiscale",
+  "route": "/situazione-fiscale",
+  "purpose": "Situazione fiscale unificata con F24, dichiarazioni, quietanze e anomalie.",
+  "sources": [
+    "F24/righe tributo",
+    "dichiarazioni",
+    "quietanze",
+    "movimenti banca",
+    "scadenze/anomalie",
+    "indice documentale (database applicativo)"
+  ],
+  "writes": [
+    "Nessuna scrittura fiscale primaria; note/stato verifica e relazioni tramite servizi di dominio"
+  ],
+  "flow": [
+    "Costruire quadro per anno/tributo da fonti distinte, indicando presenza e stato di F24, dichiarazione, quietanza e banca.",
+    "Mostrare totali solo quando semanticamente sommabili e permettere drill-down fino a riga tributo e PDF.",
+    "Evidenziare documenti mancanti, crediti, differenze e relazioni ambigue con liste navigabili.",
+    "Dichiarare la freschezza dell'indice e non nascondere una fonte indisponibile dietro uno zero."
+  ],
+  "automations": [
+    "Aggiornamento derivato dopo indicizzazione/import/riconciliazione e notifiche su anomalie persistenti."
+  ],
+  "links": [
+    "Tributo ↔ F24/PDF ↔ dichiarazione ↔ quietanza ↔ banca ↔ scadenza e documento (storage file)."
+  ],
+  "guards": [
+    "F24, dichiarazione, quietanza e pagamento bancario non sono intercambiabili; nessuna associazione per importo solo."
+  ],
+  "acceptance": [
+    "Ricerca per anno/codice raggiunge tutte le prove; ogni anomalia ha lista e tutte le somme quadrano alle righe origine."
+  ]
+}

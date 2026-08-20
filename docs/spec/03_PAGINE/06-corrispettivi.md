@@ -7,14 +7,57 @@
 - Modulo: `fatture`
 - Componente corrente: `frontend/src/pages/Corrispettivi.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/FattureHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/corrispettivi.json`](MAPPE_JSON/corrispettivi.json)
+- Contratto logico macchina: [`LOGICA_JSON/06-corrispettivi.json`](LOGICA_JSON/06-corrispettivi.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Corrispettivi giornalieri, aliquote, mezzi di pagamento e scritture Cassa/POS senza duplicati.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- XML/ZIP corrispettivi
+- Corrispettivi
+- chiusure POS
+- Prima Nota Cassa
+- accrediti provider/banca
+
+## Scritture ed effetti consentiti
+
+- giornata corrispettivi deduplicata
+- scrittura vendite Cassa
+- crediti POS attesi separati
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Validare firma/schema e ricavare data, imponibili, IVA e mezzi di pagamento dalla fonte RT.
+2. Creare una giornata canonica per dispositivo/data e ripartire contanti, carte e altri mezzi senza inventare valori mancanti.
+3. Registrare vendite/contanti in Cassa e crediti POS attesi come fatti distinti; l'accredito bancario resta prova successiva.
+4. Mostrare differenze tra RT, chiusura terminale e accredito con lista delle righe interessate.
+
+## Automazioni previste
+
+- Secondo import identico nuovi=0; sincronizzazione idempotente verso Prima Nota.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Giornata verso documento RT, Prima Nota Cassa, Coerenza POS e accrediti riconciliati.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non trasformare una chiusura POS in vendita aggiuntiva; non confondere importo lordo, netto e commissioni.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +65,13 @@ Corrispettivi giornalieri, aliquote, mezzi di pagamento e scritture Cassa/POS se
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Totali aliquote e mezzi quadrano con il documento; una nuova giornata compare automaticamente in Cassa una sola volta.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 63,
+  "label": "Indice documentale",
+  "route": "/documenti/indice",
+  "purpose": "Indice autorevole per metadati, hash, percorso e stato indicizzazione.",
+  "sources": [
+    "storage file applicativo",
+    "metadati/hash/permessi",
+    "indice Documenti",
+    "watermark scansione"
+  ],
+  "writes": [
+    "indice documentale e stato indicizzazione; mai contenuto originale"
+  ],
+  "flow": [
+    "Scansionare le cartelle di storage autorizzate con paginazione e conservare ID interno, percorso, MIME, dimensione, checksum e permessi.",
+    "Mostrare cartelle/documenti con filtri e stato indicizzato/non leggibile/duplicato esatto/da elaborare.",
+    "Aprire l'originale e il record applicativo; una nuova scansione aggiorna metadati senza creare copie."
+  ],
+  "automations": [
+    "Scan incrementale con watermark, retry e rilevamento spostamenti tramite ID interno."
+  ],
+  "links": [
+    "File (storage applicativo) ↔ indice Documenti ↔ import run ↔ record di dominio."
+  ],
+  "guards": [
+    "Errore permessi è esplicito; nessuna pulizia automatica; hash SHA-256 esatto è requisito minimo per copia certa."
+  ],
+  "acceptance": [
+    "Conteggi verificabili per cartella, file apribili e seconda scansione senza nuovi record se lo storage non cambia."
+  ]
+}

@@ -7,14 +7,57 @@
 - Modulo: `fatture`
 - Componente corrente: `frontend/src/pages/ArchivioFattureRicevute.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/FattureHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/fatture.json`](MAPPE_JSON/fatture.json)
+- Contratto logico macchina: [`LOGICA_JSON/05-fatture.json`](LOGICA_JSON/05-fatture.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Archivio unico fatture ricevute, PDF/XML, provenienza, pagamento e spostamento Cassa/Banca.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Documenti
+- Fatture ricevute
+- Fornitori
+- Relazioni
+- Prima Nota e movimenti bancari
+
+## Scritture ed effetti consentiti
+
+- stato e classificazione fattura
+- relazioni di pagamento
+- eventuale destinazione Cassa/Banca richiesta
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Indicizzare XML/PDF con chiave fattura composta da cedente, numero, data e tipo, conservando l'originale sullo storage file.
+2. Mostrare imponibile, IVA esposta, totale, scadenza, residuo, metodo previsto e prove collegate.
+3. Segnare pagata solo con relazione confermata a pagamento/prova coerente; altrimenti mostrare prevista, candidata o da verificare.
+4. I comandi Cassa/Banca spostano o correggono la scrittura tramite operation_id senza duplicare la fattura.
+
+## Automazioni previste
+
+- Matching certo con banca/PayPal/assegno solo usando identità, centesimi, data e provenienza; aggiornamento residui.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Viewer originale; link bidirezionali a fornitore, Prima Nota, banca, PayPal, assegno e documento.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non dedurre il pagamento dal metodo previsto; non usare l'importo da solo; IVA esposta non equivale a IVA detraibile.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +65,13 @@ Archivio unico fatture ricevute, PDF/XML, provenienza, pagamento e spostamento C
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni fattura appare una volta, apre l'originale e mostra la stessa relazione/stato da tutte le pagine collegate.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

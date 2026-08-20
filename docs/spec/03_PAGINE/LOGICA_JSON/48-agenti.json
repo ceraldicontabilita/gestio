@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 48,
+  "label": "Agenti AI",
+  "route": "/agenti",
+  "purpose": "Agenti e automazioni con scopo, permessi, run, log, esito e disattivazione.",
+  "sources": [
+    "catalogo automazioni",
+    "permessi",
+    "run e log",
+    "decisioni proposte"
+  ],
+  "writes": [
+    "configurazione agente",
+    "approvazione/rifiuto proposta",
+    "audit run"
+  ],
+  "flow": [
+    "Mostrare per agente scopo, trigger, fonti, permessi massimi, stato e ultimo esito.",
+    "Ogni run espone input riferiti, decisioni, output, errori e modifiche proposte.",
+    "Approvare significa autorizzare la proposta prevista, non pagamenti o azioni fuori scope; disattivazione immediata disponibile."
+  ],
+  "automations": [
+    "Scheduler con lock/idempotenza e circuit breaker; azioni ad alto rischio restano manuali."
+  ],
+  "links": [
+    "Agente ↔ run ↔ record letti/proposte ↔ audit e notifiche."
+  ],
+  "guards": [
+    "Nessun accesso a segreti in UI/log; nessuna estensione autonoma dei permessi o esecuzione di pagamenti."
+  ],
+  "acceptance": [
+    "Run riproducibile e tracciato; agente disattivato non parte e una proposta ambigua non modifica dati."
+  ]
+}

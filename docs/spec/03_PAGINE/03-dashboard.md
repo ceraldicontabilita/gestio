@@ -7,14 +7,52 @@
 - Modulo: `dashboard`
 - Componente corrente: `frontend/src/pages/Dashboard.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/DashboardHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/dashboard.json`](MAPPE_JSON/dashboard.json)
+- Contratto logico macchina: [`LOGICA_JSON/03-dashboard.json`](LOGICA_JSON/03-dashboard.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Dashboard derivata dai registri, con indicatori cliccabili e nessun saldo hardcoded.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- viste aggregate dei registri canonici
+- stato importazioni e riconciliazioni
+- anno globale
+
+## Scritture ed effetti consentiti
+
+- Nessuna scrittura contabile; solo preferenze di visualizzazione non sensibili.
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Caricare anno e permessi, poi KPI calcolati dai registri e non da valori salvati nella pagina.
+2. Ogni KPI deve dichiarare formula, periodo, ultimo aggiornamento e stato della fonte.
+3. Il clic su una card apre la lista esatta che compone il numero, con gli stessi filtri.
+
+## Automazioni previste
+
+- Aggiornamento periodico read-only e invalidazione quando termina un'importazione.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- KPI verso Fatture, Prima Nota, Riconciliazioni, Scadenze e anomalie filtrate.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Errore o fonte indisponibile non diventano zero; totali di documenti, pagamenti e saldi restano semanticamente distinti.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Dashboard derivata dai registri, con indicatori cliccabili e nessun saldo hardco
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Somma delle righe di drill-down uguale alla card al centesimo; cambio anno aggiorna card e destinazione.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

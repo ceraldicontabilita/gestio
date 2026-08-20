@@ -7,14 +7,54 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/Finanziaria.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-finanziaria.json`](MAPPE_JSON/contabilita-finanziaria.json)
+- Contratto logico macchina: [`LOGICA_JSON/22-contabilita-finanziaria.json`](LOGICA_JSON/22-contabilita-finanziaria.json)
 - Stato della prova corrente: `verified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Posizione finanziaria, flussi, debiti, crediti e finanziamenti soci non duplicati.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- saldi banca/cassa
+- crediti/debiti
+- mutui
+- finanziamenti soci
+- scadenze
+
+## Scritture ed effetti consentiti
+
+- Nessuna scrittura primaria; classificazioni finanziarie tracciate quando necessarie.
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Calcolare liquidità, posizione finanziaria netta e flussi da registri confermati con periodo e formula visibili.
+2. Separare finanziamenti soci da ricavi e distinguere capitale, interessi, debiti e crediti.
+3. Ogni totale apre strumenti e movimenti che lo compongono, senza sommare la stessa operazione su più viste.
+
+## Automazioni previste
+
+- Ricalcolo derivato quando cambiano saldi, rate o relazioni.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Indicatore ↔ banca/Prima Nota ↔ mutuo/socio ↔ documento e scadenza.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Niente saldi inventati o cache non datata; trasferimenti interni non sono flussi economici.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +62,13 @@ Posizione finanziaria, flussi, debiti, crediti e finanziamenti soci non duplicat
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni indicatore è riconciliabile alle fonti e finanziamenti soci non risultano duplicati tra banca e ledger.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

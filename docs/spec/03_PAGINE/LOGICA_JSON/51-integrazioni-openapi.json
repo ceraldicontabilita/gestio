@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 51,
+  "label": "Integrazione OpenAPI",
+  "route": "/integrazioni",
+  "purpose": "Integrazioni API con scope, token ruotabili, OpenAPI, rate limit e revoca.",
+  "sources": [
+    "client API",
+    "scope/ruoli",
+    "OpenAPI",
+    "rate limit e utilizzo token"
+  ],
+  "writes": [
+    "client e scope",
+    "hash/metadata token",
+    "revoca/rotazione e audit"
+  ],
+  "flow": [
+    "Creare client con scope minimo e mostrare il token una sola volta al momento della generazione.",
+    "Documentare endpoint, schema, errori, idempotency e limiti dal contratto OpenAPI corrente.",
+    "Rotazione crea nuova credenziale e finestra controllata; revoca è immediata e auditata."
+  ],
+  "automations": [
+    "Rate limit, scadenza e rilevamento uso anomalo lato gateway."
+  ],
+  "links": [
+    "Client ↔ scope ↔ chiamate/audit ↔ versione OpenAPI."
+  ],
+  "guards": [
+    "Token mai persistito in chiaro o mostrato nuovamente; nessuno scope amministrativo implicito."
+  ],
+  "acceptance": [
+    "Client senza scope riceve 403; token revocato non funziona; OpenAPI coincide con router pubblicati."
+  ]
+}

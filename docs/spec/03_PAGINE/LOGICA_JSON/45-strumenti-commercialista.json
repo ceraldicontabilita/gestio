@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 45,
+  "label": "Commercialista",
+  "route": "/strumenti/commercialista",
+  "purpose": "Fascicolo per commercialista con registri, documenti, manifest e quadrature.",
+  "sources": [
+    "registri contabili/fiscali",
+    "documenti (storage file)",
+    "quadrature e periodo selezionato"
+  ],
+  "writes": [
+    "fascicolo/export immutabile con manifest, non modifiche ai dati origine"
+  ],
+  "flow": [
+    "Selezionare esercizio/periodo e mostrare checklist dei registri e documenti inclusi/mancanti.",
+    "Generare struttura navigabile con file, indici, totali e SHA-256, preservando identificatori come testo.",
+    "Bloccare l'export se quadrature essenziali falliscono oppure etichettarlo chiaramente come bozza incompleta."
+  ],
+  "automations": [
+    "Rigenerazione deterministica dello stesso fascicolo e report differenze rispetto alla versione precedente."
+  ],
+  "links": [
+    "Indice export ↔ registro ↔ riga ↔ documento originale; manifest bidirezionale."
+  ],
+  "guards": [
+    "Nessun dato inventato, segreto o duplicato; export non modifica né sposta gli originali."
+  ],
+  "acceptance": [
+    "ZIP/fascicolo integro, una radice, hash validi, totali uguali alle fonti e documenti apribili."
+  ]
+}

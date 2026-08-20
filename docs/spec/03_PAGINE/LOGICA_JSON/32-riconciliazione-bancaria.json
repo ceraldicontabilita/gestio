@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "page_id": 32,
+  "label": "Riconciliazione dashboard",
+  "route": "/riconciliazione",
+  "purpose": "Indice unico delle riconciliazioni con code, stati e contatori navigabili.",
+  "sources": [
+    "casi di riconciliazione di banca, F24, stipendi, documenti, assegni, PayPal e PagoPA"
+  ],
+  "writes": [
+    "Nessuna associazione diretta dalla dashboard; solo filtri/priorità del caso."
+  ],
+  "flow": [
+    "Mostrare code per dominio con conteggi calcolati e stato fonte/ultimo aggiornamento.",
+    "Ogni card apre la lista esatta mantenendo anno, stato e filtro.",
+    "Separare certi auto-risolti, candidati da scegliere, fonti mancanti e conflitti."
+  ],
+  "automations": [
+    "Aggiornamento dopo import o decisione; priorità per scadenza/severità, non per numero casuale."
+  ],
+  "links": [
+    "Dashboard ↔ pagina dominio ↔ singolo caso ↔ prove e relazioni."
+  ],
+  "guards": [
+    "Nessun contatore non navigabile; nessuna conferma massiva di casi ambigui."
+  ],
+  "acceptance": [
+    "Conteggi dashboard uguali alle liste e tornano a zero solo quando i casi sono realmente risolti."
+  ]
+}

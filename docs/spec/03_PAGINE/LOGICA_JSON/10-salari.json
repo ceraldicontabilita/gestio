@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "page_id": 10,
+  "label": "Cedolini e salari",
+  "route": "/salari",
+  "purpose": "Dipendenti, cedolini, periodi e pagamenti con regola temporale del giorno 25.",
+  "sources": [
+    "Dipendenti",
+    "Cedolini",
+    "Bonifici",
+    "Movimenti bancari",
+    "documenti paghe"
+  ],
+  "writes": [
+    "periodo cedolino",
+    "note/descrizione persistenti",
+    "relazioni pagamento e Prima Nota salari"
+  ],
+  "flow": [
+    "Conservare ogni cedolino come documento distinto anche se dipendente, mese e tipo coincidono.",
+    "Per un bonifico effettuato prima del giorno 25 proporre il mese precedente; dal giorno 25 proporre il mese corrente, senza confermare se il cedolino non esiste.",
+    "Mostrare per dipendente cedolini, bonifici, residui e documenti; il campo descrizione deve sopravvivere a refresh e filtri.",
+    "Confermare l'associazione con identità dipendente/IBAN, periodo, importo e provenienza; i candidati multipli richiedono scelta."
+  ],
+  "automations": [
+    "Import paghe/bonifici idempotente e proposta automatica del periodo secondo la regola del giorno 25."
+  ],
+  "links": [
+    "Cedolino ↔ dipendente ↔ bonifico ↔ movimento banca ↔ Prima Nota salari, tutti navigabili."
+  ],
+  "guards": [
+    "Importo uguale non basta; non scartare cedolini legittimi dello stesso mese; il periodo proposto non è conferma."
+  ],
+  "acceptance": [
+    "Dopo refresh restano periodo, nota e collegamenti; la somma riconciliata per dipendente coincide con i bonifici confermati."
+  ]
+}

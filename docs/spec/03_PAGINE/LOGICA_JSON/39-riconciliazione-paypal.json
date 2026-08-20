@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 39,
+  "label": "PayPal",
+  "route": "/riconciliazione/paypal",
+  "purpose": "PayPal interconnesso con banca, fatture, Prima Nota e prove tramite operation_id.",
+  "sources": [
+    "transazioni PayPal",
+    "movimenti bancari SDD PayPal",
+    "fatture",
+    "Prima Nota"
+  ],
+  "writes": [
+    "relazioni transazione-fattura-banca",
+    "stato riconciliazione",
+    "note"
+  ],
+  "flow": [
+    "Importare tutte le transazioni con transaction ID, data, controparte, valuta, lordo, commissione e netto.",
+    "Collegare fattura usando controparte/numero/data/centesimi e il movimento bancario usando riferimenti SDD PayPal e finestra coerente.",
+    "Assegnare un operation_id comune a fattura, transazione e banca senza fondere le tre righe.",
+    "Applicare la stessa logica a tutti i movimenti PayPal; i dubbi mostrano candidati e scelta."
+  ],
+  "automations": [
+    "Sync incrementale idempotente e riprocessamento dei non associati quando arriva fattura o banca."
+  ],
+  "links": [
+    "PayPal ↔ fattura/PDF ↔ banca ↔ Prima Nota; ogni colonna è un link alla prova."
+  ],
+  "guards": [
+    "Non confrontare USD ed EUR senza cambio/prova; commissione e acquisto non sono la stessa riga; importo solo non basta."
+  ],
+  "acceptance": [
+    "Un acquisto PayPal con fattura e addebito SDD produce tre record collegati con lo stesso operation_id; il secondo sync non duplica transazioni."
+  ]
+}

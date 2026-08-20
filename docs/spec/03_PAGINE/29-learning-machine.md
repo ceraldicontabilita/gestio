@@ -7,14 +7,52 @@
 - Modulo: `strumenti`
 - Componente corrente: `frontend/src/pages/LearningMachine.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/learning-machine.json`](MAPPE_JSON/learning-machine.json)
+- Contratto logico macchina: [`LOGICA_JSON/29-learning-machine.json`](LOGICA_JSON/29-learning-machine.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Suggerimenti di apprendimento con evidenza, confidenza, approvazione e revoca.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- casi riconciliati e rifiutati
+- regole approvate
+- feature/provenienza del suggerimento
+
+## Scritture ed effetti consentiti
+
+- suggerimento, confidenza, approvazione/revoca e versione regola
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Generare suggerimenti spiegando segnali, esempi, perimetro e confidenza.
+2. L'utente approva, rifiuta o limita la regola; l'approvazione non modifica retroattivamente record già chiusi.
+3. Ogni applicazione futura registra regola/versione e resta revocabile o correggibile.
+
+## Automazioni previste
+
+- Training solo su decisioni confermate e dati minimizzati; monitoraggio falsi positivi.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Suggerimento ↔ esempi origine ↔ regola ↔ record sui quali è stata applicata.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun auto-apprendimento da associazioni ambigue; nessuna regola opaca o pagamento automatico.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Suggerimenti di apprendimento con evidenza, confidenza, approvazione e revoca.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Regola approvata applicata solo nel perimetro; revoca impedisce nuove applicazioni e mantiene audit storico.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

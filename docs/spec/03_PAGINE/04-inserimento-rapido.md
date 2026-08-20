@@ -7,14 +7,52 @@
 - Modulo: `dashboard`
 - Componente corrente: `frontend/src/pages/InserimentoRapido.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/inserimento-rapido.json`](MAPPE_JSON/inserimento-rapido.json)
+- Contratto logico macchina: [`LOGICA_JSON/04-inserimento-rapido.json`](LOGICA_JSON/04-inserimento-rapido.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Inserimento rapido idempotente di corrispettivi, versamenti, pagamenti, apporti e presenze.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- anno globale
+- anagrafiche fornitori/dipendenti
+- categorie e metodi consentiti
+
+## Scritture ed effetti consentiti
+
+- movimento o documento nel registro canonico scelto tramite il writer di dominio
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. L'utente sceglie prima il tipo: corrispettivo, versamento, pagamento, apporto soci o presenza.
+2. Il form cambia campi e controlli in base al tipo, calcola l'anteprima e mostra registro/segno di destinazione.
+3. Il backend genera idempotency key e operation_id, salva una sola volta e restituisce il link al risultato.
+
+## Automazioni previste
+
+- Riconoscimento di un invio ripetuto e proposta di valori anagrafici già verificati.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Il risultato apre Prima Nota, Corrispettivi, Soci o Personale sulla riga appena creata.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Mai scrivere direttamente in più registri dal browser; mai assumere Cassa/Banca dal solo importo.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Inserimento rapido idempotente di corrispettivi, versamenti, pagamenti, apporti 
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Doppio invio produce un solo record; segno, data, centesimi e registro coincidono con l'anteprima.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

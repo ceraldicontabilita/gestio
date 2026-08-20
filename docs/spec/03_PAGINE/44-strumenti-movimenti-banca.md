@@ -7,14 +7,53 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/VerificaMovimentiBanca.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/strumenti-movimenti-banca.json`](MAPPE_JSON/strumenti-movimenti-banca.json)
+- Contratto logico macchina: [`LOGICA_JSON/44-strumenti-movimenti-banca.json`](LOGICA_JSON/44-strumenti-movimenti-banca.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Movimenti banca con riga fonte, classificazione e stato di associazione.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- movimenti bancari originali
+- classificazioni
+- candidati entità
+- operation_id
+
+## Scritture ed effetti consentiti
+
+- classificazione e relazione, mai modifica della riga bancaria originale
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare data valuta/contabile, segno, centesimi, causale integrale e identificatori bancari.
+2. Consentire classificazione senza documento oppure scelta fra fattura, cedolino, F24, socio, assegno, PayPal e altro.
+3. Mostrare perché ogni candidato è proposto; la conferma aggiorna relazioni e writer contabile una sola volta.
+
+## Automazioni previste
+
+- Classificazione certa da riferimenti bancari amministrabili; le regole sono versionate e revocabili.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Movimento ↔ estratto/import run ↔ entità ↔ Prima Nota/giornale.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Mai troncare causale o sovrascrivere il movimento; mai associare per importo solo.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Movimenti banca con riga fonte, classificazione e stato di associazione.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Classificazione resta dopo refresh e apre l'entità; una seconda conferma non crea altra scrittura.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

@@ -7,14 +7,56 @@
 - Modulo: `fornitori`
 - Componente corrente: `frontend/src/pages/Fornitori.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/FornitoriHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/fornitori.json`](MAPPE_JSON/fornitori.json)
+- Contratto logico macchina: [`LOGICA_JSON/07-fornitori.json`](LOGICA_JSON/07-fornitori.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Anagrafica fornitori univoca, fatture, residui, IBAN, metodo e merge controllato.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Fornitori
+- Fatture ricevute
+- pagamenti e IBAN verificati
+- regole operative
+
+## Scritture ed effetti consentiti
+
+- anagrafica canonica
+- alias
+- metodo previsto
+- merge controllato
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Identificare il fornitore principalmente con partita IVA/codice fiscale normalizzati e mantenere denominazioni storiche come alias.
+2. Mostrare contatti, IBAN con provenienza, fatture, pagato/residuo e ultimo documento per anno.
+3. La modifica aggiorna solo l'anagrafica; il merge presenta anteprima di tutte le relazioni e conserva l'identità assorbita.
+
+## Automazioni previste
+
+- Aggiornamento dati da fatture nuove solo per campi con fonte più affidabile, mai sovrascrittura cieca.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Drill-down verso fatture, scadenze, pagamenti, documenti e regole di associazione.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non cancellare un fornitore con fatti collegati; IBAN o metodo previsto non provano un pagamento.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ Anagrafica fornitori univoca, fatture, residui, IBAN, metodo e merge controllato
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Nessun duplicato per stessa identità fiscale; totali fatture/residui coincidono con l'archivio fatture.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

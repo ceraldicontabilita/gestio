@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 29,
+  "label": "Learning Machine",
+  "route": "/learning-machine",
+  "purpose": "Suggerimenti di apprendimento con evidenza, confidenza, approvazione e revoca.",
+  "sources": [
+    "casi riconciliati e rifiutati",
+    "regole approvate",
+    "feature/provenienza del suggerimento"
+  ],
+  "writes": [
+    "suggerimento, confidenza, approvazione/revoca e versione regola"
+  ],
+  "flow": [
+    "Generare suggerimenti spiegando segnali, esempi, perimetro e confidenza.",
+    "L'utente approva, rifiuta o limita la regola; l'approvazione non modifica retroattivamente record già chiusi.",
+    "Ogni applicazione futura registra regola/versione e resta revocabile o correggibile."
+  ],
+  "automations": [
+    "Training solo su decisioni confermate e dati minimizzati; monitoraggio falsi positivi."
+  ],
+  "links": [
+    "Suggerimento ↔ esempi origine ↔ regola ↔ record sui quali è stata applicata."
+  ],
+  "guards": [
+    "Nessun auto-apprendimento da associazioni ambigue; nessuna regola opaca o pagamento automatico."
+  ],
+  "acceptance": [
+    "Regola approvata applicata solo nel perimetro; revoca impedisce nuove applicazioni e mantiene audit storico."
+  ]
+}

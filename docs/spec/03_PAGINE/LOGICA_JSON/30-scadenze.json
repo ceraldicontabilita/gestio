@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 30,
+  "label": "Scadenze",
+  "route": "/scadenze",
+  "purpose": "Scadenziario fornitori con residui, parziali, prove e alert navigabili.",
+  "sources": [
+    "fatture e note credito",
+    "pagamenti confermati/parziali",
+    "fornitori",
+    "scadenze"
+  ],
+  "writes": [
+    "scadenza, sollecito/promemoria interno, relazione a pagamento"
+  ],
+  "flow": [
+    "Calcolare residuo per fattura da totale meno pagamenti confermati e note credito compatibili.",
+    "Raggruppare per fornitore e scadenza, distinguendo previsto, scaduto, parziale, pagato e da verificare.",
+    "Ogni alert apre le fatture esatte; l'utente può annotare o associare una prova, non forzare il saldo senza evidenza."
+  ],
+  "automations": [
+    "Aggiornamento automatico quando fattura/pagamento cambia e promemoria sulle scadenze effettive."
+  ],
+  "links": [
+    "Scadenza ↔ fattura ↔ fornitore ↔ pagamento/prova ↔ Prima Nota."
+  ],
+  "guards": [
+    "Metodo previsto o disposizione non azzerano il residuo; importo simile non associa automaticamente."
+  ],
+  "acceptance": [
+    "Residui sommati coincidono con archivio fatture e ogni stato apre le prove che lo giustificano."
+  ]
+}

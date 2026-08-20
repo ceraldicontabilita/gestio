@@ -7,14 +7,55 @@
 - Modulo: `integrazioni`
 - Componente corrente: `frontend/src/pages/IntegrazioniOpenAPI.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/IntegrazioniHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/integrazioni-openapi.json`](MAPPE_JSON/integrazioni-openapi.json)
+- Contratto logico macchina: [`LOGICA_JSON/51-integrazioni-openapi.json`](LOGICA_JSON/51-integrazioni-openapi.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Integrazioni API con scope, token ruotabili, OpenAPI, rate limit e revoca.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- client API
+- scope/ruoli
+- OpenAPI
+- rate limit e utilizzo token
+
+## Scritture ed effetti consentiti
+
+- client e scope
+- hash/metadata token
+- revoca/rotazione e audit
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Creare client con scope minimo e mostrare il token una sola volta al momento della generazione.
+2. Documentare endpoint, schema, errori, idempotency e limiti dal contratto OpenAPI corrente.
+3. Rotazione crea nuova credenziale e finestra controllata; revoca è immediata e auditata.
+
+## Automazioni previste
+
+- Rate limit, scadenza e rilevamento uso anomalo lato gateway.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Client ↔ scope ↔ chiamate/audit ↔ versione OpenAPI.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Token mai persistito in chiaro o mostrato nuovamente; nessuno scope amministrativo implicito.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Integrazioni API con scope, token ruotabili, OpenAPI, rate limit e revoca.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Client senza scope riceve 403; token revocato non funziona; OpenAPI coincide con router pubblicati.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

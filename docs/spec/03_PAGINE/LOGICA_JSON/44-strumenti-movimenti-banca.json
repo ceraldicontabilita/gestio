@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 44,
+  "label": "Movimenti banca",
+  "route": "/riconciliazione/movimenti-banca",
+  "purpose": "Movimenti banca con riga fonte, classificazione e stato di associazione.",
+  "sources": [
+    "movimenti bancari originali",
+    "classificazioni",
+    "candidati entità",
+    "operation_id"
+  ],
+  "writes": [
+    "classificazione e relazione, mai modifica della riga bancaria originale"
+  ],
+  "flow": [
+    "Mostrare data valuta/contabile, segno, centesimi, causale integrale e identificatori bancari.",
+    "Consentire classificazione senza documento oppure scelta fra fattura, cedolino, F24, socio, assegno, PayPal e altro.",
+    "Mostrare perché ogni candidato è proposto; la conferma aggiorna relazioni e writer contabile una sola volta."
+  ],
+  "automations": [
+    "Classificazione certa da riferimenti bancari amministrabili; le regole sono versionate e revocabili."
+  ],
+  "links": [
+    "Movimento ↔ estratto/import run ↔ entità ↔ Prima Nota/giornale."
+  ],
+  "guards": [
+    "Mai troncare causale o sovrascrivere il movimento; mai associare per importo solo."
+  ],
+  "acceptance": [
+    "Classificazione resta dopo refresh e apre l'entità; una seconda conferma non crea altra scrittura."
+  ]
+}

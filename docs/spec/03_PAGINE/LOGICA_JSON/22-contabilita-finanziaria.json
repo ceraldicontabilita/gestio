@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "page_id": 22,
+  "label": "Finanziaria",
+  "route": "/contabilita/finanziaria",
+  "purpose": "Posizione finanziaria, flussi, debiti, crediti e finanziamenti soci non duplicati.",
+  "sources": [
+    "saldi banca/cassa",
+    "crediti/debiti",
+    "mutui",
+    "finanziamenti soci",
+    "scadenze"
+  ],
+  "writes": [
+    "Nessuna scrittura primaria; classificazioni finanziarie tracciate quando necessarie."
+  ],
+  "flow": [
+    "Calcolare liquidità, posizione finanziaria netta e flussi da registri confermati con periodo e formula visibili.",
+    "Separare finanziamenti soci da ricavi e distinguere capitale, interessi, debiti e crediti.",
+    "Ogni totale apre strumenti e movimenti che lo compongono, senza sommare la stessa operazione su più viste."
+  ],
+  "automations": [
+    "Ricalcolo derivato quando cambiano saldi, rate o relazioni."
+  ],
+  "links": [
+    "Indicatore ↔ banca/Prima Nota ↔ mutuo/socio ↔ documento e scadenza."
+  ],
+  "guards": [
+    "Niente saldi inventati o cache non datata; trasferimenti interni non sono flussi economici."
+  ],
+  "acceptance": [
+    "Ogni indicatore è riconciliabile alle fonti e finanziamenti soci non risultano duplicati tra banca e ledger."
+  ]
+}

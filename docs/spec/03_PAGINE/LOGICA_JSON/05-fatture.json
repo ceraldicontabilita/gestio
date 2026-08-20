@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "page_id": 5,
+  "label": "Archivio fatture",
+  "route": "/fatture",
+  "purpose": "Archivio unico fatture ricevute, PDF/XML, provenienza, pagamento e spostamento Cassa/Banca.",
+  "sources": [
+    "Documenti",
+    "Fatture ricevute",
+    "Fornitori",
+    "Relazioni",
+    "Prima Nota e movimenti bancari"
+  ],
+  "writes": [
+    "stato e classificazione fattura",
+    "relazioni di pagamento",
+    "eventuale destinazione Cassa/Banca richiesta"
+  ],
+  "flow": [
+    "Indicizzare XML/PDF con chiave fattura composta da cedente, numero, data e tipo, conservando l'originale sullo storage file.",
+    "Mostrare imponibile, IVA esposta, totale, scadenza, residuo, metodo previsto e prove collegate.",
+    "Segnare pagata solo con relazione confermata a pagamento/prova coerente; altrimenti mostrare prevista, candidata o da verificare.",
+    "I comandi Cassa/Banca spostano o correggono la scrittura tramite operation_id senza duplicare la fattura."
+  ],
+  "automations": [
+    "Matching certo con banca/PayPal/assegno solo usando identità, centesimi, data e provenienza; aggiornamento residui."
+  ],
+  "links": [
+    "Viewer originale; link bidirezionali a fornitore, Prima Nota, banca, PayPal, assegno e documento."
+  ],
+  "guards": [
+    "Non dedurre il pagamento dal metodo previsto; non usare l'importo da solo; IVA esposta non equivale a IVA detraibile."
+  ],
+  "acceptance": [
+    "Ogni fattura appare una volta, apre l'originale e mostra la stessa relazione/stato da tutte le pagine collegate."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 9,
+  "label": "Pulizia Prima Nota",
+  "route": "/prima-nota/pulizia",
+  "purpose": "Audit Prima Nota con liste esatte, dry-run, correzione deterministica e rollback.",
+  "sources": [
+    "Prima Nota Cassa/Banca",
+    "chiavi canoniche",
+    "hash/import run",
+    "audit delle correzioni"
+  ],
+  "writes": [
+    "marcatura recuperabile di copie esatte",
+    "report di correzione e rollback"
+  ],
+  "flow": [
+    "Eseguire diagnosi read-only e mostrare sempre l'elenco completo dei gruppi, non solo un contatore.",
+    "Distinguere copie certe, casi simili ma legittimi e incoerenze di relazione; assegni o rate ricorrenti non sono duplicati per importo.",
+    "Applicare automaticamente solo la copia esatta secondo source_external_id/hash/fingerprint, conservando il record più completo.",
+    "Registrare prima/dopo, motivo e comando di rollback; i casi dubbi restano visibili senza modifica."
+  ],
+  "automations": [
+    "La prevenzione duplicati agisce già in import; la pagina serve per audit e recupero, non per manutenzione ordinaria."
+  ],
+  "links": [
+    "Ogni elemento della lista apre direttamente le righe nella Prima Nota filtrata."
+  ],
+  "guards": [
+    "Nessuna cancellazione fisica; nessuna deduplica per importo o fattura_id condiviso quando le date/strumenti sono diversi."
+  ],
+  "acceptance": [
+    "Anteprima e applicazione restituiscono gli stessi target; secondo passaggio trova zero copie certe e rollback ripristina la visibilità."
+  ]
+}

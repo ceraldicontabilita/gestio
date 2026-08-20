@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "page_id": 58,
+  "label": "Utenti",
+  "route": "/utenti",
+  "purpose": "Utenti, ruoli, attivazione, reset sicuro e audit senza auto-elevazione.",
+  "sources": [
+    "utenti",
+    "ruoli/permessi",
+    "stato sessioni",
+    "audit sicurezza"
+  ],
+  "writes": [
+    "profilo, ruolo, attivazione/disattivazione",
+    "invito/reset tramite provider"
+  ],
+  "flow": [
+    "Elencare utenti con ruolo, stato, ultimo accesso e MFA senza esporre credenziali.",
+    "Creazione invia un invito sicuro; modifica ruolo mostra differenze permessi e richiede step-up per privilegi elevati.",
+    "Disattivazione revoca sessioni; eliminazione logica conserva audit e riferimenti storici."
+  ],
+  "automations": [
+    "Notifica sicurezza su cambio ruolo/reset e scadenza degli inviti."
+  ],
+  "links": [
+    "Utente ↔ ruolo/permessi ↔ sessioni ↔ azioni audit."
+  ],
+  "guards": [
+    "Nessuna auto-elevazione; password/PIN mai leggibili; non cancellare l'ultimo amministratore attivo."
+  ],
+  "acceptance": [
+    "Ruolo applicato da API e UI; utente disattivato non accede e storico resta attribuito."
+  ]
+}

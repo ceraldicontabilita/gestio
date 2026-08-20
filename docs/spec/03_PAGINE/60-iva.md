@@ -7,14 +7,56 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/GestioneIVA.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/iva.json`](MAPPE_JSON/iva.json)
+- Contratto logico macchina: [`LOGICA_JSON/60-iva.json`](LOGICA_JSON/60-iva.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 IVA, liquidazioni, fatture, corrispettivi, F24, periodi e quadrature.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- fatture con classificazione IVA
+- corrispettivi
+- liquidazioni IVA
+- F24
+- crediti precedenti
+
+## Scritture ed effetti consentiti
+
+- classificazione detraibilità
+- versione liquidazione
+- conferma/rettifica
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Calcolare IVA vendite da corrispettivi attivi deduplicati e IVA acquisti solo da classificazione esplicita iva_detraibile.
+2. Mostrare fatture incluse/escluse, aliquote, credito precedente, debito/credito periodo e formula.
+3. Una liquidazione confermata è versionata e non sovrascritta; trasmissione/pagamento F24 restano prove separate.
+
+## Automazioni previste
+
+- Ricalcolo bozza quando cambiano fonti aperte; blocco silenzioso su periodi confermati/trasmessi.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Liquidazione ↔ fatture/corrispettivi ↔ riga F24 ↔ PDF/quietanza/banca.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- IVA esposta non è automaticamente detraibile; F24 e quietanza non sono movimento banca; nessun valore stimato come reale.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ IVA, liquidazioni, fatture, corrispettivi, F24, periodi e quadrature.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Totali riconciliabili alle righe incluse e una rettifica crea nuova versione con differenze esplicite.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

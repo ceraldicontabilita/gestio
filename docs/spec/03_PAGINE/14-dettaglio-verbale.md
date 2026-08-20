@@ -7,14 +7,55 @@
 - Modulo: `noleggio`
 - Componente corrente: `frontend/src/pages/DettaglioVerbale.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/dettaglio-verbale.json`](MAPPE_JSON/dettaglio-verbale.json)
+- Contratto logico macchina: [`LOGICA_JSON/14-dettaglio-verbale.json`](LOGICA_JSON/14-dettaglio-verbale.json)
 - Stato della prova corrente: `verified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Fascicolo del verbale con PDF, importo, targa, trasgressore, driver e prove.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- verbale identificato dalla route
+- PDF e metadati
+- relazioni veicolo/driver/pagamento/quietanza
+
+## Scritture ed effetti consentiti
+
+- correzioni verificate
+- associazioni manuali esplicite
+- richiesta nuova lettura OCR
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Risolvere l'identificativo in un solo verbale oppure mostrare 404 utile senza creare record fittizi.
+2. Mostrare numero, date, ente, targa, trasgressore, driver, importo, scadenze e stato con fonte per campo.
+3. Aprire il PDF in un viewer chiudibile e accessibile; permettere associa PDF quando l'originale manca o è errato.
+4. Una correzione manuale richiede motivo, conserva il valore OCR precedente e rilancia i controlli collegati.
+
+## Automazioni previste
+
+- Ricalcolo candidati driver e prove dopo nuova lettura o nuovo documento.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Collegamenti diretti a veicolo, driver, pagamento, quietanza, banca e lista verbali.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non sostituire il dato del PDF senza provenienza; associazioni ambigue non diventano definitive.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Fascicolo del verbale con PDF, importo, targa, trasgressore, driver e prove.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Il fascicolo ricostruisce tutta la storia del verbale e il viewer si apre/chiude senza lasciare overlay bloccanti.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

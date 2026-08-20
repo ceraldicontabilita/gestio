@@ -7,14 +7,55 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/CoerenzaPOSCorrispettivi.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/coerenza-pos.json`](MAPPE_JSON/coerenza-pos.json)
+- Contratto logico macchina: [`LOGICA_JSON/40-coerenza-pos.json`](LOGICA_JSON/40-coerenza-pos.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Coerenza fra corrispettivi, POS, commissioni, giorni di vendita e accrediti.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- corrispettivi RT
+- chiusure POS
+- transazioni/accrediti SumUp
+- movimenti banca
+- commissioni
+
+## Scritture ed effetti consentiti
+
+- casi di differenza e relazioni confermate
+- nessuna nuova vendita
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Confrontare per giorno e terminale: vendite carta RT, chiusura terminale, credito provider atteso e accredito banca.
+2. Mostrare lordo, commissioni, netto, date di competenza/accredito e differenza con elenco operazioni.
+3. Riconciliare accrediti uno-a-uno o molti-a-uno quando il provider lo documenta, conservando tutti gli ID.
+
+## Automazioni previste
+
+- Aggiornamento giornaliero e riapertura del caso se cambia una fonte.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Giorno POS ↔ corrispettivo ↔ transazioni provider ↔ accredito/commissione banca ↔ Prima Nota.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non creare vendite dalle chiusure o dagli accrediti; data vendita e data accredito non devono coincidere per forza.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Coerenza fra corrispettivi, POS, commissioni, giorni di vendita e accrediti.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni differenza è spiegata; giorni completi quadrano lordo - commissioni = netto accreditato.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

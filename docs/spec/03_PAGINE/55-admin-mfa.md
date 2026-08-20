@@ -7,14 +7,55 @@
 - Modulo: `admin`
 - Componente corrente: `frontend/src/pages/MFAAdmin.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/AdminHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/admin-mfa.json`](MAPPE_JSON/admin-mfa.json)
+- Contratto logico macchina: [`LOGICA_JSON/55-admin-mfa.json`](LOGICA_JSON/55-admin-mfa.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 MFA amministrativa, enrollment, revoca, recovery e step-up authentication.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- utente amministratore
+- stato enrollment MFA
+- recovery policy
+- audit
+
+## Scritture ed effetti consentiti
+
+- enrollment/revoca MFA nel provider
+- recovery code hash
+- audit step-up
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Richiedere step-up prima di enrollment, rigenerazione recovery o revoca.
+2. Mostrare QR/secret soltanto nella fase di enrollment e confermare con codice valido.
+3. Recovery code mostrati una volta, conservati solo come hash e invalidati dopo uso/rigenerazione.
+
+## Automazioni previste
+
+- Revoca sessioni esistenti dopo operazioni sensibili e notifica all'amministratore.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Enrollment ↔ utente ↔ sessioni revocate ↔ audit sicurezza.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Secret MFA mai nei log/fogli/ZIP; nessuna disattivazione senza step-up e motivo.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ MFA amministrativa, enrollment, revoca, recovery e step-up authentication.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Codice errato non attiva MFA; dopo attivazione il login richiede secondo fattore e revoca è auditata.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

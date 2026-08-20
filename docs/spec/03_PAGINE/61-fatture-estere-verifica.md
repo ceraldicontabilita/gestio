@@ -7,14 +7,55 @@
 - Modulo: `fatture`
 - Componente corrente: `frontend/src/pages/FattureEstereVerifica.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/fatture-estere-verifica.json`](MAPPE_JSON/fatture-estere-verifica.json)
+- Contratto logico macchina: [`LOGICA_JSON/61-fatture-estere-verifica.json`](LOGICA_JSON/61-fatture-estere-verifica.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Fatture estere, paese, valuta, integrazione/autofattura e trattamento IVA.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- fatture estere
+- anagrafiche paese/valuta
+- documenti integrazione/autofattura
+- classificazione IVA
+
+## Scritture ed effetti consentiti
+
+- stato verifica
+- trattamento IVA motivato
+- relazioni integrazione/autofattura
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Identificare paese, tipo fornitore, valuta, data cambio e natura dell'operazione dalla fattura.
+2. Proporre trattamento UE/extra-UE e necessità di integrazione/autofattura con regola fiscale/versione.
+3. Mostrare originale, documento integrativo e impatto IVA; conferma manuale quando dati fiscali non sono univoci.
+
+## Automazioni previste
+
+- Coda automatica per nuove fatture estere e controllo documenti integrativi mancanti.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Fattura estera ↔ fornitore ↔ originale ↔ integrazione/autofattura ↔ IVA/F24.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non inventare cambio o trattamento; valuta/importo originale e controvalore restano distinti.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Fatture estere, paese, valuta, integrazione/autofattura e trattamento IVA.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni fattura ha stato motivato e documenti collegati; totali IVA usano solo classificazioni confermate.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

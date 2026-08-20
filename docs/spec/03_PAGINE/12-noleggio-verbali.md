@@ -7,14 +7,58 @@
 - Modulo: `noleggio`
 - Componente corrente: `frontend/src/pages/VerbaliRiconciliazione.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/VeicoliHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/noleggio-verbali.json`](MAPPE_JSON/noleggio-verbali.json)
+- Contratto logico macchina: [`LOGICA_JSON/12-noleggio-verbali.json`](LOGICA_JSON/12-noleggio-verbali.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Riconciliazione verbali, veicoli, driver, pagamenti, quietanze e documenti.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Verbali PartenoPay/Gmail
+- veicoli
+- storico driver
+- pagamenti
+- quietanze
+
+## Scritture ed effetti consentiti
+
+- verbale canonico
+- associazione veicolo/driver
+- stato pagamento
+- attesa quietanza
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Importare e leggere il PDF originale, estraendo numero, data/ora infrazione, targa, ente, trasgressore, scadenza e importo esatto.
+2. Associare automaticamente il veicolo per targa e il driver solo se l'assegnazione copre data/ora del verbale; altrimenti mostrare candidati.
+3. Accettare Ceraldi Group S.r.l. come trasgressore quando risulta dal documento, senza inventare un driver.
+4. Dopo prova di pagamento usare PAGATO - ATTESA QUIETANZA; collegare la quietanza quando arriva e mantenere distinta la prova bancaria.
+
+## Automazioni previste
+
+- Controllo Gmail giornaliero idempotente e promemoria su scadenze/quietanze mancanti.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Verbale ↔ PDF ↔ targa ↔ driver storico ↔ pagamento ↔ quietanza ↔ movimento banca.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Mai associare driver per importo; mai chiamare fattura la quietanza; originali Gmail e file non vengono spostati o eliminati.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +66,13 @@ Riconciliazione verbali, veicoli, driver, pagamenti, quietanze e documenti.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Importo mostrato coincide col PDF; casi certi si completano da soli, ambigui restano nella lista con candidati e motivo.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

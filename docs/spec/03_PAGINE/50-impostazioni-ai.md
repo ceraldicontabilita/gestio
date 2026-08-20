@@ -7,14 +7,52 @@
 - Modulo: `integrazioni`
 - Componente corrente: `frontend/src/pages/ImpostazioniAI.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/impostazioni-ai.json`](MAPPE_JSON/impostazioni-ai.json)
+- Contratto logico macchina: [`LOGICA_JSON/50-impostazioni-ai.json`](LOGICA_JSON/50-impostazioni-ai.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Configurazione AI tramite riferimenti a segreti, modello, limiti e health.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- configurazione modello/provider non sensibile
+- stato secret reference
+- health e limiti
+
+## Scritture ed effetti consentiti
+
+- riferimenti a segreti, modello/limiti e policy; mai valore del segreto
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare provider, modello, timeout, limiti, finalità consentite e presenza del segreto come sì/no.
+2. Validare configurazione e fare health test minimizzato senza inviare documenti aziendali reali.
+3. Salvare versione e audit; rollback alla configurazione precedente disponibile.
+
+## Automazioni previste
+
+- Health periodico e circuit breaker su errori/costi anomali.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Configurazione ↔ run agente/AI ↔ audit, senza collegare contenuti sensibili ai log.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessuna chiave in codice, fogli, log, API o ZIP; AI non conferma associazioni contabili ambigue.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Configurazione AI tramite riferimenti a segreti, modello, limiti e health.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Secret non leggibile dalla UI; health fallito blocca l'uso ma non altera dati.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

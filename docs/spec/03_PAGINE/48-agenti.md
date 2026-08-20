@@ -7,14 +7,55 @@
 - Modulo: `strumenti`
 - Componente corrente: `frontend/src/pages/Agenti.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/agenti.json`](MAPPE_JSON/agenti.json)
+- Contratto logico macchina: [`LOGICA_JSON/48-agenti.json`](LOGICA_JSON/48-agenti.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Agenti e automazioni con scopo, permessi, run, log, esito e disattivazione.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- catalogo automazioni
+- permessi
+- run e log
+- decisioni proposte
+
+## Scritture ed effetti consentiti
+
+- configurazione agente
+- approvazione/rifiuto proposta
+- audit run
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare per agente scopo, trigger, fonti, permessi massimi, stato e ultimo esito.
+2. Ogni run espone input riferiti, decisioni, output, errori e modifiche proposte.
+3. Approvare significa autorizzare la proposta prevista, non pagamenti o azioni fuori scope; disattivazione immediata disponibile.
+
+## Automazioni previste
+
+- Scheduler con lock/idempotenza e circuit breaker; azioni ad alto rischio restano manuali.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Agente ↔ run ↔ record letti/proposte ↔ audit e notifiche.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun accesso a segreti in UI/log; nessuna estensione autonoma dei permessi o esecuzione di pagamenti.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Agenti e automazioni con scopo, permessi, run, log, esito e disattivazione.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Run riproducibile e tracciato; agente disattivato non parte e una proposta ambigua non modifica dati.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

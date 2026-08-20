@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 16,
+  "label": "Bilancio",
+  "route": "/contabilita/bilancio",
+  "purpose": "Bilancio calcolato da scritture valide, quadratura e drill-down.",
+  "sources": [
+    "scritture giornale valide",
+    "piano dei conti",
+    "periodo/anno globale"
+  ],
+  "writes": [
+    "Nessuna scrittura primaria; eventuale snapshot firmato solo come report."
+  ],
+  "flow": [
+    "Calcolare Stato patrimoniale e Conto economico dalle righe bilanciate e dai conti validi nel periodo.",
+    "Mostrare saldi iniziali, movimenti, saldi finali e quadratura Dare/Avere con formule esplicite.",
+    "Ogni riga consente drill-down al conto, alla scrittura e al documento origine."
+  ],
+  "automations": [
+    "Ricalcolo read-only quando cambiano scritture aperte; periodi chiusi usano la versione approvata."
+  ],
+  "links": [
+    "Bilancio ↔ piano conti ↔ giornale ↔ documento/prova origine."
+  ],
+  "guards": [
+    "Non usare totali Prima Nota non contabilizzati come bilancio; errore fonte non diventa zero."
+  ],
+  "acceptance": [
+    "Dare uguale Avere e utile/perdita riconciliabile al centesimo con il giornale."
+  ]
+}

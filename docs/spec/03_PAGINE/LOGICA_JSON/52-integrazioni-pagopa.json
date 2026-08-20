@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 52,
+  "label": "Riconciliazione PagoPA",
+  "route": "/riconciliazione/pagopa",
+  "purpose": "PagoPA con IUV, ente, avviso, ricevuta, banca e scelta nei casi ambigui.",
+  "sources": [
+    "avvisi PagoPA",
+    "IUV/ente",
+    "ricevute",
+    "movimenti bancari",
+    "documenti"
+  ],
+  "writes": [
+    "relazioni avviso-ricevuta-banca",
+    "stato del caso"
+  ],
+  "flow": [
+    "Importare avviso e ricevuta come documenti distinti con IUV, ente, causale, importo e scadenza.",
+    "Associare automaticamente ricevuta all'avviso su IUV univoco; cercare banca con riferimento/identità/importo/data.",
+    "Mostrare pagato documentale e pagato banca come stati separati fino alla conferma completa."
+  ],
+  "automations": [
+    "Riprocessamento quando arriva ricevuta o movimento; notifiche su avvisi prossimi alla scadenza."
+  ],
+  "links": [
+    "Avviso ↔ IUV ↔ ricevuta ↔ banca ↔ Prima Nota ↔ documento originale."
+  ],
+  "guards": [
+    "Nessun pagamento automatico; importo solo non basta; IUV conflittuale richiede scelta."
+  ],
+  "acceptance": [
+    "IUV univoco collega avviso/ricevuta; pagamento banca apre il movimento e secondo import non duplica."
+  ]
+}

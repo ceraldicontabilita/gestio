@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 50,
+  "label": "Impostazioni AI",
+  "route": "/impostazioni-ai",
+  "purpose": "Configurazione AI tramite riferimenti a segreti, modello, limiti e health.",
+  "sources": [
+    "configurazione modello/provider non sensibile",
+    "stato secret reference",
+    "health e limiti"
+  ],
+  "writes": [
+    "riferimenti a segreti, modello/limiti e policy; mai valore del segreto"
+  ],
+  "flow": [
+    "Mostrare provider, modello, timeout, limiti, finalità consentite e presenza del segreto come sì/no.",
+    "Validare configurazione e fare health test minimizzato senza inviare documenti aziendali reali.",
+    "Salvare versione e audit; rollback alla configurazione precedente disponibile."
+  ],
+  "automations": [
+    "Health periodico e circuit breaker su errori/costi anomali."
+  ],
+  "links": [
+    "Configurazione ↔ run agente/AI ↔ audit, senza collegare contenuti sensibili ai log."
+  ],
+  "guards": [
+    "Nessuna chiave in codice, fogli, log, API o ZIP; AI non conferma associazioni contabili ambigue."
+  ],
+  "acceptance": [
+    "Secret non leggibile dalla UI; health fallito blocca l'uso ma non altera dati."
+  ]
+}

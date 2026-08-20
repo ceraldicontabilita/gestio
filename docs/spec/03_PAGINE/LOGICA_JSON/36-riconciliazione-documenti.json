@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 36,
+  "label": "Riconciliazione documenti",
+  "route": "/riconciliazione/documenti",
+  "purpose": "Riconciliazione documenti con originale, classificazione, candidati e provenienza.",
+  "sources": [
+    "Documenti inbox/storage file",
+    "classificazioni",
+    "entità candidate",
+    "relazioni"
+  ],
+  "writes": [
+    "classificazione approvata",
+    "relazione documento-entità",
+    "stato elaborazione"
+  ],
+  "flow": [
+    "Mostrare originale, hash, fonte, parser/versione, campi estratti e confidenza.",
+    "Proporre tipo ed entità compatibili spiegando i criteri; scelta manuale disponibile per candidati ambigui.",
+    "Dopo conferma invocare il servizio di dominio del tipo, conservare documento originale e link al record creato."
+  ],
+  "automations": [
+    "Auto-classificazione soltanto oltre soglia e con identità univoca; retry per errori tecnici senza duplicare."
+  ],
+  "links": [
+    "Documento ↔ record elaborato ↔ relazioni/prove ↔ pagina dominio."
+  ],
+  "guards": [
+    "OCR basso, PDF cifrato o fonte incompleta restano in revisione; mai creare record contabile da contenuto ambiguo."
+  ],
+  "acceptance": [
+    "Ogni documento ha stato e destinazione; secondo processamento non crea una seconda entità."
+  ]
+}

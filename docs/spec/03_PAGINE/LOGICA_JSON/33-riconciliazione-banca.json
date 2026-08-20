@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 33,
+  "label": "Riconciliazione banca",
+  "route": "/riconciliazione/banca",
+  "purpose": "Riconciliazione bancaria deterministica, candidati motivati e operation_id.",
+  "sources": [
+    "movimenti bancari immutabili",
+    "fatture",
+    "Prima Nota",
+    "PayPal/assegni/bonifici/F24/PagoPA"
+  ],
+  "writes": [
+    "caso/candidati",
+    "relazione confermata",
+    "scrittura contabile tramite writer unico"
+  ],
+  "flow": [
+    "Importare ogni riga con fingerprint di banca/conto/data/importo/causale/riferimento e non modificarne il contenuto originale.",
+    "Generare candidati con motivazione: identità, riferimenti, centesimi, finestra data e provenienza; mostrare punteggio per criterio.",
+    "Confermare automaticamente solo una corrispondenza univoca e forte; altrimenti Scegli fattura/entità o classifica senza documento.",
+    "Assegnare lo stesso operation_id alle prove dello stesso evento mantenendo record distinti e collegamenti reciproci."
+  ],
+  "automations": [
+    "Nuovo estratto riprocessa solo righe nuove e tenta nuovamente i casi aperti senza duplicare relazioni."
+  ],
+  "links": [
+    "Movimento ↔ caso ↔ fattura/PayPal/assegno/F24/bonifico ↔ Prima Nota e documento."
+  ],
+  "guards": [
+    "Mai associare per importo solo; commissione ignorata è riconciliazione classificata, non pagamento fattura."
+  ],
+  "acceptance": [
+    "Secondo import nuovi=0; ogni conferma è visibile in entrambe le pagine e l'importo resta al centesimo."
+  ]
+}

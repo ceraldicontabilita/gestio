@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "page_id": 18,
+  "label": "Libro Giornale",
+  "route": "/contabilita/giornale",
+  "purpose": "Libro giornale progressivo, bilanciato, filtrabile, esportabile e auditabile.",
+  "sources": [
+    "scritture giornale",
+    "righe Dare/Avere",
+    "piano conti",
+    "documenti e operation_id"
+  ],
+  "writes": [
+    "scritture manuali bilanciate",
+    "storni e rettifiche, mai sovrascrittura dello storico"
+  ],
+  "flow": [
+    "Assegnare numero progressivo per esercizio solo al momento della registrazione valida.",
+    "Mostrare data competenza/registrazione, causale, righe Dare/Avere, stato e documento origine.",
+    "Le rettifiche creano nuove scritture collegate; export conserva filtri, numerazione e totali."
+  ],
+  "automations": [
+    "Generazione dal writer contabile unico dopo eventi di dominio confermati."
+  ],
+  "links": [
+    "Scrittura ↔ evento/fattura/pagamento/F24 ↔ piano conti ↔ bilancio."
+  ],
+  "guards": [
+    "Una scrittura sbilanciata o priva di conto valido non può essere registrata; progressivi non si riciclano."
+  ],
+  "acceptance": [
+    "Per ogni scrittura Dare=Avere e sequenza progressiva senza duplicati; storno navigabile in entrambe le direzioni."
+  ]
+}

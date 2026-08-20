@@ -7,14 +7,53 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/DatiIsa.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-dati-isa.json`](MAPPE_JSON/contabilita-dati-isa.json)
+- Contratto logico macchina: [`LOGICA_JSON/62-contabilita-dati-isa.json`](LOGICA_JSON/62-contabilita-dati-isa.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Dati ISA derivati, tracciabili, quadrati ed esportabili senza valori inventati.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- bilancio/giornale
+- fatture/corrispettivi
+- personale/cespiti
+- mappatura campi ISA
+
+## Scritture ed effetti consentiti
+
+- snapshot ISA derivato, mapping/versione e note; nessuna modifica alle fonti
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mappare ogni campo ISA a formula e conti/registri origine per esercizio.
+2. Calcolare valori solo da dati confermati e mostrare mancanti, esclusioni e quadrature.
+3. Esportare snapshot versionato con fingerprint delle fonti e drill-down per campo.
+
+## Automazioni previste
+
+- Ricalcolo bozza dopo variazioni; snapshot consegnato resta immutabile.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Campo ISA ↔ formula ↔ conti/righe/documenti origine ↔ snapshot/export.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun valore inventato o zero al posto di fonte mancante; niente invio automatico.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Dati ISA derivati, tracciabili, quadrati ed esportabili senza valori inventati.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni valore è tracciabile e la somma delle righe origine coincide; mancanti restano espliciti.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

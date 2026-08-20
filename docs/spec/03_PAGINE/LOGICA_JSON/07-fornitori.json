@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 7,
+  "label": "Fornitori",
+  "route": "/fornitori",
+  "purpose": "Anagrafica fornitori univoca, fatture, residui, IBAN, metodo e merge controllato.",
+  "sources": [
+    "Fornitori",
+    "Fatture ricevute",
+    "pagamenti e IBAN verificati",
+    "regole operative"
+  ],
+  "writes": [
+    "anagrafica canonica",
+    "alias",
+    "metodo previsto",
+    "merge controllato"
+  ],
+  "flow": [
+    "Identificare il fornitore principalmente con partita IVA/codice fiscale normalizzati e mantenere denominazioni storiche come alias.",
+    "Mostrare contatti, IBAN con provenienza, fatture, pagato/residuo e ultimo documento per anno.",
+    "La modifica aggiorna solo l'anagrafica; il merge presenta anteprima di tutte le relazioni e conserva l'identità assorbita."
+  ],
+  "automations": [
+    "Aggiornamento dati da fatture nuove solo per campi con fonte più affidabile, mai sovrascrittura cieca."
+  ],
+  "links": [
+    "Drill-down verso fatture, scadenze, pagamenti, documenti e regole di associazione."
+  ],
+  "guards": [
+    "Non cancellare un fornitore con fatti collegati; IBAN o metodo previsto non provano un pagamento."
+  ],
+  "acceptance": [
+    "Nessun duplicato per stessa identità fiscale; totali fatture/residui coincidono con l'archivio fatture."
+  ]
+}

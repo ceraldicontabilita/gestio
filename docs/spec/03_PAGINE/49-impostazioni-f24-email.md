@@ -7,14 +7,53 @@
 - Modulo: `integrazioni`
 - Componente corrente: `frontend/src/pages/ImpostazioniF24Email.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/impostazioni-f24-email.json`](MAPPE_JSON/impostazioni-f24-email.json)
+- Contratto logico macchina: [`LOGICA_JSON/49-impostazioni-f24-email.json`](LOGICA_JSON/49-impostazioni-f24-email.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Configurazione ingest email F24, query, mittenti, test e ultima scansione.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- configurazione query/mittenti F24
+- stato connessione Gmail
+- ultimo watermark/run
+
+## Scritture ed effetti consentiti
+
+- query e mittenti validati
+- configurazione scheduler non segreta
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Configurare ricerca in:anywhere, alias/wrapper PEC e tipi allegato attesi senza esporre credenziali.
+2. Testare in sola lettura mostrando messaggi trovati, pagine percorse e potenziali allegati senza importarli.
+3. Salvare configurazione versionata e mostrare ultimo run, watermark, nuovi/duplicati/errori.
+
+## Automazioni previste
+
+- Controllo giornaliero Europe/Rome con paginazione, Gmail IDs, SHA-256, lock e retry.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Configurazione ↔ run Gmail ↔ documenti F24/quietanze importati ↔ audit.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Mai spostare/eliminare/segnare lette le email; nessuna password/token restituita alla UI.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Configurazione ingest email F24, query, mittenti, test e ultima scansione.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Test trova gli stessi messaggi della query completa; secondo run senza novità importa zero allegati.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

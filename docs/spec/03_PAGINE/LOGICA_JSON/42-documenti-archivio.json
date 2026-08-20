@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 42,
+  "label": "Archivio documenti",
+  "route": "/documenti/archivio",
+  "purpose": "Archivio documenti indicizzati con metadati, originale, relazioni e viewer.",
+  "sources": [
+    "indice Documenti",
+    "metadati file (storage applicativo)",
+    "relazioni a entità",
+    "stato elaborazione"
+  ],
+  "writes": [
+    "metadati/etichette controllate",
+    "richiesta di riprocessamento",
+    "nessuna modifica all'originale"
+  ],
+  "flow": [
+    "Elencare con paginazione server, ricerca e filtri per tipo, periodo, stato, fonte e relazione.",
+    "Mostrare nome, MIME, hash, percorso/provenienza, parser, data e destinazione elaborata.",
+    "Aprire PDF/XML nel viewer appropriato e navigare al record collegato; il riprocessamento crea un run auditato."
+  ],
+  "automations": [
+    "Indicizzazione incrementale dello storage file con watermark e aggiornamento metadati senza duplicare hash."
+  ],
+  "links": [
+    "Documento ↔ originale (storage file) ↔ import run ↔ fattura/F24/verbale/atto/altro record."
+  ],
+  "guards": [
+    "Nessuna eliminazione/spostamento automatico; stesso hash in cartelle di ciclo vita può essere provenienza valida."
+  ],
+  "acceptance": [
+    "Ricerca trova il documento e apre originale/record; conteggi filtri coerenti con paginazione."
+  ]
+}

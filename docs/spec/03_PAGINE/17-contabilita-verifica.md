@@ -7,14 +7,53 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/BilancioVerifica.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-verifica.json`](MAPPE_JSON/contabilita-verifica.json)
+- Contratto logico macchina: [`LOGICA_JSON/17-contabilita-verifica.json`](LOGICA_JSON/17-contabilita-verifica.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Verifica bilancio con anomalie spiegate e link alla scrittura origine.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- bilancio calcolato
+- giornale
+- piano conti
+- check di quadratura
+
+## Scritture ed effetti consentiti
+
+- stato e nota di risoluzione dell'anomalia, senza alterare direttamente la contabilità
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Eseguire controlli riproducibili: sbilanci, conti mancanti, date fuori periodo, duplicati e saldi incoerenti.
+2. Ogni alert mostra severità, regola, elenco righe, differenza e percorso di correzione.
+3. La risoluzione viene riconosciuta ricalcolando la regola, non nascondendo manualmente l'alert.
+
+## Automazioni previste
+
+- Ricalcolo dopo modifica di scritture e prima di chiusura esercizio.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Alert ↔ conto ↔ scrittura ↔ documento origine ↔ checklist di chiusura.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Contatori sempre cliccabili; nessuna correzione contabile direttamente dalla card di allerta.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Verifica bilancio con anomalie spiegate e link alla scrittura origine.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni anomalia è riproducibile e scompare solo quando la condizione non esiste più.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

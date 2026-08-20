@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 24,
+  "label": "Budget",
+  "route": "/contabilita/budget",
+  "purpose": "Budget versionato e confronto consuntivo per mese, conto e centro.",
+  "sources": [
+    "budget versionato",
+    "piano conti/centri",
+    "consuntivo giornale",
+    "anno globale"
+  ],
+  "writes": [
+    "versione budget, righe mensili, note e stato approvazione"
+  ],
+  "flow": [
+    "Creare scenari separati per anno/versione senza sovrascrivere quello approvato.",
+    "Inserire importi per mese, conto/voce e centro; mostrare totale e controlli di coerenza.",
+    "Confrontare consuntivo omogeneo con budget e aprire il dettaglio dello scostamento."
+  ],
+  "automations": [
+    "Duplicazione anno crea una bozza distinta e conserva provenienza/versione."
+  ],
+  "links": [
+    "Budget ↔ conto/centro ↔ consuntivo giornale ↔ utile obiettivo/previsioni."
+  ],
+  "guards": [
+    "Budget e simulazioni non generano scritture reali; una versione approvata non si modifica in silenzio."
+  ],
+  "acceptance": [
+    "Totali mensili/annuali coerenti e scostamento uguale a consuntivo meno budget al centesimo."
+  ]
+}

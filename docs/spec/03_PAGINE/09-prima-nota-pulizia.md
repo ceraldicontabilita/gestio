@@ -7,14 +7,55 @@
 - Modulo: `prima-nota`
 - Componente corrente: `frontend/src/pages/PuliziaPrimaNota.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/PrimaNotaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/prima-nota-pulizia.json`](MAPPE_JSON/prima-nota-pulizia.json)
+- Contratto logico macchina: [`LOGICA_JSON/09-prima-nota-pulizia.json`](LOGICA_JSON/09-prima-nota-pulizia.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Audit Prima Nota con liste esatte, dry-run, correzione deterministica e rollback.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Prima Nota Cassa/Banca
+- chiavi canoniche
+- hash/import run
+- audit delle correzioni
+
+## Scritture ed effetti consentiti
+
+- marcatura recuperabile di copie esatte
+- report di correzione e rollback
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Eseguire diagnosi read-only e mostrare sempre l'elenco completo dei gruppi, non solo un contatore.
+2. Distinguere copie certe, casi simili ma legittimi e incoerenze di relazione; assegni o rate ricorrenti non sono duplicati per importo.
+3. Applicare automaticamente solo la copia esatta secondo source_external_id/hash/fingerprint, conservando il record più completo.
+4. Registrare prima/dopo, motivo e comando di rollback; i casi dubbi restano visibili senza modifica.
+
+## Automazioni previste
+
+- La prevenzione duplicati agisce già in import; la pagina serve per audit e recupero, non per manutenzione ordinaria.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Ogni elemento della lista apre direttamente le righe nella Prima Nota filtrata.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessuna cancellazione fisica; nessuna deduplica per importo o fattura_id condiviso quando le date/strumenti sono diversi.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Audit Prima Nota con liste esatte, dry-run, correzione deterministica e rollback
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Anteprima e applicazione restituiscono gli stessi target; secondo passaggio trova zero copie certe e rollback ripristina la visibilità.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

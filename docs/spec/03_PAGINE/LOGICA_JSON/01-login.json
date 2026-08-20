@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 1,
+  "label": "Login",
+  "route": "/login",
+  "purpose": "Login sicuro, sessione, MFA e redirect alla destinazione autorizzata.",
+  "sources": [
+    "Identity provider",
+    "utenti e ruoli",
+    "configurazione MFA"
+  ],
+  "writes": [
+    "sessione autenticata",
+    "audit accessi e tentativi falliti"
+  ],
+  "flow": [
+    "Validare credenziali lato server e applicare rate limit senza rivelare se l'utente esiste.",
+    "Se MFA è richiesta, creare una sessione provvisoria e completarla solo dopo il secondo fattore.",
+    "Caricare ruolo e destinazione richiesta, quindi reindirizzare esclusivamente verso una route autorizzata."
+  ],
+  "automations": [
+    "Scadenza sessione, blocco progressivo e revoca vengono applicati dal backend."
+  ],
+  "links": [
+    "Ogni login riuscito o fallito è collegato all'audit dell'utente e alla sessione generata."
+  ],
+  "guards": [
+    "Cookie sicuri; nessun token nel localStorage; autorizzazione verificata nuovamente da ogni API."
+  ],
+  "acceptance": [
+    "Utente valido entra nella destinazione consentita; utente/MFA non validi restano fuori senza perdita del redirect sicuro."
+  ]
+}

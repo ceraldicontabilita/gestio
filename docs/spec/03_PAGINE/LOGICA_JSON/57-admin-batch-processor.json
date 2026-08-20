@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "page_id": 57,
+  "label": "Elaborazioni legacy",
+  "route": "/admin/batch-processor",
+  "purpose": "Alias legacy temporaneo verso elaborazioni, senza componente o router duplicato.",
+  "sources": [
+    "route legacy e mappa di redirect",
+    "permessi utente"
+  ],
+  "writes": [
+    "Nessuna scrittura; solo audit del redirect se necessario."
+  ],
+  "flow": [
+    "Risolvere la route legacy verso /admin/batch-reprocessing mantenendo parametri sicuri supportati.",
+    "Mostrare un avviso di percorso aggiornato solo se utile, poi usare lo stesso componente e gli stessi endpoint canonici."
+  ],
+  "automations": [
+    "Telemetry del traffico legacy per decidere la rimozione futura."
+  ],
+  "links": [
+    "Route legacy → pagina elaborazioni canonica, senza duplicare stato o logica."
+  ],
+  "guards": [
+    "Nessun componente, router o writer duplicato; parametri sconosciuti vengono scartati."
+  ],
+  "acceptance": [
+    "Stesso contenuto e autorizzazioni della pagina canonica; nessuna chiamata a endpoint legacy paralleli."
+  ]
+}

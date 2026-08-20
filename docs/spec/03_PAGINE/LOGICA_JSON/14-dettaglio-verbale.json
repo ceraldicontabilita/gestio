@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 14,
+  "label": "Dettaglio verbale",
+  "route": "/verbali-noleggio/:identificativo",
+  "purpose": "Fascicolo del verbale con PDF, importo, targa, trasgressore, driver e prove.",
+  "sources": [
+    "verbale identificato dalla route",
+    "PDF e metadati",
+    "relazioni veicolo/driver/pagamento/quietanza"
+  ],
+  "writes": [
+    "correzioni verificate",
+    "associazioni manuali esplicite",
+    "richiesta nuova lettura OCR"
+  ],
+  "flow": [
+    "Risolvere l'identificativo in un solo verbale oppure mostrare 404 utile senza creare record fittizi.",
+    "Mostrare numero, date, ente, targa, trasgressore, driver, importo, scadenze e stato con fonte per campo.",
+    "Aprire il PDF in un viewer chiudibile e accessibile; permettere associa PDF quando l'originale manca o è errato.",
+    "Una correzione manuale richiede motivo, conserva il valore OCR precedente e rilancia i controlli collegati."
+  ],
+  "automations": [
+    "Ricalcolo candidati driver e prove dopo nuova lettura o nuovo documento."
+  ],
+  "links": [
+    "Collegamenti diretti a veicolo, driver, pagamento, quietanza, banca e lista verbali."
+  ],
+  "guards": [
+    "Non sostituire il dato del PDF senza provenienza; associazioni ambigue non diventano definitive."
+  ],
+  "acceptance": [
+    "Il fascicolo ricostruisce tutta la storia del verbale e il viewer si apre/chiude senza lasciare overlay bloccanti."
+  ]
+}

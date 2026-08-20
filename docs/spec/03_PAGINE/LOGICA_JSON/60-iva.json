@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 60,
+  "label": "Gestione IVA",
+  "route": "/iva",
+  "purpose": "IVA, liquidazioni, fatture, corrispettivi, F24, periodi e quadrature.",
+  "sources": [
+    "fatture con classificazione IVA",
+    "corrispettivi",
+    "liquidazioni IVA",
+    "F24",
+    "crediti precedenti"
+  ],
+  "writes": [
+    "classificazione detraibilità",
+    "versione liquidazione",
+    "conferma/rettifica"
+  ],
+  "flow": [
+    "Calcolare IVA vendite da corrispettivi attivi deduplicati e IVA acquisti solo da classificazione esplicita iva_detraibile.",
+    "Mostrare fatture incluse/escluse, aliquote, credito precedente, debito/credito periodo e formula.",
+    "Una liquidazione confermata è versionata e non sovrascritta; trasmissione/pagamento F24 restano prove separate."
+  ],
+  "automations": [
+    "Ricalcolo bozza quando cambiano fonti aperte; blocco silenzioso su periodi confermati/trasmessi."
+  ],
+  "links": [
+    "Liquidazione ↔ fatture/corrispettivi ↔ riga F24 ↔ PDF/quietanza/banca."
+  ],
+  "guards": [
+    "IVA esposta non è automaticamente detraibile; F24 e quietanza non sono movimento banca; nessun valore stimato come reale."
+  ],
+  "acceptance": [
+    "Totali riconciliabili alle righe incluse e una rettifica crea nuova versione con differenze esplicite."
+  ]
+}

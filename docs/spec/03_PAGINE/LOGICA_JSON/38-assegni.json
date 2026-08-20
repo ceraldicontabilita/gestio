@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 38,
+  "label": "Assegni",
+  "route": "/riconciliazione/assegni",
+  "purpose": "Assegni distinti per numero/data/importo, fatture collegate e casi ambigui.",
+  "sources": [
+    "assegni",
+    "movimenti bancari",
+    "fatture",
+    "documenti/prove"
+  ],
+  "writes": [
+    "stato assegno",
+    "relazioni a una o più fatture",
+    "incasso/addebito bancario confermato"
+  ],
+  "flow": [
+    "Identificare ogni assegno con numero completo, conto, data emissione/incasso, importo e beneficiario.",
+    "Consentire associazione a una o più fatture con somma controllata e prova del documento.",
+    "Il movimento bancario chiude l'assegno solo se numero/riferimento, importo e contesto sono coerenti.",
+    "Gli alert mostrano la lista esatta dei candidati o delle differenze."
+  ],
+  "automations": [
+    "Ricostruzione del numero completo da finale solo come candidato; dedup su identità strumento, non fattura condivisa."
+  ],
+  "links": [
+    "Assegno ↔ fatture ↔ movimento banca ↔ Prima Nota ↔ documento."
+  ],
+  "guards": [
+    "Assegni diversi con stesso importo o fattura non sono copie; emissione/disposizione non prova l'addebito."
+  ],
+  "acceptance": [
+    "Ogni assegno resta distinto e navigabile; somma fatture compatibile e stato banca supportato dal movimento esatto."
+  ]
+}

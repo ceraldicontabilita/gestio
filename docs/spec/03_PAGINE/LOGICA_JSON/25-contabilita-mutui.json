@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 25,
+  "label": "Mutui",
+  "route": "/contabilita/mutui",
+  "purpose": "Mutui, rate, quota capitale/interessi, banca e residuo riconciliato.",
+  "sources": [
+    "contratti mutuo/PDF",
+    "mutui",
+    "piano rate",
+    "movimenti bancari",
+    "giornale"
+  ],
+  "writes": [
+    "mutuo e rate",
+    "relazione rata-movimento",
+    "scritture capitale/interessi"
+  ],
+  "flow": [
+    "Importare o inserire contratto con banca, capitale, tasso, decorrenza e piano verificabile.",
+    "Per ogni rata separare quota capitale, interessi, spese e residuo; mostrare scadenza e stato.",
+    "Riconciliare il movimento bancario alla rata usando riferimento, data e importo, poi generare la scrittura tramite writer unico."
+  ],
+  "automations": [
+    "Proposta automatica di rata candidata e aggiornamento residuo dopo conferma."
+  ],
+  "links": [
+    "Mutuo ↔ contratto/PDF ↔ rata ↔ banca ↔ giornale ↔ posizione finanziaria."
+  ],
+  "guards": [
+    "Importo uguale non basta; non contabilizzare l'intera rata come costo; nessun pagamento automatico."
+  ],
+  "acceptance": [
+    "Somma capitale rimborsato più residuo coincide col capitale; rata riconciliata apre il movimento esatto."
+  ]
+}

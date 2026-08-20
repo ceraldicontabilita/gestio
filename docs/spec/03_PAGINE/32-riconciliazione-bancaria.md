@@ -7,14 +7,50 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/RiconciliazioneUnificata.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/riconciliazione-bancaria.json`](MAPPE_JSON/riconciliazione-bancaria.json)
+- Contratto logico macchina: [`LOGICA_JSON/32-riconciliazione-bancaria.json`](LOGICA_JSON/32-riconciliazione-bancaria.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Indice unico delle riconciliazioni con code, stati e contatori navigabili.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- casi di riconciliazione di banca, F24, stipendi, documenti, assegni, PayPal e PagoPA
+
+## Scritture ed effetti consentiti
+
+- Nessuna associazione diretta dalla dashboard; solo filtri/priorità del caso.
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare code per dominio con conteggi calcolati e stato fonte/ultimo aggiornamento.
+2. Ogni card apre la lista esatta mantenendo anno, stato e filtro.
+3. Separare certi auto-risolti, candidati da scegliere, fonti mancanti e conflitti.
+
+## Automazioni previste
+
+- Aggiornamento dopo import o decisione; priorità per scadenza/severità, non per numero casuale.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Dashboard ↔ pagina dominio ↔ singolo caso ↔ prove e relazioni.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun contatore non navigabile; nessuna conferma massiva di casi ambigui.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +58,13 @@ Indice unico delle riconciliazioni con code, stati e contatori navigabili.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Conteggi dashboard uguali alle liste e tornano a zero solo quando i casi sono realmente risolti.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

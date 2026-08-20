@@ -7,14 +7,56 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/RiconciliazionePaypal.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/riconciliazione-paypal.json`](MAPPE_JSON/riconciliazione-paypal.json)
+- Contratto logico macchina: [`LOGICA_JSON/39-riconciliazione-paypal.json`](LOGICA_JSON/39-riconciliazione-paypal.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 PayPal interconnesso con banca, fatture, Prima Nota e prove tramite operation_id.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- transazioni PayPal
+- movimenti bancari SDD PayPal
+- fatture
+- Prima Nota
+
+## Scritture ed effetti consentiti
+
+- relazioni transazione-fattura-banca
+- stato riconciliazione
+- note
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Importare tutte le transazioni con transaction ID, data, controparte, valuta, lordo, commissione e netto.
+2. Collegare fattura usando controparte/numero/data/centesimi e il movimento bancario usando riferimenti SDD PayPal e finestra coerente.
+3. Assegnare un operation_id comune a fattura, transazione e banca senza fondere le tre righe.
+4. Applicare la stessa logica a tutti i movimenti PayPal; i dubbi mostrano candidati e scelta.
+
+## Automazioni previste
+
+- Sync incrementale idempotente e riprocessamento dei non associati quando arriva fattura o banca.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- PayPal ↔ fattura/PDF ↔ banca ↔ Prima Nota; ogni colonna è un link alla prova.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non confrontare USD ed EUR senza cambio/prova; commissione e acquisto non sono la stessa riga; importo solo non basta.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ PayPal interconnesso con banca, fatture, Prima Nota e prove tramite operation_id
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Un acquisto PayPal con fattura e addebito SDD produce tre record collegati con lo stesso operation_id; il secondo sync non duplica transazioni.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

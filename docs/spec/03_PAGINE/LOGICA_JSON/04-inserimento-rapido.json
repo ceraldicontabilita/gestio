@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 4,
+  "label": "Inserimento rapido",
+  "route": "/rapido",
+  "purpose": "Inserimento rapido idempotente di corrispettivi, versamenti, pagamenti, apporti e presenze.",
+  "sources": [
+    "anno globale",
+    "anagrafiche fornitori/dipendenti",
+    "categorie e metodi consentiti"
+  ],
+  "writes": [
+    "movimento o documento nel registro canonico scelto tramite il writer di dominio"
+  ],
+  "flow": [
+    "L'utente sceglie prima il tipo: corrispettivo, versamento, pagamento, apporto soci o presenza.",
+    "Il form cambia campi e controlli in base al tipo, calcola l'anteprima e mostra registro/segno di destinazione.",
+    "Il backend genera idempotency key e operation_id, salva una sola volta e restituisce il link al risultato."
+  ],
+  "automations": [
+    "Riconoscimento di un invio ripetuto e proposta di valori anagrafici già verificati."
+  ],
+  "links": [
+    "Il risultato apre Prima Nota, Corrispettivi, Soci o Personale sulla riga appena creata."
+  ],
+  "guards": [
+    "Mai scrivere direttamente in più registri dal browser; mai assumere Cassa/Banca dal solo importo."
+  ],
+  "acceptance": [
+    "Doppio invio produce un solo record; segno, data, centesimi e registro coincidono con l'anteprima."
+  ]
+}

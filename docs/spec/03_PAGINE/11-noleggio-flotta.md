@@ -7,14 +7,58 @@
 - Modulo: `noleggio`
 - Componente corrente: `frontend/src/pages/NoleggioAuto.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/VeicoliHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/noleggio-flotta.json`](MAPPE_JSON/noleggio-flotta.json)
+- Contratto logico macchina: [`LOGICA_JSON/11-noleggio-flotta.json`](LOGICA_JSON/11-noleggio-flotta.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Flotta ricostruita da fatture di noleggio, contratti, targhe e storico driver.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Fatture di noleggio
+- veicoli
+- contratti
+- storico driver
+- dati automotive opzionali
+
+## Scritture ed effetti consentiti
+
+- anagrafica veicolo completa
+- contratto
+- assegnazioni driver con intervallo
+- relazioni fatture
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Scansionare fatture XML/PDF dei noleggiatori e ricavare targa, telaio se presente, marca/modello, contratto, periodo e costi.
+2. Unire le informazioni per targa normalizzata senza creare schede vuote; mostrare solo veicoli completi o una coda esplicita di documenti non interpretabili.
+3. Registrare l'assegnazione driver con data inizio/fine e fonte; una nuova assegnazione chiude la precedente senza cancellarla.
+4. Gli arricchimenti esterni sono proposte e non sovrascrivono dati documentali più affidabili.
+
+## Automazioni previste
+
+- Nuova fattura aggiorna veicolo/contratto/costi in modo idempotente e tenta l'associazione solo se la targa è certa.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Veicolo ↔ fatture ↔ contratto ↔ driver storico ↔ verbali ↔ costi.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Niente form manuali incompleti quando i dati sono già nelle fatture; assenza di fattura recente non è automaticamente un errore.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +66,13 @@ Flotta ricostruita da fatture di noleggio, contratti, targhe e storico driver.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni veicolo mostrato ha targa e fonte; fatture e driver corretti sono raggiungibili e una nuova scansione non duplica costi.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

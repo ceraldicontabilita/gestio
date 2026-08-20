@@ -7,14 +7,58 @@
 - Modulo: `prima-nota`
 - Componente corrente: `frontend/src/pages/PrimaNota.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/PrimaNotaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/prima-nota.json`](MAPPE_JSON/prima-nota.json)
+- Contratto logico macchina: [`LOGICA_JSON/08-prima-nota.json`](LOGICA_JSON/08-prima-nota.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Prima Nota Cassa/Banca/SumUp/Soci come viste coerenti del ledger, raggruppate per giorno.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Prima Nota Cassa
+- Prima Nota Banca
+- SumUp/POS
+- finanziamenti soci
+- fatture e movimenti bancari
+
+## Scritture ed effetti consentiti
+
+- scritture tramite writer unico
+- trasferimenti Cassa-Banca
+- relazioni e correzioni tracciate
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare Cassa, Banca, SumUp e Soci come conti distinti dello stesso ledger, raggruppando tutte le operazioni in card giornaliere.
+2. Calcolare saldi progressivi dal riporto iniziale e dalle righe ordinate; ogni giorno espone numero operazioni e totale netto.
+3. Un versamento contanti crea uscita Cassa ed entrata Banca attesa con lo stesso operation_id; il movimento di estratto conto la riconcilia senza crearne una terza.
+4. Le vendite POS generano crediti attesi; accredito provider, commissione e movimento banca restano fatti separati ma collegati.
+5. Spostare una fattura tra Cassa e Banca corregge la scrittura esistente, conserva audit e aggiorna tutte le viste.
+
+## Automazioni previste
+
+- Import estratto conto idempotente; generazione automatica di attesi POS/versamenti; associazioni certe e coda dei dubbi.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Ogni riga apre fattura/documento/prova; operation_id consente di passare tra Cassa, Banca, SumUp, PayPal e riconciliazione.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non inserire movimenti bancari reali in Cassa; non usare saldi hardcoded; non marcare pagato senza prova coerente.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +66,13 @@ Prima Nota Cassa/Banca/SumUp/Soci come viste coerenti del ledger, raggruppate pe
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Saldo per conto ricalcolabile al centesimo; versamento e POS risultano nelle sezioni corrette dopo refresh senza duplicati.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

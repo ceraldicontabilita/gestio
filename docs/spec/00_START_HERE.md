@@ -6,18 +6,22 @@ Non contiene dati reali, credenziali, allegati fiscali o una copia del vecchio c
 ## Contenuto verificato
 
 - 65 pagine canoniche con logica, API, stato UI, handler, fonti e test;
+- 65 contratti logici JSON (`03_PAGINE/LOGICA_JSON/`), uno per pagina;
 - 36 popup mappati;
-- 1140 endpoint classificati, inclusi quelli in quarantena;
-- 224 variabili senza valori segreti;
+- 1140 endpoint classificati (737 attivi, 403 quarantena come decision log);
+- 164 variabili senza valori segreti;
 - 22 tabelle/registri canonici del database applicativo;
-- fingerprint fonti: `0c0fbc2c05f1fcb851823adc2f5d3e914f540a25db0ede76bf8d83933c6bf755`.
+- fingerprint fonti: `4b6ea6e27c9ce4a487a5847a3312a56ce2ff7e15d6b2b7e83107fa414c521daa`.
 
 Adattamento per il repository `gestio`: rispetto al kit originale sono
 esclusi MongoDB e Google Drive/Sheets come persistenza. Il target usa un
 unico database SQL monoutente (SQLite) e storage file locale per gli
-originali. I riferimenti a Drive/Mongo rimasti in appendici e mappe
-tecniche descrivono il codice legacy come inventario storico, non il
-target da costruire (vedi nota nelle rispettive appendici).
+originali. Sono state rimosse anche le parti morte/ridondanti del kit:
+60 variabili Mongo/Drive dall'inventario, la mappa tecnica duplicata
+`03_PAGINE/MAPPE_JSON/` (assorbita dalle schede pagina e da `LOGICA_JSON/`),
+le mappe in quarantena e la documentazione di audit del vecchio repository
+in `08_RIFERIMENTI_CONTESTO/` (restano solo i riferimenti fiscali di
+dominio: piano dei conti, IVA, F24/cedolini, libro mastro, fornitori).
 
 ## Ordine di lettura
 

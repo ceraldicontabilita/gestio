@@ -7,14 +7,53 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/UtileObiettivo.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-utile.json`](MAPPE_JSON/contabilita-utile.json)
+- Contratto logico macchina: [`LOGICA_JSON/27-contabilita-utile.json`](LOGICA_JSON/27-contabilita-utile.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Simulazione utile obiettivo separata dai consuntivi e senza scritture reali.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- consuntivi
+- budget
+- costi/ricavi ricorrenti
+- parametri utente
+
+## Scritture ed effetti consentiti
+
+- scenario di simulazione separato, mai scritture o budget approvati
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Partire da un periodo/base dichiarato e permettere ipotesi su ricavi, margini, costi e imposte.
+2. Calcolare il fatturato/margine necessario all'utile obiettivo con formule e sensibilità visibili.
+3. Salvare o confrontare scenari nominati senza mescolarli ai consuntivi.
+
+## Automazioni previste
+
+- Aggiornamento immediato della simulazione nel browser o servizio read-only.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Scenario ↔ budget/consuntivo usato come base, con link ma senza relazione contabile.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessuna scrittura, ordine o pagamento; risultati sono simulazioni e devono essere etichettati.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Simulazione utile obiettivo separata dai consuntivi e senza scritture reali.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Stessi input producono stesso risultato; esportazione riporta tutte le ipotesi e la data base.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

@@ -7,14 +7,53 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/ContabilitaAvanzata.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-avanzata.json`](MAPPE_JSON/contabilita-avanzata.json)
+- Contratto logico macchina: [`LOGICA_JSON/26-contabilita-avanzata.json`](LOGICA_JSON/26-contabilita-avanzata.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Analisi contabili avanzate come viste derivate, con formule e drill-down.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- viste contabili derivate
+- giornale
+- piano conti
+- periodi e dimensioni
+
+## Scritture ed effetti consentiti
+
+- Nessuna scrittura; preferenze/report eventualmente salvati.
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Presentare analisi per conto, mese, fornitore e centro usando formule documentate.
+2. Applicare gli stessi filtri canonici del bilancio e indicare dati esclusi o incompleti.
+3. Ogni grafico/tabella offre drill-down alle righe contabili e export con metadati del filtro.
+
+## Automazioni previste
+
+- Ricalcolo read-only; cache con data/fingerprint e invalidazione esplicita.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Analisi ↔ giornale ↔ conto ↔ documento origine.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun indicatore senza formula; errore fonte non diventa zero; niente scritture dalla vista analitica.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Analisi contabili avanzate come viste derivate, con formule e drill-down.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Totali delle analisi coincidono con il giornale filtrato e ogni dato è spiegabile.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

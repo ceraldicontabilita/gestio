@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 56,
+  "label": "Elaborazioni amministrative",
+  "route": "/admin/elaborazioni",
+  "purpose": "Elaborazioni batch idempotenti con progresso, errori per record e retry selettivo.",
+  "sources": [
+    "definizioni job",
+    "import run",
+    "record/errori per elemento",
+    "checkpoint"
+  ],
+  "writes": [
+    "run batch, progresso, risultato per record e retry selettivo"
+  ],
+  "flow": [
+    "Creare un run con tipo, parametri validati, idempotency key, totale e checkpoint.",
+    "Mostrare progresso reale, nuovi/aggiornati/duplicati/da verificare/errori e lista dei record.",
+    "Retry elabora solo errori selezionati e conserva i successi; cancel interrompe in modo consistente."
+  ],
+  "automations": [
+    "Lock per job/sorgente, heartbeat, ripresa da checkpoint e backoff."
+  ],
+  "links": [
+    "Run ↔ record origine/destinazione ↔ errori ↔ audit e pagina dominio."
+  ],
+  "guards": [
+    "Nessun batch senza dettaglio; retry totale non duplica successi; errori di un file non cancellano altri risultati."
+  ],
+  "acceptance": [
+    "Secondo run identico non crea nuovi record; progresso e conteggi finali coincidono con il dettaglio."
+  ]
+}

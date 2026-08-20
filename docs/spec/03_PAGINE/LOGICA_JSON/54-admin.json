@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "page_id": 54,
+  "label": "Admin sistema",
+  "route": "/admin",
+  "purpose": "Admin con salute, job, errori, configurazione non sensibile e azioni protette.",
+  "sources": [
+    "health servizi/provider",
+    "job/run",
+    "errori",
+    "configurazione non sensibile",
+    "audit"
+  ],
+  "writes": [
+    "comandi amministrativi protetti",
+    "retry/cancel controllato",
+    "note operative"
+  ],
+  "flow": [
+    "Mostrare stato per servizio con timestamp, versione/commit, dipendenze e ultimo errore strutturato.",
+    "Ogni contatore apre lista di job/errori; retry è selettivo e idempotente.",
+    "Azioni distruttive o migrazioni mostrano dry-run, target esatti, conferma forte e rollback."
+  ],
+  "automations": [
+    "Refresh health e alert su errori persistenti, senza tempeste di notifiche."
+  ],
+  "links": [
+    "Servizio/job ↔ run ↔ record coinvolti ↔ log/audit e pagina operativa."
+  ],
+  "guards": [
+    "Nessun segreto, stack trace sensibile o pulsante inutilizzabile; admin non significa autorizzazione automatica al pagamento."
+  ],
+  "acceptance": [
+    "Ogni stato è datato e verificabile; retry non duplica record e un errore apre il dettaglio utile."
+  ]
+}

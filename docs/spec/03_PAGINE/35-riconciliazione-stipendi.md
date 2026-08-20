@@ -7,14 +7,55 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/RiconciliazioneUnificata.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/riconciliazione-stipendi.json`](MAPPE_JSON/riconciliazione-stipendi.json)
+- Contratto logico macchina: [`LOGICA_JSON/35-riconciliazione-stipendi.json`](LOGICA_JSON/35-riconciliazione-stipendi.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Riconciliazione stipendi per dipendente, IBAN, periodo e regola del giorno 25.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Cedolini
+- Dipendenti/IBAN
+- Bonifici
+- Movimenti bancari
+- Prima Nota salari
+
+## Scritture ed effetti consentiti
+
+- candidati periodo/dipendente
+- relazioni confermate e stato pagamento
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Partire dal bonifico o movimento e identificare il dipendente con beneficiario/IBAN normalizzati.
+2. Proporre periodo precedente se data <25, stesso mese se data ≥25; il periodo resta visibile dopo refresh.
+3. Verificare importo e documenti disponibili, mantenere più cedolini legittimi e chiedere scelta se più candidati.
+
+## Automazioni previste
+
+- Riprocessare casi aperti quando arriva il cedolino del mese corrente.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Bonifico ↔ movimento banca ↔ dipendente ↔ cedolino ↔ Prima Nota salari/PDF.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- La regola del giorno 25 propone, non conferma; importo solo o nome parziale non bastano.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Riconciliazione stipendi per dipendente, IBAN, periodo e regola del giorno 25.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Periodo/descrizione persistono; pagamento confermato apre cedolino e banca in entrambe le direzioni.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

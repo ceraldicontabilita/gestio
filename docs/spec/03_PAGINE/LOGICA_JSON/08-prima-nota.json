@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "page_id": 8,
+  "label": "Prima Nota",
+  "route": "/prima-nota",
+  "purpose": "Prima Nota Cassa/Banca/SumUp/Soci come viste coerenti del ledger, raggruppate per giorno.",
+  "sources": [
+    "Prima Nota Cassa",
+    "Prima Nota Banca",
+    "SumUp/POS",
+    "finanziamenti soci",
+    "fatture e movimenti bancari"
+  ],
+  "writes": [
+    "scritture tramite writer unico",
+    "trasferimenti Cassa-Banca",
+    "relazioni e correzioni tracciate"
+  ],
+  "flow": [
+    "Mostrare Cassa, Banca, SumUp e Soci come conti distinti dello stesso ledger, raggruppando tutte le operazioni in card giornaliere.",
+    "Calcolare saldi progressivi dal riporto iniziale e dalle righe ordinate; ogni giorno espone numero operazioni e totale netto.",
+    "Un versamento contanti crea uscita Cassa ed entrata Banca attesa con lo stesso operation_id; il movimento di estratto conto la riconcilia senza crearne una terza.",
+    "Le vendite POS generano crediti attesi; accredito provider, commissione e movimento banca restano fatti separati ma collegati.",
+    "Spostare una fattura tra Cassa e Banca corregge la scrittura esistente, conserva audit e aggiorna tutte le viste."
+  ],
+  "automations": [
+    "Import estratto conto idempotente; generazione automatica di attesi POS/versamenti; associazioni certe e coda dei dubbi."
+  ],
+  "links": [
+    "Ogni riga apre fattura/documento/prova; operation_id consente di passare tra Cassa, Banca, SumUp, PayPal e riconciliazione."
+  ],
+  "guards": [
+    "Non inserire movimenti bancari reali in Cassa; non usare saldi hardcoded; non marcare pagato senza prova coerente."
+  ],
+  "acceptance": [
+    "Saldo per conto ricalcolabile al centesimo; versamento e POS risultano nelle sezioni corrette dopo refresh senza duplicati."
+  ]
+}

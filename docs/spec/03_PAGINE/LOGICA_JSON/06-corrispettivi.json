@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "page_id": 6,
+  "label": "Corrispettivi",
+  "route": "/fatture/corrispettivi",
+  "purpose": "Corrispettivi giornalieri, aliquote, mezzi di pagamento e scritture Cassa/POS senza duplicati.",
+  "sources": [
+    "XML/ZIP corrispettivi",
+    "Corrispettivi",
+    "chiusure POS",
+    "Prima Nota Cassa",
+    "accrediti provider/banca"
+  ],
+  "writes": [
+    "giornata corrispettivi deduplicata",
+    "scrittura vendite Cassa",
+    "crediti POS attesi separati"
+  ],
+  "flow": [
+    "Validare firma/schema e ricavare data, imponibili, IVA e mezzi di pagamento dalla fonte RT.",
+    "Creare una giornata canonica per dispositivo/data e ripartire contanti, carte e altri mezzi senza inventare valori mancanti.",
+    "Registrare vendite/contanti in Cassa e crediti POS attesi come fatti distinti; l'accredito bancario resta prova successiva.",
+    "Mostrare differenze tra RT, chiusura terminale e accredito con lista delle righe interessate."
+  ],
+  "automations": [
+    "Secondo import identico nuovi=0; sincronizzazione idempotente verso Prima Nota."
+  ],
+  "links": [
+    "Giornata verso documento RT, Prima Nota Cassa, Coerenza POS e accrediti riconciliati."
+  ],
+  "guards": [
+    "Non trasformare una chiusura POS in vendita aggiuntiva; non confondere importo lordo, netto e commissioni."
+  ],
+  "acceptance": [
+    "Totali aliquote e mezzi quadrano con il documento; una nuova giornata compare automaticamente in Cassa una sola volta."
+  ]
+}

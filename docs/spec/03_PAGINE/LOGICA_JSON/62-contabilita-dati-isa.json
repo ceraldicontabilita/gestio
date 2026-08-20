@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 62,
+  "label": "Dati ISA",
+  "route": "/contabilita/dati-isa",
+  "purpose": "Dati ISA derivati, tracciabili, quadrati ed esportabili senza valori inventati.",
+  "sources": [
+    "bilancio/giornale",
+    "fatture/corrispettivi",
+    "personale/cespiti",
+    "mappatura campi ISA"
+  ],
+  "writes": [
+    "snapshot ISA derivato, mapping/versione e note; nessuna modifica alle fonti"
+  ],
+  "flow": [
+    "Mappare ogni campo ISA a formula e conti/registri origine per esercizio.",
+    "Calcolare valori solo da dati confermati e mostrare mancanti, esclusioni e quadrature.",
+    "Esportare snapshot versionato con fingerprint delle fonti e drill-down per campo."
+  ],
+  "automations": [
+    "Ricalcolo bozza dopo variazioni; snapshot consegnato resta immutabile."
+  ],
+  "links": [
+    "Campo ISA ↔ formula ↔ conti/righe/documenti origine ↔ snapshot/export."
+  ],
+  "guards": [
+    "Nessun valore inventato o zero al posto di fonte mancante; niente invio automatico."
+  ],
+  "acceptance": [
+    "Ogni valore è tracciabile e la somma delle righe origine coincide; mancanti restano espliciti."
+  ]
+}

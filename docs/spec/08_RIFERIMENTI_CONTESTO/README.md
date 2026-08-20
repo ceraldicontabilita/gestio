@@ -1,13 +1,12 @@
-# Riferimenti correnti e di contesto
+# Riferimenti di dominio
 
-Questi documenti completano il dominio ma non prevalgono sul Prompt Master.
-Le descrizioni di implementazioni transitorie servono a evitare regressioni,
-non autorizzano a ricreare il database applicativo, pipeline duplicate o
-endpoint in quarantena.
+Questi documenti sono riferimento fiscale/contabile di dominio (piano dei
+conti, IVA, F24/cedolini/IRES/IRAP, libro mastro, regola fornitori). Non
+prevalgono sul Prompt Master: in caso di conflitto vince
+`01_MASTER/PROMPT_MASTER.md`.
 
-Molti di questi file descrivono ancora, come cronaca tecnica del codice
-legacy, MongoDB e Google Drive/Sheets come backend attivo o in migrazione.
-Per il target `gestio` questi riferimenti sono storici: il backend è un
-unico database SQL monoutente (SQLite) con storage file locale per gli
-originali, senza MongoDB né Google Drive/Sheets. In caso di conflitto tra
-questi appunti e `01_MASTER/PROMPT_MASTER.md`, vince il Prompt Master.
+Rispetto al kit originale sono stati rimossi i documenti di audit e mappatura
+tecnica del codice legacy (report di codice morto, mappe endpoint/router
+duplicate, gap-analysis legate a MongoDB/Google Drive): erano cronaca del
+vecchio repository, non specifica utile alla ricostruzione. Sono rimasti solo
+i contenuti di dominio riutilizzabili indipendentemente dal backend.

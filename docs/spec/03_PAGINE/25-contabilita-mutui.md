@@ -7,14 +7,56 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/Mutui.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-mutui.json`](MAPPE_JSON/contabilita-mutui.json)
+- Contratto logico macchina: [`LOGICA_JSON/25-contabilita-mutui.json`](LOGICA_JSON/25-contabilita-mutui.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Mutui, rate, quota capitale/interessi, banca e residuo riconciliato.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- contratti mutuo/PDF
+- mutui
+- piano rate
+- movimenti bancari
+- giornale
+
+## Scritture ed effetti consentiti
+
+- mutuo e rate
+- relazione rata-movimento
+- scritture capitale/interessi
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Importare o inserire contratto con banca, capitale, tasso, decorrenza e piano verificabile.
+2. Per ogni rata separare quota capitale, interessi, spese e residuo; mostrare scadenza e stato.
+3. Riconciliare il movimento bancario alla rata usando riferimento, data e importo, poi generare la scrittura tramite writer unico.
+
+## Automazioni previste
+
+- Proposta automatica di rata candidata e aggiornamento residuo dopo conferma.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Mutuo ↔ contratto/PDF ↔ rata ↔ banca ↔ giornale ↔ posizione finanziaria.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Importo uguale non basta; non contabilizzare l'intera rata come costo; nessun pagamento automatico.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ Mutui, rate, quota capitale/interessi, banca e residuo riconciliato.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Somma capitale rimborsato più residuo coincide col capitale; rata riconciliata apre il movimento esatto.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

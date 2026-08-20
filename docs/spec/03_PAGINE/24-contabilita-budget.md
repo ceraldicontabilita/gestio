@@ -7,14 +7,53 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/BudgetPrevisionale.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-budget.json`](MAPPE_JSON/contabilita-budget.json)
+- Contratto logico macchina: [`LOGICA_JSON/24-contabilita-budget.json`](LOGICA_JSON/24-contabilita-budget.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Budget versionato e confronto consuntivo per mese, conto e centro.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- budget versionato
+- piano conti/centri
+- consuntivo giornale
+- anno globale
+
+## Scritture ed effetti consentiti
+
+- versione budget, righe mensili, note e stato approvazione
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Creare scenari separati per anno/versione senza sovrascrivere quello approvato.
+2. Inserire importi per mese, conto/voce e centro; mostrare totale e controlli di coerenza.
+3. Confrontare consuntivo omogeneo con budget e aprire il dettaglio dello scostamento.
+
+## Automazioni previste
+
+- Duplicazione anno crea una bozza distinta e conserva provenienza/versione.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Budget ↔ conto/centro ↔ consuntivo giornale ↔ utile obiettivo/previsioni.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Budget e simulazioni non generano scritture reali; una versione approvata non si modifica in silenzio.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Budget versionato e confronto consuntivo per mese, conto e centro.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Totali mensili/annuali coerenti e scostamento uguale a consuntivo meno budget al centesimo.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

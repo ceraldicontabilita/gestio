@@ -7,14 +7,52 @@
 - Modulo: `strumenti`
 - Componente corrente: `frontend/src/pages/MappaGestionale.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/mappa-gestionale.json`](MAPPE_JSON/mappa-gestionale.json)
+- Contratto logico macchina: [`LOGICA_JSON/59-mappa-gestionale.json`](LOGICA_JSON/59-mappa-gestionale.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Mappa gestionale generata dal catalogo con moduli, route, flussi e health.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- page_catalog
+- router frontend/backend
+- health e stato audit
+
+## Scritture ed effetti consentiti
+
+- Nessuna scrittura applicativa; artefatto generato e fingerprint.
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Generare albero per modulo dalle route canoniche con accesso, componente e stato verifica.
+2. Ogni nodo apre la pagina e mostra dipendenze/endpoint principali; alias legacy sono marcati.
+3. Separare raggiungibile, testato staticamente e verificato end-to-end.
+
+## Automazioni previste
+
+- Rigenerazione in CI e fallimento se catalogo/router/documentazione divergono.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Nodo pagina ↔ scheda logica ↔ componente ↔ endpoint ↔ test/health.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- HTTP 200 non equivale a funzionamento; nessuna pagina scoperta fuori catalogo.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +60,13 @@ Mappa gestionale generata dal catalogo con moduli, route, flussi e health.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Catalogo contiene esattamente le route canoniche e ogni link risolve con il ruolo previsto.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

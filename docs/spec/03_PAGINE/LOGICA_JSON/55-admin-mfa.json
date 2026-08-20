@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 55,
+  "label": "Admin MFA",
+  "route": "/admin/mfa",
+  "purpose": "MFA amministrativa, enrollment, revoca, recovery e step-up authentication.",
+  "sources": [
+    "utente amministratore",
+    "stato enrollment MFA",
+    "recovery policy",
+    "audit"
+  ],
+  "writes": [
+    "enrollment/revoca MFA nel provider",
+    "recovery code hash",
+    "audit step-up"
+  ],
+  "flow": [
+    "Richiedere step-up prima di enrollment, rigenerazione recovery o revoca.",
+    "Mostrare QR/secret soltanto nella fase di enrollment e confermare con codice valido.",
+    "Recovery code mostrati una volta, conservati solo come hash e invalidati dopo uso/rigenerazione."
+  ],
+  "automations": [
+    "Revoca sessioni esistenti dopo operazioni sensibili e notifica all'amministratore."
+  ],
+  "links": [
+    "Enrollment ↔ utente ↔ sessioni revocate ↔ audit sicurezza."
+  ],
+  "guards": [
+    "Secret MFA mai nei log/fogli/ZIP; nessuna disattivazione senza step-up e motivo."
+  ],
+  "acceptance": [
+    "Codice errato non attiva MFA; dopo attivazione il login richiede secondo fattore e revoca è auditata."
+  ]
+}

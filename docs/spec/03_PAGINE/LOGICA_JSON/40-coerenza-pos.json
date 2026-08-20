@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 40,
+  "label": "Coerenza POS",
+  "route": "/riconciliazione/coerenza-pos",
+  "purpose": "Coerenza fra corrispettivi, POS, commissioni, giorni di vendita e accrediti.",
+  "sources": [
+    "corrispettivi RT",
+    "chiusure POS",
+    "transazioni/accrediti SumUp",
+    "movimenti banca",
+    "commissioni"
+  ],
+  "writes": [
+    "casi di differenza e relazioni confermate",
+    "nessuna nuova vendita"
+  ],
+  "flow": [
+    "Confrontare per giorno e terminale: vendite carta RT, chiusura terminale, credito provider atteso e accredito banca.",
+    "Mostrare lordo, commissioni, netto, date di competenza/accredito e differenza con elenco operazioni.",
+    "Riconciliare accrediti uno-a-uno o molti-a-uno quando il provider lo documenta, conservando tutti gli ID."
+  ],
+  "automations": [
+    "Aggiornamento giornaliero e riapertura del caso se cambia una fonte."
+  ],
+  "links": [
+    "Giorno POS ↔ corrispettivo ↔ transazioni provider ↔ accredito/commissione banca ↔ Prima Nota."
+  ],
+  "guards": [
+    "Non creare vendite dalle chiusure o dagli accrediti; data vendita e data accredito non devono coincidere per forza."
+  ],
+  "acceptance": [
+    "Ogni differenza è spiegata; giorni completi quadrano lordo - commissioni = netto accreditato."
+  ]
+}

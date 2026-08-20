@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 61,
+  "label": "Verifica fatture estere",
+  "route": "/fatture-estere-verifica",
+  "purpose": "Fatture estere, paese, valuta, integrazione/autofattura e trattamento IVA.",
+  "sources": [
+    "fatture estere",
+    "anagrafiche paese/valuta",
+    "documenti integrazione/autofattura",
+    "classificazione IVA"
+  ],
+  "writes": [
+    "stato verifica",
+    "trattamento IVA motivato",
+    "relazioni integrazione/autofattura"
+  ],
+  "flow": [
+    "Identificare paese, tipo fornitore, valuta, data cambio e natura dell'operazione dalla fattura.",
+    "Proporre trattamento UE/extra-UE e necessità di integrazione/autofattura con regola fiscale/versione.",
+    "Mostrare originale, documento integrativo e impatto IVA; conferma manuale quando dati fiscali non sono univoci."
+  ],
+  "automations": [
+    "Coda automatica per nuove fatture estere e controllo documenti integrativi mancanti."
+  ],
+  "links": [
+    "Fattura estera ↔ fornitore ↔ originale ↔ integrazione/autofattura ↔ IVA/F24."
+  ],
+  "guards": [
+    "Non inventare cambio o trattamento; valuta/importo originale e controvalore restano distinti."
+  ],
+  "acceptance": [
+    "Ogni fattura ha stato motivato e documenti collegati; totali IVA usano solo classificazioni confermate."
+  ]
+}

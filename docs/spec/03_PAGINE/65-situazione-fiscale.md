@@ -7,14 +7,56 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/SituazioneFiscale.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/situazione-fiscale.json`](MAPPE_JSON/situazione-fiscale.json)
+- Contratto logico macchina: [`LOGICA_JSON/65-situazione-fiscale.json`](LOGICA_JSON/65-situazione-fiscale.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Situazione fiscale unificata con F24, dichiarazioni, quietanze e anomalie.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- F24/righe tributo
+- dichiarazioni
+- quietanze
+- movimenti banca
+- scadenze/anomalie
+- indice documentale (database applicativo)
+
+## Scritture ed effetti consentiti
+
+- Nessuna scrittura fiscale primaria; note/stato verifica e relazioni tramite servizi di dominio
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Costruire quadro per anno/tributo da fonti distinte, indicando presenza e stato di F24, dichiarazione, quietanza e banca.
+2. Mostrare totali solo quando semanticamente sommabili e permettere drill-down fino a riga tributo e PDF.
+3. Evidenziare documenti mancanti, crediti, differenze e relazioni ambigue con liste navigabili.
+4. Dichiarare la freschezza dell'indice e non nascondere una fonte indisponibile dietro uno zero.
+
+## Automazioni previste
+
+- Aggiornamento derivato dopo indicizzazione/import/riconciliazione e notifiche su anomalie persistenti.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Tributo ↔ F24/PDF ↔ dichiarazione ↔ quietanza ↔ banca ↔ scadenza e documento (storage file).
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- F24, dichiarazione, quietanza e pagamento bancario non sono intercambiabili; nessuna associazione per importo solo.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +64,13 @@ Situazione fiscale unificata con F24, dichiarazioni, quietanze e anomalie.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ricerca per anno/codice raggiunge tutte le prove; ogni anomalia ha lista e tutte le somme quadrano alle righe origine.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

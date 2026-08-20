@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 47,
+  "label": "Visure",
+  "route": "/strumenti/visure",
+  "purpose": "Visure con soggetto, tipo, stato e documento, senza richieste esterne automatiche.",
+  "sources": [
+    "soggetti/fornitori",
+    "visure già archiviate",
+    "metadati e scadenza documento"
+  ],
+  "writes": [
+    "richiesta preparata o documento visura importato; nessun acquisto automatico"
+  ],
+  "flow": [
+    "Ricercare soggetto e mostrare visure esistenti con tipo, data, fonte, validità e PDF.",
+    "Una nuova richiesta prepara parametri/costo e richiede conferma separata nel provider autorizzato.",
+    "Il documento ricevuto viene archiviato e collegato al soggetto conservando protocollo/hash."
+  ],
+  "automations": [
+    "Promemoria di scadenza; nessuna chiamata a pagamento senza azione esplicita."
+  ],
+  "links": [
+    "Visura ↔ soggetto/fornitore ↔ documento (storage file) ↔ eventuale richiesta provider."
+  ],
+  "guards": [
+    "Non eseguire richieste esterne o addebiti automaticamente; non mostrare una richiesta come documento ricevuto."
+  ],
+  "acceptance": [
+    "Documenti esistenti apribili; richiesta e ricevuta hanno stati distinti e audit completi."
+  ]
+}

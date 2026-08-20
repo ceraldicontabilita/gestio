@@ -7,14 +7,55 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/ControlloMensile.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-controllo.json`](MAPPE_JSON/contabilita-controllo.json)
+- Contratto logico macchina: [`LOGICA_JSON/19-contabilita-controllo.json`](LOGICA_JSON/19-contabilita-controllo.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Controllo mensile con lista per ogni anomalia e stato di risoluzione.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- KPI mensili
+- Prima Nota
+- corrispettivi/POS
+- fatture
+- F24
+- giornale
+
+## Scritture ed effetti consentiti
+
+- stato controllo, assegnatario e nota; nessuna scrittura contabile diretta
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Eseguire la checklist del mese con regole versionate e mostrare superato, anomalia o fonte mancante.
+2. Ogni contatore apre l'elenco esatto e mantiene anno/mese/sezione nel link.
+3. Consentire presa in carico e nota, ma chiudere il controllo solo dopo ricalcolo positivo o eccezione motivata.
+
+## Automazioni previste
+
+- Ricalcolo schedulato e dopo import rilevanti; notifiche soltanto su anomalie persistenti.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Controllo ↔ pagina operativa esatta ↔ righe origine ↔ audit risoluzione.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Niente pulsanti generici di pulizia; nessun alert senza lista e criterio.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Controllo mensile con lista per ogni anomalia e stato di risoluzione.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Tutti i controlli hanno fonte e risultato riproducibile; stato mensile coincide con i dettagli.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "page_id": 19,
+  "label": "Controllo mensile",
+  "route": "/contabilita/controllo",
+  "purpose": "Controllo mensile con lista per ogni anomalia e stato di risoluzione.",
+  "sources": [
+    "KPI mensili",
+    "Prima Nota",
+    "corrispettivi/POS",
+    "fatture",
+    "F24",
+    "giornale"
+  ],
+  "writes": [
+    "stato controllo, assegnatario e nota; nessuna scrittura contabile diretta"
+  ],
+  "flow": [
+    "Eseguire la checklist del mese con regole versionate e mostrare superato, anomalia o fonte mancante.",
+    "Ogni contatore apre l'elenco esatto e mantiene anno/mese/sezione nel link.",
+    "Consentire presa in carico e nota, ma chiudere il controllo solo dopo ricalcolo positivo o eccezione motivata."
+  ],
+  "automations": [
+    "Ricalcolo schedulato e dopo import rilevanti; notifiche soltanto su anomalie persistenti."
+  ],
+  "links": [
+    "Controllo ↔ pagina operativa esatta ↔ righe origine ↔ audit risoluzione."
+  ],
+  "guards": [
+    "Niente pulsanti generici di pulizia; nessun alert senza lista e criterio."
+  ],
+  "acceptance": [
+    "Tutti i controlli hanno fonte e risultato riproducibile; stato mensile coincide con i dettagli."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "page_id": 11,
+  "label": "Flotta noleggio",
+  "route": "/noleggio",
+  "purpose": "Flotta ricostruita da fatture di noleggio, contratti, targhe e storico driver.",
+  "sources": [
+    "Fatture di noleggio",
+    "veicoli",
+    "contratti",
+    "storico driver",
+    "dati automotive opzionali"
+  ],
+  "writes": [
+    "anagrafica veicolo completa",
+    "contratto",
+    "assegnazioni driver con intervallo",
+    "relazioni fatture"
+  ],
+  "flow": [
+    "Scansionare fatture XML/PDF dei noleggiatori e ricavare targa, telaio se presente, marca/modello, contratto, periodo e costi.",
+    "Unire le informazioni per targa normalizzata senza creare schede vuote; mostrare solo veicoli completi o una coda esplicita di documenti non interpretabili.",
+    "Registrare l'assegnazione driver con data inizio/fine e fonte; una nuova assegnazione chiude la precedente senza cancellarla.",
+    "Gli arricchimenti esterni sono proposte e non sovrascrivono dati documentali più affidabili."
+  ],
+  "automations": [
+    "Nuova fattura aggiorna veicolo/contratto/costi in modo idempotente e tenta l'associazione solo se la targa è certa."
+  ],
+  "links": [
+    "Veicolo ↔ fatture ↔ contratto ↔ driver storico ↔ verbali ↔ costi."
+  ],
+  "guards": [
+    "Niente form manuali incompleti quando i dati sono già nelle fatture; assenza di fattura recente non è automaticamente un errore."
+  ],
+  "acceptance": [
+    "Ogni veicolo mostrato ha targa e fonte; fatture e driver corretti sono raggiungibili e una nuova scansione non duplica costi."
+  ]
+}

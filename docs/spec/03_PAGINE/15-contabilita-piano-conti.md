@@ -7,14 +7,54 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/PianoDeiConti.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-piano-conti.json`](MAPPE_JSON/contabilita-piano-conti.json)
+- Contratto logico macchina: [`LOGICA_JSON/15-contabilita-piano-conti.json`](LOGICA_JSON/15-contabilita-piano-conti.json)
 - Stato della prova corrente: `verified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Piano dei conti gerarchico, regole versionate e movimenti collegati.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- piano dei conti versionato
+- regole di classificazione
+- scritture e righe giornale
+
+## Scritture ed effetti consentiti
+
+- conto/sottoconto
+- validità temporale
+- regole approvate
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare la gerarchia con codice stabile, natura Dare/Avere, validità e conti non più utilizzabili separati.
+2. Creazione/modifica controlla unicità, cicli gerarchici e impatto sulle regole future.
+3. La disattivazione impedisce nuove scritture ma conserva storico e bilanci precedenti.
+
+## Automazioni previste
+
+- Suggerire classificazioni dalle regole approvate senza riclassificare automaticamente periodi chiusi.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Conto ↔ movimenti giornale ↔ documenti/fatture ↔ bilancio e controlli.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Mai cancellare conti usati; nessuna riclassificazione retroattiva silenziosa.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +62,13 @@ Piano dei conti gerarchico, regole versionate e movimenti collegati.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Gerarchia senza cicli; ogni saldo apre le scritture origine e un conto disattivato resta nello storico.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

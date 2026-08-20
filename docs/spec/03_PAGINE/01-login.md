@@ -7,14 +7,53 @@
 - Modulo: `accesso`
 - Componente corrente: `frontend/src/pages/Login.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/login.json`](MAPPE_JSON/login.json)
+- Contratto logico macchina: [`LOGICA_JSON/01-login.json`](LOGICA_JSON/01-login.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Login sicuro, sessione, MFA e redirect alla destinazione autorizzata.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Identity provider
+- utenti e ruoli
+- configurazione MFA
+
+## Scritture ed effetti consentiti
+
+- sessione autenticata
+- audit accessi e tentativi falliti
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Validare credenziali lato server e applicare rate limit senza rivelare se l'utente esiste.
+2. Se MFA è richiesta, creare una sessione provvisoria e completarla solo dopo il secondo fattore.
+3. Caricare ruolo e destinazione richiesta, quindi reindirizzare esclusivamente verso una route autorizzata.
+
+## Automazioni previste
+
+- Scadenza sessione, blocco progressivo e revoca vengono applicati dal backend.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Ogni login riuscito o fallito è collegato all'audit dell'utente e alla sessione generata.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Cookie sicuri; nessun token nel localStorage; autorizzazione verificata nuovamente da ogni API.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Login sicuro, sessione, MFA e redirect alla destinazione autorizzata.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Utente valido entra nella destinazione consentita; utente/MFA non validi restano fuori senza perdita del redirect sicuro.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

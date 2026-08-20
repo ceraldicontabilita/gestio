@@ -2,14 +2,14 @@
   "schema_version": 1,
   "application": "Gestio - Ceraldi ERP",
   "generated_at": "2026-08-20",
-  "source_fingerprint": "0c0fbc2c05f1fcb851823adc2f5d3e914f540a25db0ede76bf8d83933c6bf755",
+  "source_fingerprint": "4b6ea6e27c9ce4a487a5847a3312a56ce2ff7e15d6b2b7e83107fa414c521daa",
   "counts": {
     "pages": 65,
+    "page_logic_contracts": 65,
     "popups": 36,
     "endpoints": 1140,
-    "variables": 224,
-    "database_tables": 22,
-    "quarantined_page_maps": 2
+    "variables": 164,
+    "database_tables": 22
   },
   "storage_target": "sqlite_single_db",
   "canonical_pages": [

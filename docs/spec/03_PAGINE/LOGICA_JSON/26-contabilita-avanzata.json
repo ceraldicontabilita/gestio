@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 26,
+  "label": "Contabilita avanzata",
+  "route": "/contabilita/avanzata",
+  "purpose": "Analisi contabili avanzate come viste derivate, con formule e drill-down.",
+  "sources": [
+    "viste contabili derivate",
+    "giornale",
+    "piano conti",
+    "periodi e dimensioni"
+  ],
+  "writes": [
+    "Nessuna scrittura; preferenze/report eventualmente salvati."
+  ],
+  "flow": [
+    "Presentare analisi per conto, mese, fornitore e centro usando formule documentate.",
+    "Applicare gli stessi filtri canonici del bilancio e indicare dati esclusi o incompleti.",
+    "Ogni grafico/tabella offre drill-down alle righe contabili e export con metadati del filtro."
+  ],
+  "automations": [
+    "Ricalcolo read-only; cache con data/fingerprint e invalidazione esplicita."
+  ],
+  "links": [
+    "Analisi ↔ giornale ↔ conto ↔ documento origine."
+  ],
+  "guards": [
+    "Nessun indicatore senza formula; errore fonte non diventa zero; niente scritture dalla vista analitica."
+  ],
+  "acceptance": [
+    "Totali delle analisi coincidono con il giornale filtrato e ogni dato è spiegabile."
+  ]
+}

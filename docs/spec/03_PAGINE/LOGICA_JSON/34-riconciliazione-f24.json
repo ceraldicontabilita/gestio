@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "page_id": 34,
+  "label": "Riconciliazione F24",
+  "route": "/riconciliazione/f24",
+  "purpose": "F24 con PDF, righe tributo, quietanza, banca e ricerca per codice.",
+  "sources": [
+    "F24 unificato",
+    "righe tributo",
+    "PDF",
+    "Quietanze F24",
+    "movimenti bancari",
+    "codici tributo"
+  ],
+  "writes": [
+    "relazioni F24-quietanza-banca",
+    "stato per modello e riga tributo"
+  ],
+  "flow": [
+    "Mostrare tutti i modelli, non solo pendenti, con periodo, totale e PDF originale.",
+    "Espandere le righe per sezione/codice/periodo/debito/credito e permettere ricerca codice tributo → F24 → PDF e percorso inverso.",
+    "Collegare quietanza solo con codici, periodi e importi compatibili; indicare QUIETANZA PRESENTE - BANCA DA VERIFICARE finché manca il movimento.",
+    "Il pagamento bancario confermato aggiorna il modello senza fondere F24, quietanza e movimento."
+  ],
+  "automations": [
+    "Import da Gmail/Import documenti idempotente e nuovo tentativo di riconciliazione su evidenze aggiunte."
+  ],
+  "links": [
+    "Codice tributo ↔ riga F24 ↔ PDF ↔ quietanza ↔ banca ↔ dichiarazione compatibile."
+  ],
+  "guards": [
+    "Non ricostruire un F24 dalla sola quietanza; non mostrare pagato banca senza movimento; crediti e debiti conservano segno."
+  ],
+  "acceptance": [
+    "Ogni F24 indicizzato compare nella pagina, ricerca bidirezionale funziona e somme righe quadrano col totale documento."
+  ]
+}

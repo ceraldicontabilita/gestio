@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "page_id": 37,
+  "label": "Archivio bonifici",
+  "route": "/riconciliazione/archivio-bonifici",
+  "purpose": "Archivio bonifici con CRO/TRN, beneficiario, periodo, descrizione e associazioni persistenti.",
+  "sources": [
+    "bonifici importati",
+    "movimenti bancari",
+    "dipendenti/fatture",
+    "note e periodi"
+  ],
+  "writes": [
+    "descrizione e periodo persistenti",
+    "relazioni salario/fattura/banca"
+  ],
+  "flow": [
+    "Indicizzare data, importo, ordinante, beneficiario, IBAN, CRO/TRN e causale senza perdere il testo originale.",
+    "Mostrare da associare e associati, con campo descrizione/nota modificabile e persistente.",
+    "Associa salario applica la regola del giorno 25; associa fattura usa identità/provenienza e candidati motivati."
+  ],
+  "automations": [
+    "Riconciliazione automatica al movimento estratto conto quando CRO/TRN o identità forte sono univoci."
+  ],
+  "links": [
+    "Bonifico ↔ movimento banca ↔ fattura oppure dipendente/cedolino ↔ Prima Nota."
+  ],
+  "guards": [
+    "Nessuna associazione definitiva per stesso importo; bonifici ricorrenti distinti non sono duplicati."
+  ],
+  "acceptance": [
+    "Nota e periodo restano dopo reload; contatori e liste coincidono e ogni associato apre le prove."
+  ]
+}

@@ -7,14 +7,53 @@
 - Modulo: `accesso`
 - Componente corrente: `frontend/src/pages/GestioneRiservata.jsx`
 - Entrypoint/router: `frontend/src/main.jsx`
-- Mappa macchina: [`MAPPE_JSON/gestione-riservata.json`](MAPPE_JSON/gestione-riservata.json)
+- Contratto logico macchina: [`LOGICA_JSON/02-gestione-riservata.json`](LOGICA_JSON/02-gestione-riservata.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Area riservata separata, con accesso dedicato e movimenti auditabili.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- sessione autenticata
+- permessi area riservata
+- registro operazioni riservate
+
+## Scritture ed effetti consentiti
+
+- operazioni riservate tramite servizio dedicato
+- audit prima/dopo
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Eseguire uno step-up di autenticazione prima di mostrare dati o comandi sensibili.
+2. Mostrare solo le funzioni concesse dal ruolo e spiegare perché una funzione non è disponibile.
+3. Per ogni mutazione mostrare anteprima, conseguenze, conferma forte ed esito verificabile.
+
+## Automazioni previste
+
+- Timeout breve e nuova autenticazione dopo inattività o cambio di contesto sensibile.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Ogni azione rimanda al record modificato e alla relativa voce di audit.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Nessun pagamento, cancellazione definitiva o elevazione di ruolo può partire implicitamente.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +61,13 @@ Area riservata separata, con accesso dedicato e movimenti auditabili.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Accesso negato fail-closed; ogni comando consentito produce un audit completo e un risultato rileggibile.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

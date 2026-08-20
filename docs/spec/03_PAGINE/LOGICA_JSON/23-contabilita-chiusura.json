@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "page_id": 23,
+  "label": "Chiusura esercizio",
+  "route": "/contabilita/chiusura",
+  "purpose": "Chiusura esercizio con checklist, anteprima, conferma forte, audit e rollback.",
+  "sources": [
+    "check mensili",
+    "bilancio",
+    "giornale",
+    "IVA/F24",
+    "stato esercizio"
+  ],
+  "writes": [
+    "evento di chiusura",
+    "snapshot e hash",
+    "eventuale riapertura/rettifica"
+  ],
+  "flow": [
+    "Eseguire una checklist bloccante di quadrature, periodi, documenti e registrazioni mancanti.",
+    "Mostrare anteprima completa degli effetti e richiedere frase esatta più step-up authentication.",
+    "La chiusura congela la versione, registra hash/attore/orario e impedisce modifiche dirette al periodo.",
+    "La riapertura è separata, motivata e auditata; le rettifiche non cancellano lo snapshot precedente."
+  ],
+  "automations": [
+    "Ricalcolo della checklist prima della conferma e invalidazione se i dati cambiano."
+  ],
+  "links": [
+    "Chiusura ↔ bilancio ↔ giornale ↔ controlli ↔ audit e snapshot esportabile."
+  ],
+  "guards": [
+    "Nessuna chiusura automatica o con checklist rossa; nessuna cancellazione di dati originari."
+  ],
+  "acceptance": [
+    "Chiusura impossibile senza conferma forte; esercizio chiuso produce lo stesso snapshot da sorgenti immutate."
+  ]
+}

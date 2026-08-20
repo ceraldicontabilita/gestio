@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "page_id": 17,
+  "label": "Verifica Bilancio",
+  "route": "/contabilita/verifica",
+  "purpose": "Verifica bilancio con anomalie spiegate e link alla scrittura origine.",
+  "sources": [
+    "bilancio calcolato",
+    "giornale",
+    "piano conti",
+    "check di quadratura"
+  ],
+  "writes": [
+    "stato e nota di risoluzione dell'anomalia, senza alterare direttamente la contabilità"
+  ],
+  "flow": [
+    "Eseguire controlli riproducibili: sbilanci, conti mancanti, date fuori periodo, duplicati e saldi incoerenti.",
+    "Ogni alert mostra severità, regola, elenco righe, differenza e percorso di correzione.",
+    "La risoluzione viene riconosciuta ricalcolando la regola, non nascondendo manualmente l'alert."
+  ],
+  "automations": [
+    "Ricalcolo dopo modifica di scritture e prima di chiusura esercizio."
+  ],
+  "links": [
+    "Alert ↔ conto ↔ scrittura ↔ documento origine ↔ checklist di chiusura."
+  ],
+  "guards": [
+    "Contatori sempre cliccabili; nessuna correzione contabile direttamente dalla card di allerta."
+  ],
+  "acceptance": [
+    "Ogni anomalia è riproducibile e scompare solo quando la condizione non esiste più."
+  ]
+}

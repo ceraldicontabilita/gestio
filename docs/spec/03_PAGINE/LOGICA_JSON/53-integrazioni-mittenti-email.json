@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "page_id": 53,
+  "label": "Mittenti Email attendibili",
+  "route": "/integrazioni/mittenti-email",
+  "purpose": "Mittenti email attendibili con canale, documento atteso, priorita e audit.",
+  "sources": [
+    "mittenti/alias configurati",
+    "tipi documento",
+    "statistiche/errori ingest"
+  ],
+  "writes": [
+    "regola mittente-canale-documento, priorità e audit"
+  ],
+  "flow": [
+    "Registrare indirizzo/dominio, alias PEC, canale, documenti attesi e livello di affidabilità.",
+    "Testare la regola su esempi esistenti in sola lettura e mostrare corrispondenze/conflitti.",
+    "Versionare modifiche e permettere disattivazione senza perdere lo storico dei documenti già importati."
+  ],
+  "automations": [
+    "Le regole alimentano classificazione Gmail ma non sostituiscono hash e validazione del documento."
+  ],
+  "links": [
+    "Mittente ↔ run Gmail ↔ documenti classificati ↔ errori/audit."
+  ],
+  "guards": [
+    "Mittente noto non rende vero ogni allegato; wrapper PEC e alias vanno conservati come provenienza."
+  ],
+  "acceptance": [
+    "Regola attiva classifica solo il perimetro previsto e il test mostra esattamente i messaggi coinvolti."
+  ]
+}

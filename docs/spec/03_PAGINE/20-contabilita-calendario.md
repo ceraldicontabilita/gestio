@@ -7,14 +7,54 @@
 - Modulo: `contabilita`
 - Componente corrente: `frontend/src/pages/CalendarioFiscale.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/ContabilitaHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/contabilita-calendario.json`](MAPPE_JSON/contabilita-calendario.json)
+- Contratto logico macchina: [`LOGICA_JSON/20-contabilita-calendario.json`](LOGICA_JSON/20-contabilita-calendario.json)
 - Stato della prova corrente: `in_review`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Calendario fiscale con fonte, scadenza, stato, promemoria e documento collegato.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- scadenze fiscali
+- F24
+- dichiarazioni
+- quietanze
+- atti e notifiche
+
+## Scritture ed effetti consentiti
+
+- stato operativo, promemoria e relazione al documento; non il pagamento
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Generare scadenze da regole versionate e documenti effettivi, indicando fonte e periodo.
+2. Mostrare per data: adempimento, importo se noto, stato, documento, responsabile e promemoria.
+3. Completato richiede prova prevista dal tipo: invio, F24, quietanza o altra evidenza, senza confonderle.
+
+## Automazioni previste
+
+- Promemoria configurabili e aggiornamento quando arriva una prova; mai invio/pagamento automatico.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Scadenza ↔ F24/dichiarazione/atto ↔ quietanza ↔ eventuale movimento banca.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- Non inventare importi o scadenze da OCR incerto; fonte assente resta da verificare.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +62,13 @@ Calendario fiscale con fonte, scadenza, stato, promemoria e documento collegato.
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni scadenza apre la prova e il calendario distingue scaduto, imminente, completato e da verificare.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 

@@ -7,14 +7,55 @@
 - Modulo: `riconciliazione`
 - Componente corrente: `frontend/src/pages/RiconciliazioneUnificata.jsx`
 - Entrypoint/router: `frontend/src/pages/hub/RiconciliazioneHub.jsx`
-- Mappa macchina: [`MAPPE_JSON/riconciliazione-documenti.json`](MAPPE_JSON/riconciliazione-documenti.json)
+- Contratto logico macchina: [`LOGICA_JSON/36-riconciliazione-documenti.json`](LOGICA_JSON/36-riconciliazione-documenti.json)
 - Stato della prova corrente: `unverified`; una mappa statica o HTTP 200 non sono prova end-to-end.
 
 ## Scopo da preservare
 
 Riconciliazione documenti con originale, classificazione, candidati e provenienza.
 
-## Flusso obbligatorio
+## Fonti e registri letti
+
+- Documenti inbox/storage file
+- classificazioni
+- entità candidate
+- relazioni
+
+## Scritture ed effetti consentiti
+
+- classificazione approvata
+- relazione documento-entità
+- stato elaborazione
+
+Ogni effetto passa dal servizio/writer canonico del dominio, usa idempotency key
+e conserva `canonical_id`, `operation_id`, fonte, attore e audit prima/dopo.
+
+## Logica operativa specifica
+
+1. Mostrare originale, hash, fonte, parser/versione, campi estratti e confidenza.
+2. Proporre tipo ed entità compatibili spiegando i criteri; scelta manuale disponibile per candidati ambigui.
+3. Dopo conferma invocare il servizio di dominio del tipo, conservare documento originale e link al record creato.
+
+## Automazioni previste
+
+- Auto-classificazione soltanto oltre soglia e con identità univoca; retry per errori tecnici senza duplicare.
+
+Le automazioni ordinarie non richiedono una plancia di pulsanti. Un errore deve
+creare un caso visibile e ripetibile; non deve duplicare dati o mascherarsi da
+esito riuscito.
+
+## Collegamenti con le altre pagine
+
+- Documento ↔ record elaborato ↔ relazioni/prove ↔ pagina dominio.
+
+I collegamenti sono reciproci: se A mostra B, B deve mostrare A usando la stessa
+`relation_id`/`operation_id` e deve aprire il record esatto, non una ricerca generica.
+
+## Divieti e protezioni specifiche
+
+- OCR basso, PDF cifrato o fonte incompleta restano in revisione; mai creare record contabile da contenuto ambiguo.
+
+## Regole comuni obbligatorie
 
 1. Caricare identità, autorizzazioni e anno globale prima dei dati di dominio.
 2. Leggere i registri sul database applicativo tramite servizi/API canonici; mai interrogare file o archivi paralleli dalla UI.
@@ -22,6 +63,13 @@ Riconciliazione documenti con originale, classificazione, candidati e provenienz
 4. Eseguire azioni idempotenti; le associazioni certe sono automatiche, quelle ambigue mostrano candidati e motivazione.
 5. Aggiornare tutte le viste collegate tramite `operation_id`/relazioni e rendere la navigazione bidirezionale.
 6. Conservare fonte, hash, identificatore esterno, timestamp e stato di ogni prova.
+
+## Criteri specifici di completamento
+
+- Ogni documento ha stato e destinazione; secondo processamento non crea una seconda entità.
+
+Questi criteri vanno provati con test unitari, integrazione e almeno un percorso
+browser end-to-end basato su fixture documentali verificabili.
 
 ## API rilevate dalla pagina e dalle sue mappe
 
