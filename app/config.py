@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./gestio.db"
     document_storage_path: str = "./storage"
     secret_key: str = "dev-secret-change-me"
+    # Origini frontend ammesse per CORS (separate da virgola); vuoto = CORS disattivato.
+    cors_allowed_origins: str = ""
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 

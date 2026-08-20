@@ -1,4 +1,7 @@
-const BASE_URL = '/api'
+// In sviluppo locale il proxy di Vite instrada /api verso il backend
+// (vite.config.js). In produzione (static site) non c'è proxy: serve
+// l'URL assoluto del backend, passato a build time.
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL ?? ''}/api`
 
 async function request(path, options = {}) {
   const response = await fetch(`${BASE_URL}${path}`, {
