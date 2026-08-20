@@ -1,9 +1,13 @@
 from pathlib import Path
 
 import pytest
+from fastapi.testclient import TestClient
 from sqlalchemy import select
 
+from app.database import get_db
+from app.main import app
 from app.models import Corrispettivo
+from app.routers import drive_sync as drive_sync_router
 from app.services import drive_sync as drive_sync_service
 
 FIXTURE = Path(__file__).parent / "fixtures" / "corrispettivo_esempio.xml"
@@ -75,6 +79,38 @@ def test_list_xml_files_segue_la_paginazione(monkeypatch):
     files = drive_sync_service._list_xml_files("cartella-test", "fake-token")
 
     assert [f["id"] for f in files] == ["a", "b"]
+
+
+def test_endpoint_risponde_409_se_non_configurato(monkeypatch):
+    monkeypatch.setattr(drive_sync_router.drive_sync_service, "is_configured", lambda: False)
+    client = TestClient(app)
+
+    response = client.post("/api/drive-sync/corrispettivi")
+
+    assert response.status_code == 409
+
+
+def test_endpoint_avvia_in_background_e_risponde_subito(db_session, monkeypatch):
+    """L'endpoint non deve bloccare la richiesta HTTP in attesa del risultato:
+    una cartella con centinaia di file supererebbe i timeout dei proxy
+    (visto in produzione con Render/Cloudflare)."""
+    monkeypatch.setattr(drive_sync_router.drive_sync_service, "is_configured", lambda: True)
+    chiamate = []
+    monkeypatch.setattr(drive_sync_router, "_sync_in_background", lambda: chiamate.append(1))
+
+    def override_get_db():
+        yield db_session
+
+    app.dependency_overrides[get_db] = override_get_db
+    try:
+        client = TestClient(app)
+        response = client.post("/api/drive-sync/corrispettivi")
+    finally:
+        app.dependency_overrides.clear()
+
+    assert response.status_code == 200
+    assert response.json()["avviato"] is True
+    assert chiamate == [1], "il task in background deve essere eseguito (TestClient lo fa in modo sincrono dopo la risposta)"
 
 
 def test_sync_registra_errori_di_parsing_senza_interrompersi(db_session, monkeypatch):
