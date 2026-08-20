@@ -1,0 +1,1163 @@
+[
+  {
+    "id": "admin-rollback-conferma-eliminazione",
+    "popup": "Modale di conferma \"Confermi l'eliminazione?\" (rollback dati per periodo)",
+    "purpose": "Mappa tecnica del popup «Modale di conferma \"Confermi l'eliminazione?\" (rollback dati per periodo)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Admin (Admin.jsx) — tab '🗑️ Rollback Dati' (activeTab === 'rollback')"
+    ],
+    "source_files": [
+      "frontend/src/pages/Admin.jsx"
+    ],
+    "endpoints": [
+      "/api/admin/bank-supplier-rules",
+      "/api/admin/bank-supplier-rules/reprocess/{param}",
+      "/api/admin/bank-supplier-rules/{param}",
+      "/api/admin/dashboard-summary",
+      "/api/admin/registro-dati/config",
+      "/api/admin/registro-dati/duplicate-audit",
+      "/api/admin/registro-dati/duplicate-audit-folders",
+      "/api/admin/registro-dati/duplicate-cleanup-folders",
+      "/api/admin/registro-dati/jobs/{param}",
+      "/api/admin/registro-dati/manifest",
+      "/api/admin/rollback/fatture-import/{param}",
+      "/api/admin/rollback/sezioni",
+      "/api/admin/rollback/{param}",
+      "/api/admin/rollback/{param}/conta",
+      "/api/admin/stats",
+      "/api/collaudo/esegui",
+      "/api/collaudo/storico",
+      "/api/collaudo/ultimo",
+      "/api/config/email-accounts",
+      "/api/config/email-accounts/{param}",
+      "/api/config/email-accounts/{param}/test",
+      "/api/config/parole-chiave",
+      "/api/config/parole-chiave/aggiungi",
+      "/api/config/parole-chiave/rimuovi",
+      "/api/estratto-conto-movimenti/import",
+      "/api/health",
+      "/api/prima-nota/cassa/fix-corrispettivi-importo",
+      "/api/prima-nota/cassa/verifica-entrate-corrispettivi",
+      "/api/sync/match-fatture-banca",
+      "/api/sync/match-fatture-cassa",
+      "/api/sync/stato-sincronizzazione"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/admin-rollback-conferma-eliminazione.json"
+  },
+  {
+    "id": "archivio-bonifici-dropdown-associa-fattura",
+    "popup": "Dropdown 'Associa Fattura' (NON è un vero modale)",
+    "purpose": "Mappa tecnica del popup «Dropdown 'Associa Fattura' (NON è un vero modale)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Archivio Bonifici (/riconciliazione/archivio-bonifici)"
+    ],
+    "source_files": [
+      "app/routers/bonifici_module/associazioni.py",
+      "frontend/src/pages/ArchivioBonifici.jsx"
+    ],
+    "endpoints": [
+      "/api/archivio-bonifici/associa-fattura",
+      "/api/archivio-bonifici/associa-salario",
+      "/api/archivio-bonifici/disassocia-fattura/{param}",
+      "/api/archivio-bonifici/disassocia-salario/{param}",
+      "/api/archivio-bonifici/fatture-compatibili/{param}",
+      "/api/archivio-bonifici/operazioni-salari/{param}",
+      "/api/archivio-bonifici/riconcilia",
+      "/api/archivio-bonifici/riconcilia/task/{param}",
+      "/api/archivio-bonifici/stato-riconciliazione",
+      "/api/archivio-bonifici/sync-iban-anagrafica",
+      "/api/archivio-bonifici/transfers",
+      "/api/archivio-bonifici/transfers/count",
+      "/api/archivio-bonifici/transfers/summary",
+      "/api/archivio-bonifici/transfers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/archivio-bonifici-dropdown-associa-fattura.json"
+  },
+  {
+    "id": "archivio-bonifici-dropdown-associa-salario",
+    "popup": "Dropdown 'Associa Salario' (NON è un vero modale)",
+    "purpose": "Mappa tecnica del popup «Dropdown 'Associa Salario' (NON è un vero modale)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Archivio Bonifici (/riconciliazione/archivio-bonifici)"
+    ],
+    "source_files": [
+      "app/routers/bonifici_module/associazioni.py",
+      "frontend/src/pages/ArchivioBonifici.jsx"
+    ],
+    "endpoints": [
+      "/api/archivio-bonifici/associa-fattura",
+      "/api/archivio-bonifici/associa-salario",
+      "/api/archivio-bonifici/disassocia-fattura/{param}",
+      "/api/archivio-bonifici/disassocia-salario/{param}",
+      "/api/archivio-bonifici/fatture-compatibili/{param}",
+      "/api/archivio-bonifici/operazioni-salari/{param}",
+      "/api/archivio-bonifici/riconcilia",
+      "/api/archivio-bonifici/riconcilia/task/{param}",
+      "/api/archivio-bonifici/stato-riconciliazione",
+      "/api/archivio-bonifici/sync-iban-anagrafica",
+      "/api/archivio-bonifici/transfers",
+      "/api/archivio-bonifici/transfers/count",
+      "/api/archivio-bonifici/transfers/summary",
+      "/api/archivio-bonifici/transfers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/archivio-bonifici-dropdown-associa-salario.json"
+  },
+  {
+    "id": "assegni-collega-fatture",
+    "popup": "Modal 'Collega Fatture all'Assegno' (draggable)",
+    "purpose": "Mappa tecnica del popup «Modal 'Collega Fatture all'Assegno' (draggable)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Assegni (/riconciliazione/assegni)"
+    ],
+    "source_files": [
+      "frontend/src/pages/GestioneAssegni.jsx"
+    ],
+    "endpoints": [
+      "/api/assegni",
+      "/api/assegni/ambigui",
+      "/api/assegni/auto-match",
+      "/api/assegni/auto-match/conferma",
+      "/api/assegni/cerca-combinazioni-assegni",
+      "/api/assegni/clear-generated",
+      "/api/assegni/genera",
+      "/api/assegni/learning/associa-intelligente",
+      "/api/assegni/learning/learn",
+      "/api/assegni/learning/pulizia-duplicati",
+      "/api/assegni/learning/stats-avanzate",
+      "/api/assegni/riprocessa-collegamenti",
+      "/api/assegni/senza-associazione",
+      "/api/assegni/stats",
+      "/api/assegni/supporto/fatture-disponibili",
+      "/api/assegni/{param}",
+      "/api/assegni/{param}/fatture-collegate",
+      "/api/assegni/{param}/risolvi-ambiguo",
+      "/api/invoices/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/assegni-collega-fatture.json"
+  },
+  {
+    "id": "assegni-genera-progressivi",
+    "popup": "Modal 'Genera 10 Assegni Progressivi'",
+    "purpose": "Mappa tecnica del popup «Modal 'Genera 10 Assegni Progressivi'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Assegni (/riconciliazione/assegni)"
+    ],
+    "source_files": [
+      "frontend/src/pages/GestioneAssegni.jsx"
+    ],
+    "endpoints": [
+      "/api/assegni",
+      "/api/assegni/ambigui",
+      "/api/assegni/auto-match",
+      "/api/assegni/auto-match/conferma",
+      "/api/assegni/cerca-combinazioni-assegni",
+      "/api/assegni/clear-generated",
+      "/api/assegni/genera",
+      "/api/assegni/learning/associa-intelligente",
+      "/api/assegni/learning/learn",
+      "/api/assegni/learning/pulizia-duplicati",
+      "/api/assegni/learning/stats-avanzate",
+      "/api/assegni/riprocessa-collegamenti",
+      "/api/assegni/senza-associazione",
+      "/api/assegni/stats",
+      "/api/assegni/supporto/fatture-disponibili",
+      "/api/assegni/{param}",
+      "/api/assegni/{param}/fatture-collegate",
+      "/api/assegni/{param}/risolvi-ambiguo",
+      "/api/invoices/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/assegni-genera-progressivi.json"
+  },
+  {
+    "id": "assegni-pannello-ambigui",
+    "popup": "Pannello 'Assegni ambigui — serve la tua decisione' (NON è un vero modale)",
+    "purpose": "Mappa tecnica del popup «Pannello 'Assegni ambigui — serve la tua decisione' (NON è un vero modale)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Assegni (/riconciliazione/assegni)"
+    ],
+    "source_files": [
+      "frontend/src/pages/GestioneAssegni.jsx"
+    ],
+    "endpoints": [
+      "/api/assegni",
+      "/api/assegni/ambigui",
+      "/api/assegni/auto-match",
+      "/api/assegni/auto-match/conferma",
+      "/api/assegni/cerca-combinazioni-assegni",
+      "/api/assegni/clear-generated",
+      "/api/assegni/genera",
+      "/api/assegni/learning/associa-intelligente",
+      "/api/assegni/learning/learn",
+      "/api/assegni/learning/pulizia-duplicati",
+      "/api/assegni/learning/stats-avanzate",
+      "/api/assegni/riprocessa-collegamenti",
+      "/api/assegni/senza-associazione",
+      "/api/assegni/stats",
+      "/api/assegni/supporto/fatture-disponibili",
+      "/api/assegni/{param}",
+      "/api/assegni/{param}/fatture-collegate",
+      "/api/assegni/{param}/risolvi-ambiguo",
+      "/api/invoices/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/assegni-pannello-ambigui.json"
+  },
+  {
+    "id": "coerenza-pos-chiusura-serale",
+    "popup": "ModalChiusuraSerale",
+    "purpose": "Mappa tecnica del popup «ModalChiusuraSerale». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Coerenza POS Corrispettivi (/coerenza-pos)"
+    ],
+    "source_files": [
+      "frontend/src/pages/CoerenzaPOSCorrispettivi.jsx"
+    ],
+    "endpoints": [
+      "/api/corrispettivi/manuale",
+      "/api/pos-corrispettivi/chiusura-giornaliera",
+      "/api/pos-corrispettivi/chiusure-giornaliere/batch",
+      "/api/pos-corrispettivi/controllo-due-fasi",
+      "/api/pos-corrispettivi/riepilogo-mensile",
+      "/api/pos-corrispettivi/verifica-coerenza",
+      "/api/sumup/riepilogo"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/coerenza-pos-chiusura-serale.json"
+  },
+  {
+    "id": "controllo-mensile-dettaglio-versamenti",
+    "popup": "Modale 'Dettaglio Versamenti - {Mese} {Anno}'",
+    "purpose": "Mappa tecnica del popup «Modale 'Dettaglio Versamenti - {Mese} {Anno}'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Contabilità > Controllo Mensile (ControlloMensile.jsx), solo nella vista Mensile (viewMode='mese')"
+    ],
+    "source_files": [
+      "frontend/src/pages/ControlloMensile.jsx"
+    ],
+    "endpoints": [
+      "/api/contabilita-gestionale/bilancio-verifica",
+      "/api/corrispettivi",
+      "/api/pos-corrispettivi/controllo-due-fasi",
+      "/api/prima-nota/cassa"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/controllo-mensile-dettaglio-versamenti.json"
+  },
+  {
+    "id": "corrispettivi-conferma-eliminazione",
+    "popup": "window.confirm() nativo — conferma eliminazione corrispettivo",
+    "purpose": "Mappa tecnica del popup «window.confirm() nativo — conferma eliminazione corrispettivo». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Corrispettivi (Corrispettivi.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Corrispettivi.jsx"
+    ],
+    "endpoints": [
+      "/api/corrispettivi"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/corrispettivi-conferma-eliminazione.json"
+  },
+  {
+    "id": "corrispettivi-dettaglio-pannello",
+    "popup": "Pannello 'Dettaglio Corrispettivo' (inline, non è un vero overlay/modale)",
+    "purpose": "Mappa tecnica del popup «Pannello 'Dettaglio Corrispettivo' (inline, non è un vero overlay/modale)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Corrispettivi (Corrispettivi.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Corrispettivi.jsx"
+    ],
+    "endpoints": [
+      "/api/corrispettivi"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/corrispettivi-dettaglio-pannello.json"
+  },
+  {
+    "id": "dashboard-registra-pagamento",
+    "popup": "Modale 'Registra Pagamento' (interno al widget Scadenze)",
+    "purpose": "Mappa tecnica del popup «Modale 'Registra Pagamento' (interno al widget Scadenze)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Dashboard (route '/', '/dashboard', '/dashboard/:anno', '/analytics'), sezione widget 'Scadenze in Arrivo'"
+    ],
+    "source_files": [
+      "frontend/src/pages/Dashboard.jsx"
+    ],
+    "endpoints": [
+      "/api/controllo-gestione/costi-ricavi",
+      "/api/dashboard/fascia-energia",
+      "/api/dashboard/trend-mensile",
+      "/api/prima-nota/stats",
+      "/api/scadenze",
+      "/api/verifica-coerenza/confronto-iva-completo/{param}",
+      "/api/verifica-coerenza/iva/{param}/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/dashboard-registra-pagamento.json"
+  },
+  {
+    "id": "documenti-pdf-viewer-modal",
+    "popup": "PDF Viewer Modal (visualizzatore PDF inline)",
+    "purpose": "Mappa tecnica del popup «PDF Viewer Modal (visualizzatore PDF inline)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Documenti → Archivio (frontend/src/pages/Documenti.jsx, montato dentro l'hub /documenti tramite frontend/src/pages/hub/DocumentiHub.jsx). È l'unico vero popup con overlay trovato in tutto il modulo Documenti: si apre sia dal sotto-tab 'Tutti i Documenti' (activeTab='email', tabella su documents_inbox) sia dal sotto-tab 'AI Estratti' (activeTab='ai', tabella su extracted_documents). Il sotto-tab 'Per Mittente' non ha righe con azione 'Vedi' e non apre mai questo modale. Il tab gemello 'Import Documenti' (ImportDocumenti.jsx) non ha alcun popup: usa solo alert() nativi e pannelli inline (verificato via grep su position:'fixed'/Modal/Drawer/Portal, nessun risultato)."
+    ],
+    "source_files": [
+      "frontend/src/pages/Documenti.jsx",
+      "frontend/src/pages/ImportDocumenti.jsx",
+      "frontend/src/pages/hub/DocumentiHub.jsx"
+    ],
+    "endpoints": [
+      "/api/documenti-inbox/auto-classify",
+      "/api/documenti-inbox/import-dipendenti-from-cu",
+      "/api/documenti-inbox/import-f24-from-inbox",
+      "/api/documenti/documento/{param}/download",
+      "/api/documenti/indice/catalog",
+      "/api/documenti/lista",
+      "/api/documenti/upload-auto",
+      "/api/documenti/upload-auto/preview"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/documenti-pdf-viewer-modal.json"
+  },
+  {
+    "id": "fatture-banner-deep-link-fattura-non-trovata",
+    "popup": "Banner deep-link 'Fattura non trovata / anno diverso' (pannello inline, non un vero overlay/modale)",
+    "purpose": "Mappa tecnica del popup «Banner deep-link 'Fattura non trovata / anno diverso' (pannello inline, non un vero overlay/modale)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Fatture / Archivio Fatture Ricevute (ArchivioFattureRicevute.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/ArchivioFattureRicevute.jsx"
+    ],
+    "endpoints": [
+      "/api/fatture-ricevute/archivio",
+      "/api/fatture-ricevute/export-selezione",
+      "/api/fatture-ricevute/fattura/{param}",
+      "/api/fatture-ricevute/fornitori",
+      "/api/fatture-ricevute/statistiche{param}",
+      "/api/prima-nota/sposta-movimento"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/fatture-banner-deep-link-fattura-non-trovata.json"
+  },
+  {
+    "id": "fornitori-conferma-eliminazione",
+    "popup": "window.confirm() nativo — conferma (doppia) eliminazione fornitore",
+    "purpose": "Mappa tecnica del popup «window.confirm() nativo — conferma (doppia) eliminazione fornitore». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Fornitori (Fornitori.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Fornitori.jsx"
+    ],
+    "endpoints": [
+      "/api/anagrafica-fornitori/popola-fornitore/{param}",
+      "/api/anagrafica-fornitori/popola-tutti",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/fatture/{param}",
+      "/api/openapi-imprese/info/{param}",
+      "/api/suppliers",
+      "/api/suppliers/filtered",
+      "/api/suppliers/search-piva/{param}",
+      "/api/suppliers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/fornitori-conferma-eliminazione.json"
+  },
+  {
+    "id": "fornitori-estratto-fatture",
+    "popup": "Modale Estratto Fatture (estratto conto fatture del fornitore)",
+    "purpose": "Mappa tecnica del popup «Modale Estratto Fatture (estratto conto fatture del fornitore)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Fornitori (Fornitori.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Fornitori.jsx"
+    ],
+    "endpoints": [
+      "/api/anagrafica-fornitori/popola-fornitore/{param}",
+      "/api/anagrafica-fornitori/popola-tutti",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/fatture/{param}",
+      "/api/openapi-imprese/info/{param}",
+      "/api/suppliers",
+      "/api/suppliers/filtered",
+      "/api/suppliers/search-piva/{param}",
+      "/api/suppliers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/fornitori-estratto-fatture.json"
+  },
+  {
+    "id": "fornitori-fatturato-annuo",
+    "popup": "Modale Fatturato (fatturato annuo del fornitore)",
+    "purpose": "Mappa tecnica del popup «Modale Fatturato (fatturato annuo del fornitore)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Fornitori (Fornitori.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Fornitori.jsx"
+    ],
+    "endpoints": [
+      "/api/anagrafica-fornitori/popola-fornitore/{param}",
+      "/api/anagrafica-fornitori/popola-tutti",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/fatture/{param}",
+      "/api/openapi-imprese/info/{param}",
+      "/api/suppliers",
+      "/api/suppliers/filtered",
+      "/api/suppliers/search-piva/{param}",
+      "/api/suppliers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/fornitori-fatturato-annuo.json"
+  },
+  {
+    "id": "fornitori-menu-metodo-pagamento",
+    "popup": "Menu a tendina (popover) 'Metodo Pagamento' sul badge della card fornitore",
+    "purpose": "Mappa tecnica del popup «Menu a tendina (popover) 'Metodo Pagamento' sul badge della card fornitore». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Fornitori (Fornitori.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Fornitori.jsx"
+    ],
+    "endpoints": [
+      "/api/anagrafica-fornitori/popola-fornitore/{param}",
+      "/api/anagrafica-fornitori/popola-tutti",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/fatture/{param}",
+      "/api/openapi-imprese/info/{param}",
+      "/api/suppliers",
+      "/api/suppliers/filtered",
+      "/api/suppliers/search-piva/{param}",
+      "/api/suppliers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/fornitori-menu-metodo-pagamento.json"
+  },
+  {
+    "id": "fornitori-schede-tecniche",
+    "popup": "Modale Schede Tecniche (prodotti del fornitore)",
+    "purpose": "Mappa tecnica del popup «Modale Schede Tecniche (prodotti del fornitore)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Fornitori (Fornitori.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Fornitori.jsx"
+    ],
+    "endpoints": [
+      "/api/anagrafica-fornitori/popola-fornitore/{param}",
+      "/api/anagrafica-fornitori/popola-tutti",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/fatture/{param}",
+      "/api/openapi-imprese/info/{param}",
+      "/api/suppliers",
+      "/api/suppliers/filtered",
+      "/api/suppliers/search-piva/{param}",
+      "/api/suppliers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/fornitori-schede-tecniche.json"
+  },
+  {
+    "id": "fornitori-supplier-modal",
+    "popup": "SupplierModal (creazione/modifica anagrafica fornitore)",
+    "purpose": "Mappa tecnica del popup «SupplierModal (creazione/modifica anagrafica fornitore)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Fornitori (Fornitori.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/Fornitori.jsx"
+    ],
+    "endpoints": [
+      "/api/anagrafica-fornitori/popola-fornitore/{param}",
+      "/api/anagrafica-fornitori/popola-tutti",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/fatture/{param}",
+      "/api/openapi-imprese/info/{param}",
+      "/api/suppliers",
+      "/api/suppliers/filtered",
+      "/api/suppliers/search-piva/{param}",
+      "/api/suppliers/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/fornitori-supplier-modal.json"
+  },
+  {
+    "id": "modal-fattura-condiviso",
+    "popup": "ModalFattura (componente condiviso)",
+    "purpose": "Mappa tecnica del popup «ModalFattura (componente condiviso)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "ArchivioBonifici.jsx",
+      "ArchivioFattureRicevute.jsx",
+      "GestioneAssegni.jsx",
+      "NoleggioAuto.jsx",
+      "PrimaNota.jsx",
+      "RiconciliazionePaypal.jsx",
+      "Scadenze.jsx",
+      "(più il wrapper components/InvoiceXMLViewer.jsx). Il modale PDF generico di Documenti.jsx (F24, cedolini, estratti conto, quietanze...) usa direttamente DocumentViewerModal in modalità fetchUrl: prima era un'implementazione inline duplicata e scollegata."
+    ],
+    "source_files": [
+      "frontend/src/components/DocumentViewerModal.jsx",
+      "frontend/src/components/ModalFattura.jsx",
+      "frontend/src/pages/ArchivioBonifici.jsx",
+      "frontend/src/pages/ArchivioFattureRicevute.jsx",
+      "frontend/src/pages/Documenti.jsx",
+      "frontend/src/pages/GestioneAssegni.jsx",
+      "frontend/src/pages/NoleggioAuto.jsx",
+      "frontend/src/pages/PrimaNota.jsx",
+      "frontend/src/pages/RiconciliazionePaypal.jsx",
+      "frontend/src/pages/Scadenze.jsx"
+    ],
+    "endpoints": [
+      "/api/archivio-bonifici/associa-fattura",
+      "/api/archivio-bonifici/associa-salario",
+      "/api/archivio-bonifici/disassocia-fattura/{param}",
+      "/api/archivio-bonifici/disassocia-salario/{param}",
+      "/api/archivio-bonifici/fatture-compatibili/{param}",
+      "/api/archivio-bonifici/operazioni-salari/{param}",
+      "/api/archivio-bonifici/riconcilia",
+      "/api/archivio-bonifici/riconcilia/task/{param}",
+      "/api/archivio-bonifici/stato-riconciliazione",
+      "/api/archivio-bonifici/sync-iban-anagrafica",
+      "/api/archivio-bonifici/transfers",
+      "/api/archivio-bonifici/transfers/count",
+      "/api/archivio-bonifici/transfers/summary",
+      "/api/archivio-bonifici/transfers/{param}",
+      "/api/assegni",
+      "/api/assegni/ambigui",
+      "/api/assegni/auto-match",
+      "/api/assegni/auto-match/conferma",
+      "/api/assegni/cerca-combinazioni-assegni",
+      "/api/assegni/clear-generated",
+      "/api/assegni/genera",
+      "/api/assegni/learning/associa-intelligente",
+      "/api/assegni/learning/learn",
+      "/api/assegni/learning/pulizia-duplicati",
+      "/api/assegni/learning/stats-avanzate",
+      "/api/assegni/riprocessa-collegamenti",
+      "/api/assegni/senza-associazione",
+      "/api/assegni/stats",
+      "/api/assegni/supporto/fatture-disponibili",
+      "/api/assegni/{param}",
+      "/api/assegni/{param}/fatture-collegate",
+      "/api/assegni/{param}/risolvi-ambiguo",
+      "/api/corrispettivi/view-by-filename",
+      "/api/corrispettivi/{param}/view",
+      "/api/documenti/documento/{param}/download",
+      "/api/documenti/lista",
+      "/api/email-scanner/associa",
+      "/api/email-scanner/statistiche",
+      "/api/fatture-ricevute/archivio",
+      "/api/fatture-ricevute/export-selezione",
+      "/api/fatture-ricevute/fattura/{param}",
+      "/api/fatture-ricevute/fattura/{param}/documenti-pagamento",
+      "/api/fatture-ricevute/fattura/{param}/view-assoinvoice",
+      "/api/fatture-ricevute/fattura/{param}/xml-originale",
+      "/api/fatture-ricevute/fornitori",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/fatture-ricevute/statistiche{param}",
+      "/api/invoices/{param}",
+      "/api/nexi/stato",
+      "/api/noleggio/associa-fornitore",
+      "/api/noleggio/drivers",
+      "/api/noleggio/fatture-non-associate{param}",
+      "/api/noleggio/fatture/{param}/associa-veicolo",
+      "/api/noleggio/fornitori",
+      "/api/noleggio/riepilogo-controlli{param}",
+      "/api/noleggio/veicoli",
+      "/api/noleggio/veicoli/{param}",
+      "/api/openapi-automotive/aggiorna-veicolo",
+      "/api/openapi-automotive/info/{param}",
+      "/api/paypal-api/status",
+      "/api/paypal-api/sync/incremental",
+      "/api/paypal-statements/bank-movements",
+      "/api/paypal-statements/dashboard",
+      "/api/paypal-statements/report",
+      "/api/paypal-statements/riprocessa",
+      "/api/paypal-statements/statements",
+      "/api/paypal-statements/transactions",
+      "/api/paypal-statements/transactions/{param}",
+      "/api/prima-nota/provvisori",
+      "/api/prima-nota/provvisori/attendi-banca",
+      "/api/prima-nota/provvisori/conferma",
+      "/api/prima-nota/provvisori/conferma-divisione",
+      "/api/prima-nota/provvisori/conferma-multipla",
+      "/api/prima-nota/provvisori/da-decidere",
+      "/api/prima-nota/provvisori/segnala-dubbio",
+      "/api/prima-nota/saldo-iniziale",
+      "/api/prima-nota/sposta-movimento",
+      "/api/prima-nota/sumup",
+      "/api/prima-nota/{param}",
+      "/api/prima-nota/{param}/{param}",
+      "/api/scadenze/completa/{param}",
+      "/api/scadenze/crea",
+      "/api/scadenze/dashboard-widget",
+      "/api/scadenze/tutte",
+      "/api/scadenze/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/modal-fattura-condiviso.json"
+  },
+  {
+    "id": "modal-fattura-in-page",
+    "popup": "ModalFattura (componente condiviso, visualizzazione fattura in-page)",
+    "purpose": "Mappa tecnica del popup «ModalFattura (componente condiviso, visualizzazione fattura in-page)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Assegni (/riconciliazione/assegni) — importato in GestioneAssegni.jsx, usato da vari punti: bottone '📄 Vedi' dentro il modale 'Collega Fatture' (righe ~3663-3683 di GestioneAssegni.jsx), bottone 'Vedi 📄' su righe tabella/ambigui/dettaglio match L2-L3/combinazioni (setFatturaView({id,numero}) impostato da decine di punti diversi della UI)",
+      "Presumibilmente riusabile da qualunque altra pagina che importi il componente da '../components/ModalFattura' (verificato l'uso diretto solo in GestioneAssegni.jsx nell'ambito di questo incarico; non è escluso che altre pagine del gestionale lo importino altrove)"
+    ],
+    "source_files": [
+      "frontend/src/components/ModalFattura.jsx",
+      "frontend/src/pages/GestioneAssegni.jsx"
+    ],
+    "endpoints": [
+      "/api/assegni",
+      "/api/assegni/ambigui",
+      "/api/assegni/auto-match",
+      "/api/assegni/auto-match/conferma",
+      "/api/assegni/cerca-combinazioni-assegni",
+      "/api/assegni/clear-generated",
+      "/api/assegni/genera",
+      "/api/assegni/learning/associa-intelligente",
+      "/api/assegni/learning/learn",
+      "/api/assegni/learning/pulizia-duplicati",
+      "/api/assegni/learning/stats-avanzate",
+      "/api/assegni/riprocessa-collegamenti",
+      "/api/assegni/senza-associazione",
+      "/api/assegni/stats",
+      "/api/assegni/supporto/fatture-disponibili",
+      "/api/assegni/{param}",
+      "/api/assegni/{param}/fatture-collegate",
+      "/api/assegni/{param}/risolvi-ambiguo",
+      "/api/fatture-ricevute/fattura/{param}/documenti-pagamento",
+      "/api/fatture-ricevute/fattura/{param}/view-assoinvoice",
+      "/api/fatture-ricevute/fattura/{param}/xml-originale",
+      "/api/invoices/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/modal-fattura-in-page.json"
+  },
+  {
+    "id": "noleggio-aggiungi-veicolo",
+    "popup": "Modal 'Aggiungi Veicolo'",
+    "purpose": "Mappa tecnica del popup «Modal 'Aggiungi Veicolo'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Noleggio > Flotta Auto (tab 'flotta', NoleggioAuto.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/NoleggioAuto.jsx"
+    ],
+    "endpoints": [
+      "/api/noleggio/associa-fornitore",
+      "/api/noleggio/drivers",
+      "/api/noleggio/fatture-non-associate{param}",
+      "/api/noleggio/fatture/{param}/associa-veicolo",
+      "/api/noleggio/fornitori",
+      "/api/noleggio/riepilogo-controlli{param}",
+      "/api/noleggio/veicoli",
+      "/api/noleggio/veicoli/{param}",
+      "/api/openapi-automotive/aggiorna-veicolo",
+      "/api/openapi-automotive/info/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/noleggio-aggiungi-veicolo.json"
+  },
+  {
+    "id": "noleggio-associa-targa-driver",
+    "popup": "Modal 'Associa Targa a Driver' (Associazione Manuale)",
+    "purpose": "Mappa tecnica del popup «Modal 'Associa Targa a Driver' (Associazione Manuale)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Noleggio > Verbali Noleggio (tab 'verbali', componente VerbaliRiconciliazione.jsx montato dentro VeicoliHub.jsx alla route /noleggio/verbali)"
+    ],
+    "source_files": [
+      "frontend/src/pages/VerbaliRiconciliazione.jsx",
+      "frontend/src/pages/hub/VeicoliHub.jsx"
+    ],
+    "endpoints": [
+      "/api/auto-repair/collega-targa-driver",
+      "/api/dipendenti",
+      "/api/noleggio/export-pdf-costi",
+      "/api/noleggio/veicoli",
+      "/api/verbali-riconciliazione/collega-driver-massivo",
+      "/api/verbali-riconciliazione/dashboard",
+      "/api/verbali-riconciliazione/lista",
+      "/api/verbali-riconciliazione/migra-attesa-quietanza",
+      "/api/verbali-riconciliazione/pulisci-duplicati",
+      "/api/verbali-riconciliazione/riconcilia/{param}",
+      "/api/verbali-riconciliazione/scan-email",
+      "/api/verbali-riconciliazione/scan-fatture-verbali"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/noleggio-associa-targa-driver.json"
+  },
+  {
+    "id": "noleggio-fatture-non-associate",
+    "popup": "Modal 'Fatture Non Associate'",
+    "purpose": "Mappa tecnica del popup «Modal 'Fatture Non Associate'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Noleggio > Flotta Auto (tab 'flotta', NoleggioAuto.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/NoleggioAuto.jsx"
+    ],
+    "endpoints": [
+      "/api/noleggio/associa-fornitore",
+      "/api/noleggio/drivers",
+      "/api/noleggio/fatture-non-associate{param}",
+      "/api/noleggio/fatture/{param}/associa-veicolo",
+      "/api/noleggio/fornitori",
+      "/api/noleggio/riepilogo-controlli{param}",
+      "/api/noleggio/veicoli",
+      "/api/noleggio/veicoli/{param}",
+      "/api/openapi-automotive/aggiorna-veicolo",
+      "/api/openapi-automotive/info/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/noleggio-fatture-non-associate.json"
+  },
+  {
+    "id": "noleggio-modifica-veicolo",
+    "popup": "Modal 'Modifica Veicolo'",
+    "purpose": "Mappa tecnica del popup «Modal 'Modifica Veicolo'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Noleggio > Flotta Auto (tab 'flotta', componente NoleggioAuto.jsx montato dentro VeicoliHub.jsx alla route /noleggio)"
+    ],
+    "source_files": [
+      "frontend/src/pages/NoleggioAuto.jsx",
+      "frontend/src/pages/hub/VeicoliHub.jsx"
+    ],
+    "endpoints": [
+      "/api/noleggio/associa-fornitore",
+      "/api/noleggio/drivers",
+      "/api/noleggio/export-pdf-costi",
+      "/api/noleggio/fatture-non-associate{param}",
+      "/api/noleggio/fatture/{param}/associa-veicolo",
+      "/api/noleggio/fornitori",
+      "/api/noleggio/riepilogo-controlli{param}",
+      "/api/noleggio/veicoli",
+      "/api/noleggio/veicoli/{param}",
+      "/api/openapi-automotive/aggiorna-veicolo",
+      "/api/openapi-automotive/info/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/noleggio-modifica-veicolo.json"
+  },
+  {
+    "id": "paypal-crea-fornitore",
+    "popup": "CreaFornitorePaypalModal (crea fornitore inline + mappa)",
+    "purpose": "Mappa tecnica del popup «CreaFornitorePaypalModal (crea fornitore inline + mappa)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Riconciliazione PayPal (/riconciliazione/paypal), tab 'Mapping Fornitori'"
+    ],
+    "source_files": [
+      "frontend/src/pages/RiconciliazionePaypal.jsx"
+    ],
+    "endpoints": [
+      "/api/paypal-api/status",
+      "/api/paypal-api/sync/incremental",
+      "/api/paypal-statements/bank-movements",
+      "/api/paypal-statements/dashboard",
+      "/api/paypal-statements/report",
+      "/api/paypal-statements/riprocessa",
+      "/api/paypal-statements/statements",
+      "/api/paypal-statements/transactions",
+      "/api/paypal-statements/transactions/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/paypal-crea-fornitore.json"
+  },
+  {
+    "id": "paypal-transaction-detail",
+    "popup": "PaypalTransactionDetailModal (modale dettaglio transazione PayPal)",
+    "purpose": "Mappa tecnica del popup «PaypalTransactionDetailModal (modale dettaglio transazione PayPal)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Riconciliazione PayPal (/riconciliazione/paypal)"
+    ],
+    "source_files": [
+      "frontend/src/pages/RiconciliazionePaypal.jsx"
+    ],
+    "endpoints": [
+      "/api/paypal-api/status",
+      "/api/paypal-api/sync/incremental",
+      "/api/paypal-statements/bank-movements",
+      "/api/paypal-statements/dashboard",
+      "/api/paypal-statements/report",
+      "/api/paypal-statements/riprocessa",
+      "/api/paypal-statements/statements",
+      "/api/paypal-statements/transactions",
+      "/api/paypal-statements/transactions/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/paypal-transaction-detail.json"
+  },
+  {
+    "id": "piano-conti-drawer-dettaglio-conto",
+    "popup": "Drawer laterale 'Dettaglio Conto'",
+    "purpose": "Mappa tecnica del popup «Drawer laterale 'Dettaglio Conto'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Contabilità > Piano dei Conti (tab 'Piano dei Conti', PianoDeiConti.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/PianoDeiConti.jsx"
+    ],
+    "endpoints": [
+      "/api/dizionario-articoli/articolo/{param}",
+      "/api/dizionario-articoli/riclassifica-completo",
+      "/api/piano-conti",
+      "/api/piano-conti/conto/{param}/movimenti",
+      "/api/piano-conti/regole"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/piano-conti-drawer-dettaglio-conto.json"
+  },
+  {
+    "id": "piano-conti-nuova-regola",
+    "popup": "Modal 'Nuova Regola Categorizzazione'",
+    "purpose": "Mappa tecnica del popup «Modal 'Nuova Regola Categorizzazione'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Contabilità > Piano dei Conti (tab 'Regole Categorizzazione', PianoDeiConti.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/PianoDeiConti.jsx"
+    ],
+    "endpoints": [
+      "/api/dizionario-articoli/articolo/{param}",
+      "/api/dizionario-articoli/riclassifica-completo",
+      "/api/piano-conti",
+      "/api/piano-conti/conto/{param}/movimenti",
+      "/api/piano-conti/regole"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/piano-conti-nuova-regola.json"
+  },
+  {
+    "id": "piano-conti-nuovo-conto",
+    "popup": "Modal 'Nuovo Conto'",
+    "purpose": "Mappa tecnica del popup «Modal 'Nuovo Conto'». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Contabilità > Piano dei Conti (tab 'Piano dei Conti', PianoDeiConti.jsx)"
+    ],
+    "source_files": [
+      "frontend/src/pages/PianoDeiConti.jsx"
+    ],
+    "endpoints": [
+      "/api/dizionario-articoli/articolo/{param}",
+      "/api/dizionario-articoli/riclassifica-completo",
+      "/api/piano-conti",
+      "/api/piano-conti/conto/{param}/movimenti",
+      "/api/piano-conti/regole"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/piano-conti-nuovo-conto.json"
+  },
+  {
+    "id": "prima-nota-conferma-eliminazione-movimento",
+    "popup": "confirm() nativo — conferma con avvisi per eliminazione movimento Cassa/Banca",
+    "purpose": "Mappa tecnica del popup «confirm() nativo — conferma con avvisi per eliminazione movimento Cassa/Banca». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Prima Nota (PrimaNota.jsx) — tabella movimenti, sia tab CASSA che tab BANCA"
+    ],
+    "source_files": [
+      "frontend/src/pages/PrimaNota.jsx"
+    ],
+    "endpoints": [
+      "/api/corrispettivi/view-by-filename",
+      "/api/corrispettivi/{param}/view",
+      "/api/nexi/stato",
+      "/api/prima-nota/provvisori",
+      "/api/prima-nota/provvisori/attendi-banca",
+      "/api/prima-nota/provvisori/conferma",
+      "/api/prima-nota/provvisori/conferma-divisione",
+      "/api/prima-nota/provvisori/conferma-multipla",
+      "/api/prima-nota/provvisori/da-decidere",
+      "/api/prima-nota/provvisori/segnala-dubbio",
+      "/api/prima-nota/saldo-iniziale",
+      "/api/prima-nota/sumup",
+      "/api/prima-nota/{param}",
+      "/api/prima-nota/{param}/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/prima-nota-conferma-eliminazione-movimento.json"
+  },
+  {
+    "id": "prima-nota-edit-movimento",
+    "popup": "EditMovimentoModal",
+    "purpose": "Mappa tecnica del popup «EditMovimentoModal». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Prima Nota (PrimaNota.jsx) — tabella movimenti, sia tab CASSA che tab BANCA"
+    ],
+    "source_files": [
+      "frontend/src/pages/PrimaNota.jsx"
+    ],
+    "endpoints": [
+      "/api/corrispettivi/view-by-filename",
+      "/api/corrispettivi/{param}/view",
+      "/api/nexi/stato",
+      "/api/prima-nota/provvisori",
+      "/api/prima-nota/provvisori/attendi-banca",
+      "/api/prima-nota/provvisori/conferma",
+      "/api/prima-nota/provvisori/conferma-divisione",
+      "/api/prima-nota/provvisori/conferma-multipla",
+      "/api/prima-nota/provvisori/da-decidere",
+      "/api/prima-nota/provvisori/segnala-dubbio",
+      "/api/prima-nota/saldo-iniziale",
+      "/api/prima-nota/sumup",
+      "/api/prima-nota/{param}",
+      "/api/prima-nota/{param}/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/prima-nota-edit-movimento.json"
+  },
+  {
+    "id": "prima-nota-pagamento-parziale-misto",
+    "popup": "Modale \"Pagamento parziale (Misto)\"",
+    "purpose": "Mappa tecnica del popup «Modale \"Pagamento parziale (Misto)\"». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Prima Nota (PrimaNota.jsx) — tab PROVVISORI"
+    ],
+    "source_files": [
+      "frontend/src/pages/PrimaNota.jsx"
+    ],
+    "endpoints": [
+      "/api/corrispettivi/view-by-filename",
+      "/api/corrispettivi/{param}/view",
+      "/api/nexi/stato",
+      "/api/prima-nota/provvisori",
+      "/api/prima-nota/provvisori/attendi-banca",
+      "/api/prima-nota/provvisori/conferma",
+      "/api/prima-nota/provvisori/conferma-divisione",
+      "/api/prima-nota/provvisori/conferma-multipla",
+      "/api/prima-nota/provvisori/da-decidere",
+      "/api/prima-nota/provvisori/segnala-dubbio",
+      "/api/prima-nota/saldo-iniziale",
+      "/api/prima-nota/sumup",
+      "/api/prima-nota/{param}",
+      "/api/prima-nota/{param}/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/prima-nota-pagamento-parziale-misto.json"
+  },
+  {
+    "id": "scadenze-nuova-scadenza",
+    "popup": "Modal Nuova Scadenza",
+    "purpose": "Mappa tecnica del popup «Modal Nuova Scadenza». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Scadenze e Notifiche (/scadenze), header della pagina"
+    ],
+    "source_files": [
+      "frontend/src/pages/Scadenze.jsx"
+    ],
+    "endpoints": [
+      "/api/email-scanner/associa",
+      "/api/email-scanner/statistiche",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/scadenze/completa/{param}",
+      "/api/scadenze/crea",
+      "/api/scadenze/dashboard-widget",
+      "/api/scadenze/tutte",
+      "/api/scadenze/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/scadenze-nuova-scadenza.json"
+  },
+  {
+    "id": "scadenze-registra-pagamento",
+    "popup": "Modal Registra Pagamento (Cassa/Banca)",
+    "purpose": "Mappa tecnica del popup «Modal Registra Pagamento (Cassa/Banca)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Scadenze e Notifiche (/scadenze), bottone '💰 Paga' su ogni riga con tipo FATTURA / source='fattura' / importo>0, non ancora pagata"
+    ],
+    "source_files": [
+      "frontend/src/pages/Scadenze.jsx"
+    ],
+    "endpoints": [
+      "/api/email-scanner/associa",
+      "/api/email-scanner/statistiche",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/scadenze/completa/{param}",
+      "/api/scadenze/crea",
+      "/api/scadenze/dashboard-widget",
+      "/api/scadenze/tutte",
+      "/api/scadenze/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/scadenze-registra-pagamento.json"
+  },
+  {
+    "id": "scadenze-visualizzazione-fattura",
+    "popup": "Modal Visualizzazione Fattura (InvoiceXMLViewer)",
+    "purpose": "Mappa tecnica del popup «Modal Visualizzazione Fattura (InvoiceXMLViewer)». Il comportamento e le mutazioni reali devono essere verificati nei sorgenti correnti.",
+    "opened_by": [
+      "Scadenze e Notifiche (/scadenze), bottone 👁️ su ogni riga della tabella scadenze con tipo FATTURA (o source='fattura')"
+    ],
+    "source_files": [
+      "frontend/src/pages/Scadenze.jsx"
+    ],
+    "endpoints": [
+      "/api/email-scanner/associa",
+      "/api/email-scanner/statistiche",
+      "/api/fatture-ricevute/paga-manuale",
+      "/api/scadenze/completa/{param}",
+      "/api/scadenze/crea",
+      "/api/scadenze/dashboard-widget",
+      "/api/scadenze/tutte",
+      "/api/scadenze/{param}"
+    ],
+    "ux_rules": [
+      "Il popup deve avere chiusura visibile e non restare sovrapposto al documento.",
+      "Le azioni distruttive o definitive richiedono una conferma esplicita.",
+      "Le associazioni ambigue mostrano candidati e non vengono applicate automaticamente."
+    ],
+    "map": "04_POPUP/MAPPE_JSON/scadenze-visualizzazione-fattura.json"
+  }
+]

@@ -1,0 +1,333 @@
+# Solo nomi: valorizzare nel secret/config store. Nessun segreto è incluso.
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DATABASE_URL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DOCUMENT_STORAGE_PATH=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=segreta
+ACCESS_TOKEN_EXPIRE_MINUTES=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+ADER_MICRO_RESIDUAL_THRESHOLD_CENTS=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+ADMIN_EMAIL=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=segreta
+ADMIN_PASSWORD=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=segreta
+ADMIN_PASSWORD_HASH=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=segreta
+ADMIN_PIN=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+AI_L2_MAX_FINANCIAL_IMPACT=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+AI_L2_MIN_CONFIDENCE=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+ALGORITHM=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+ALLOWED_EXTENSIONS=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+ALLOWED_HEADERS=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+ALLOWED_METHODS=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+ALLOWED_ORIGINS=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+ALLOW_CREDENTIALS=
+# gruppo=ai target=configure_if_consumed sensibilita=segreta
+ANTHROPIC_API_KEY=
+# gruppo=ai target=configure_if_consumed sensibilita=configurazione
+ANTHROPIC_DOCUMENT_MODEL=
+# gruppo=ai target=configure_if_consumed sensibilita=configurazione
+ANTHROPIC_MODEL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+APP_NAME=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+APP_VERSION=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+AUDIT_BASE_URL=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=segreta
+AUTH_TOKEN=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_BANCA=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_BIC=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_CAP=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_CF=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_CITTA=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_EMAIL=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_IBAN=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_INDIRIZZO=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_PEC=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_PIVA=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_PROVINCIA=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_RAGIONE_SOCIALE=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+AZIENDA_TEL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+BACKEND_URL=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+BASE_URL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+CACHE_TTL_SECONDS=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+CHROMIUM_PATH=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+CORS_ALLOWED_ORIGINS=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=configurazione
+CORS_ORIGINS=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DATA_BACKEND=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DB_NAME=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DEBUG=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DEFAULT_USER_EMAIL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DEFAULT_USER_ID=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+DEV=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+E2E_BASE_URL=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+E2E_FRONTEND_DIST=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+EMAIL_ADDRESS=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=segreta
+EMAIL_APP_PASSWORD=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=segreta
+EMAIL_PASSWORD=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+EMAIL_USER=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_ASYNC_IMPORTS=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_CACHING=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_DOCUMENT_AI=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_AVVISI_BONARI_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_BONIFICI_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_CARTELLE_ESATTORIALI_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_CEDOLINI_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_CORRISPETTIVI_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_DICHIARAZIONI_IVA_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_ESTRATTI_CONTO_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_FATTURE_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_QUIETANZE_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_VERBALI_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_EMAIL_F24_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_EMAIL_VERBALI_SYNC=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_GMAIL_IMAP=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_SCHEDULER=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+ENABLE_SMTP_EMAIL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+ENVIRONMENT=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=segreta
+ERP_BRIDGE_SECRET=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=segreta
+FAIL_FAST_SECRETS=
+# gruppo=azienda-fiscale target=configure_if_consumed sensibilita=configurazione
+FISCAL_COMPANY_ID=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+FONTS_DIR=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+FROM_EMAIL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+FRONTEND_URL=
+# gruppo=ai target=configure_if_consumed sensibilita=segreta
+GEMINI_API_KEY=
+# gruppo=mcp target=configure_if_consumed sensibilita=configurazione
+GESTIONALE_MCP_API_BASE_URL=
+# gruppo=mcp target=configure_if_consumed sensibilita=segreta
+GESTIONALE_MCP_API_TOKEN=
+# gruppo=mcp target=configure_if_consumed sensibilita=configurazione
+GESTIONALE_MCP_HOST=
+# gruppo=mcp target=configure_if_consumed sensibilita=configurazione
+GESTIONALE_MCP_ISSUER_URL=
+# gruppo=mcp target=configure_if_consumed sensibilita=configurazione
+GESTIONALE_MCP_LOG_LEVEL=
+# gruppo=mcp target=configure_if_consumed sensibilita=configurazione
+GESTIONALE_MCP_RESOURCE_SERVER_URL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+GESTIONE_RISERVATA_CODE=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+GMAIL_ACCOUNT_AMMINISTRATIVO=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=segreta
+GMAIL_APP_PASSWORD=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=segreta
+GMAIL_APP_PASSWORD_AMMINISTRATIVO=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+GMAIL_EMAIL=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+GMAIL_IMAP_ENABLED=
+# gruppo=ai target=configure_if_consumed sensibilita=segreta
+GOOGLE_API_KEY=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+GOOGLE_CLIENT_ID=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=segreta
+GOOGLE_CLIENT_SECRET=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+GOOGLE_REDIRECT_URI=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+HOST=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+IMAP_HOST=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=segreta
+IMAP_PASSWORD=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+IMAP_PORT=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+IMAP_SERVER=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+IMAP_USER=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+IVA_ALIQUOTE=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+LOCALAPPDATA=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+LOG_FILE=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+LOG_FORMAT=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+LOG_LEVEL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+MAX_CONCURRENT_IMPORTS=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+MAX_UPLOAD_SIZE_MB=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+NODE_ENV=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+NOLEGGIO_GIORNI_SENZA_FATTURA=
+# gruppo=ai target=configure_if_consumed sensibilita=segreta
+OPENAI_API_KEY=
+# gruppo=ai target=configure_if_consumed sensibilita=configurazione
+OPENAI_MODEL=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=segreta
+OPENAPI_COMPANY_TOKEN=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=segreta
+OPENAPI_IMPRESE_TOKEN=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+OPENAPI_IT_ENV=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+OPENAPI_IT_KEY=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+OUT_DIR=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+PAYPAL_CLIENT_ID=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=segreta
+PAYPAL_CLIENT_SECRET=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+PAYPAL_MODE=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=segreta
+PAYPAL_SECRET_KEY=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+PAYPAL_WEBHOOK_ID=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=segreta
+PIN_HASH_ADMIN=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+PLAYWRIGHT_CHROMIUM=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+PORT=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+POS_ACCREDITO_WEEKEND=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+PROCESS_ROLE=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+PYTHONUTF8=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+PYTHON_VERSION=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+REACT_APP_BACKEND_URL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+RELOAD=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+RENDER=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+RENDER_GIT_COMMIT=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+RENDER_SERVICE_ID=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+REQUEST_TIMEOUT_SECONDS=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+RT_IMPORT_INBOX=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+RT_LOCAL_BASE_URL=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+RT_SYNC_STATE_FILE=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+RUN_STARTUP_DATA_REPAIRS=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+RUN_STARTUP_INDEX_MIGRATIONS=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+RUN_STARTUP_SEED_DATA=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+SCHEDULER_LEASE_SECONDS=
+# gruppo=sicurezza target=configure_if_consumed sensibilita=segreta
+SECRET_KEY=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+SMOKE_ANNO=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=segreta
+SMOKE_AUTH_TOKEN=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+SMOKE_TIMEOUT=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+SMTP_ENABLED=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+SMTP_FROM_EMAIL=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+SMTP_HOST=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=segreta
+SMTP_PASSWORD=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+SMTP_PORT=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+SMTP_USER=
+# gruppo=gmail-email target=configure_if_consumed sensibilita=configurazione
+SMTP_USERNAME=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+STATIC_FILES_DIR=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+SUMUP_API_BASE=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=segreta
+SUMUP_API_KEY=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+SUMUP_MERCHANT_CODE=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=segreta
+TELEGRAM_BOT_TOKEN=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=configurazione
+TELEGRAM_CHAT_ID=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+TEMPLATES_DIR=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+UPLOAD_FOLDER=
+# gruppo=test-tooling target=configure_if_consumed sensibilita=configurazione
+VERBALE_TEST_ID=
+# gruppo=feature-job target=configure_if_consumed sensibilita=configurazione
+VERBALI_EMAIL_SCAN_HOUR=
+# gruppo=app-runtime target=configure_if_consumed sensibilita=configurazione
+VITE_BACKEND_URL=
+# gruppo=integrazioni target=configure_if_consumed sensibilita=segreta
+WHATSAPP_VERIFY_TOKEN=

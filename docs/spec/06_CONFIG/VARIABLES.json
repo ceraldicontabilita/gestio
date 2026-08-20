@@ -1,0 +1,2777 @@
+[
+  {
+    "name": "ACCESS_TOKEN_EXPIRE_MINUTES",
+    "group": "sicurezza",
+    "sensitivity": "segreta",
+    "type": "int",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ADER_MICRO_RESIDUAL_THRESHOLD_CENTS",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "500",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ADMIN_EMAIL",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/routers/auth.py",
+      "app/routers/pin_login.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ADMIN_PASSWORD",
+    "group": "sicurezza",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/auth.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ADMIN_PASSWORD_HASH",
+    "group": "sicurezza",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/auth.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ADMIN_PIN",
+    "group": "sicurezza",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/pin_login.py",
+      "app/services/utenti_pin.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AI_L2_MAX_FINANCIAL_IMPACT",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/agents/decision_engine.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AI_L2_MIN_CONFIDENCE",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/agents/decision_engine.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ALGORITHM",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'HS256'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ALLOWED_EXTENSIONS",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'.xml,.xlsx,.xls,.pdf,.csv'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ALLOWED_HEADERS",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'*'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ALLOWED_METHODS",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'*'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ALLOWED_ORIGINS",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'*'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ALLOW_CREDENTIALS",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ANTHROPIC_API_KEY",
+    "group": "ai",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/ai_parser.py",
+      "app/routers/fornitori_learning.py",
+      "app/routers/settings_router.py",
+      "app/services/ai_categorizzazione.py",
+      "app/services/ai_document_parser.py",
+      "app/services/chat_ai_engine.py",
+      "app/services/document_ai_extractor.py",
+      "app/services/enhanced_document_parser.py",
+      "app/services/llm_document_parser.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ANTHROPIC_DOCUMENT_MODEL",
+    "group": "ai",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/services/anthropic_llm_client.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ANTHROPIC_MODEL",
+    "group": "ai",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/routers/settings_router.py",
+      "app/services/anthropic_llm_client.py",
+      "app/services/chat_ai_engine.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "APP_NAME",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'Azienda in Cloud ERP'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "APP_VERSION",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'2.0.0'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AUDIT_BASE_URL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "frontend/scripts/audit-layout.cjs",
+      "frontend/scripts/audit-operation-index.cjs",
+      "frontend/scripts/audit-viewer.cjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AUTH_TOKEN",
+    "group": "test-tooling",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "scripts/collaudo_ui.mjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_BANCA",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_BIC",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_CAP",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_CF",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_CITTA",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_EMAIL",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_IBAN",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_INDIRIZZO",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_PEC",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_PIVA",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_PROVINCIA",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_RAGIONE_SOCIALE",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "AZIENDA_TEL",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/config/azienda.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "BACKEND_URL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/smoke_app.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "BASE_URL",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/collaudo_ui.mjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "CACHE_TTL_SECONDS",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "3600",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "CHROMIUM_PATH",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/collaudo_ui.mjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "CORS_ALLOWED_ORIGINS",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "''",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "CORS_ORIGINS",
+    "group": "sicurezza",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'*'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DATA_BACKEND",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'mongodb'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DB_NAME",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'Gestionale'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/scripts/create_indexes.py",
+      "backend/tests/test_corrispettivi_ingest.py",
+      "scripts/archivia_prima_nota_salari_fuori_periodo.py",
+      "scripts/bonifica_pos_numia.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DEBUG",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DEFAULT_USER_EMAIL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'admin@ceraldi.it'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DEFAULT_USER_ID",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'admin'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DEV",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "frontend/src/components/ErrorBoundary.jsx"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_AVVISI_ESATTORIALI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_CARTE_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_CEDOLINI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_CORRISPETTIVI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_DOCUMENT_INDEX_ROOT_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'1tmVu6fl7qhJbLcGCHT3wEQzrvFAElc9h'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_ESTRATTI_ANNO_MINIMO",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "2026",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_ESTRATTI_CONTO_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_ESTRATTI_CONTO_FOLDER_IDS",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_F24_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FATTURE_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FISCAL_ROOT_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'1f48bounfoOyHL_kqpHAp2GAnFfEpHvVa'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_AVVISI_BONARI_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_BONIFICI_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_CARTELLE_ESATTORIALI_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_CEDOLINI_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_CORRISPETTIVI_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_DICHIARAZIONI_IVA_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_ESTRATTI_CONTO_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_ESTRATTI_CONTO_IDS",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_FATTURE_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_QUIETANZE_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_FOLDER_REGISTRY_JSON",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_NOLEGGIO_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_PAYPAL_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_PRESENZE_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_QUIETANZE_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DRIVE_VERBALI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "DR_SOURCE_DB_NAME",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/verifica_ripristino_mongodb.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "E2E_BASE_URL",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "frontend/scripts/audit-destructive-e2e.cjs",
+      "frontend/scripts/audit-pages-e2e.cjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "E2E_FRONTEND_DIST",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "EMAIL_ADDRESS",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/configurazioni.py",
+      "app/routers/learning_machine.py",
+      "app/services/gmail_search.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "EMAIL_APP_PASSWORD",
+    "group": "gmail-email",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "app/routers/configurazioni.py",
+      "app/routers/learning_machine.py",
+      "app/services/gmail_search.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "EMAIL_PASSWORD",
+    "group": "gmail-email",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py",
+      "app/routers/configurazioni.py",
+      "app/routers/learning_machine.py",
+      "app/services/gmail_search.py",
+      "app/services/pagopa_scanner.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "EMAIL_USER",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py",
+      "app/routers/configurazioni.py",
+      "app/services/gmail_search.py",
+      "app/services/pagopa_scanner.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_ASYNC_IMPORTS",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_CACHING",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DOCUMENT_AI",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_AVVISI_BONARI_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_BONIFICI_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_CARTELLE_ESATTORIALI_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_CEDOLINI_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_CORRISPETTIVI_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_DICHIARAZIONI_IVA_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_ESTRATTI_CONTO_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_FATTURE_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_QUIETANZE_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_DRIVE_VERBALI_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_EMAIL_F24_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_EMAIL_VERBALI_SYNC",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_GMAIL_IMAP",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_SCHEDULER",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "True",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENABLE_SMTP_EMAIL",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ENVIRONMENT",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'production'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/utils/session_cookie.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "ERP_BRIDGE_SECRET",
+    "group": "app-runtime",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/erp_bridge.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "FAIL_FAST_SECRETS",
+    "group": "app-runtime",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "render.yaml"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "FISCAL_COMPANY_ID",
+    "group": "azienda-fiscale",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'04523831214'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "FONTS_DIR",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "Path",
+    "default": "Path('fonts')",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "FROM_EMAIL",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "FRONTEND_URL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "scripts/smoke_app.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GEMINI_API_KEY",
+    "group": "ai",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GESTIONALE_MCP_API_BASE_URL",
+    "group": "mcp",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "gestionale_mcp/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GESTIONALE_MCP_API_TOKEN",
+    "group": "mcp",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "gestionale_mcp/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GESTIONALE_MCP_HOST",
+    "group": "mcp",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "gestionale_mcp/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GESTIONALE_MCP_ISSUER_URL",
+    "group": "mcp",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "gestionale_mcp/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GESTIONALE_MCP_LOG_LEVEL",
+    "group": "mcp",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "gestionale_mcp/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GESTIONALE_MCP_RESOURCE_SERVER_URL",
+    "group": "mcp",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "gestionale_mcp/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GESTIONE_RISERVATA_CODE",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/routers/gestione_riservata.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GMAIL_ACCOUNT_AMMINISTRATIVO",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GMAIL_APP_PASSWORD",
+    "group": "gmail-email",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GMAIL_APP_PASSWORD_AMMINISTRATIVO",
+    "group": "gmail-email",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GMAIL_EMAIL",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GMAIL_IMAP_ENABLED",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_API_KEY",
+    "group": "ai",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_CLIENT_ID",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_CLIENT_SECRET",
+    "group": "app-runtime",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_AVVISI_BONARI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_BONIFICI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_CARTELLE_ESATTORIALI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_CEDOLINI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_CORRISPETTIVI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_DICHIARAZIONI_IVA_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_ESTRATTI_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_ESTRATTI_FOLDER_IDS",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_FATTURE_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_QUIETANZE_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_SA_FILE",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_SA_JSON",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_REDIRECT_URI",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'/api/auth/google/callback'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SERVICE_ACCOUNT_JSON_BONIFICI",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SERVICE_ACCOUNT_JSON_CEDOLINI",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SERVICE_ACCOUNT_JSON_CORRISPETTIVI",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SERVICE_ACCOUNT_JSON_ESTRATTI_CONTO",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SERVICE_ACCOUNT_JSON_FATTURE",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SERVICE_ACCOUNT_JSON_QUIETANZE",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SHEETS_LEDGER_FOLDER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "GOOGLE_SHEETS_LEDGER_ID",
+    "group": "drive-sheets",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "HOST",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'0.0.0.0'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "IMAP_HOST",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'imap.gmail.com'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/settings_router.py",
+      "app/services/pagopa_scanner.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "IMAP_PASSWORD",
+    "group": "gmail-email",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "app/routers/settings_router.py",
+      "app/services/pagopa_scanner.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "IMAP_PORT",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "993",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/services/pagopa_scanner.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "IMAP_SERVER",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/learning_machine.py",
+      "app/services/email_full_download.py",
+      "app/services/verbali_email_scanner.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "IMAP_USER",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/settings_router.py",
+      "app/services/pagopa_scanner.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "IVA_ALIQUOTE",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "list[float]",
+    "default": "[4.0, 5.0, 10.0, 22.0]",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "LOCALAPPDATA",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/sync_rt_to_drive.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "LOG_FILE",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "Optional[Path]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "LOG_FORMAT",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'json'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "LOG_LEVEL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'INFO'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "MAX_CONCURRENT_IMPORTS",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "5",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "MAX_UPLOAD_SIZE_MB",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "50",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "MONGODB_ATLAS_URI",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "scripts/bonifica_pos_numia.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_CONNECT_TIMEOUT_MS",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "5000",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_MAX_IDLE_TIME_MS",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "120000",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_MAX_POOL_SIZE",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "50",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_MIN_POOL_SIZE",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "0",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_SOCKET_TIMEOUT_MS",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "20000",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_TIMEOUT_MS",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "5000",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_URI",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/archivia_prima_nota_salari_fuori_periodo.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGODB_WAIT_QUEUE_TIMEOUT_MS",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "5000",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGO_URI",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/archivia_prima_nota_salari_fuori_periodo.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "MONGO_URL",
+    "group": "transitorie-vietate-nel-target",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/scripts/create_indexes.py",
+      "app/utils/crypto.py",
+      "backend/tests/test_corrispettivi_ingest.py",
+      "scripts/archivia_prima_nota_salari_fuori_periodo.py",
+      "scripts/bonifica_pos_numia.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "remove_after_verified_cutover"
+  },
+  {
+    "name": "NODE_ENV",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "frontend/plugins/health-check/health-endpoints.js"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "NOLEGGIO_GIORNI_SENZA_FATTURA",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/services/noleggio/controlli.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "OPENAI_API_KEY",
+    "group": "ai",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "app/routers/settings_router.py",
+      "app/services/chat_ai_engine.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "OPENAI_MODEL",
+    "group": "ai",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/routers/settings_router.py",
+      "app/services/chat_ai_engine.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "OPENAPI_COMPANY_TOKEN",
+    "group": "integrazioni",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/openapi_automotive.py",
+      "app/routers/openapi_imprese.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "OPENAPI_IMPRESE_TOKEN",
+    "group": "integrazioni",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "OPENAPI_IT_ENV",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'production'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/openapi_it.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "OPENAPI_IT_KEY",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/openapi_it.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "OUT_DIR",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/collaudo_ui.mjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PAYPAL_CLIENT_ID",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "''",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/services/paypal_integration.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PAYPAL_CLIENT_SECRET",
+    "group": "integrazioni",
+    "sensitivity": "segreta",
+    "type": "str",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PAYPAL_MODE",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/services/paypal_integration.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PAYPAL_SECRET_KEY",
+    "group": "integrazioni",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/services/paypal_integration.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PAYPAL_WEBHOOK_ID",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/routers/paypal_api.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PIN_HASH_ADMIN",
+    "group": "sicurezza",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/pin_login.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PLAYWRIGHT_CHROMIUM",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "frontend/scripts/audit-destructive-e2e.cjs",
+      "frontend/scripts/audit-layout.cjs",
+      "frontend/scripts/audit-operation-index.cjs",
+      "frontend/scripts/audit-pages-e2e.cjs",
+      "frontend/scripts/audit-viewer.cjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PORT",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "8000",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "POS_ACCREDITO_WEEKEND",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/utils/pos_accredito.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PROCESS_ROLE",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/main.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PYTHONUTF8",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "render.yaml"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "PYTHON_VERSION",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "render.yaml"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "REACT_APP_BACKEND_URL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "backend/tests/test_corrispettivi_ingest.py",
+      "backend/tests/test_fase2_fase3_fase4.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RELOAD",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RENDER",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/main.py",
+      "app/utils/session_cookie.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RENDER_GIT_COMMIT",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/main.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RENDER_SERVICE_ID",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "app/main.py",
+      "app/utils/session_cookie.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "REQUEST_TIMEOUT_SECONDS",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "300",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RT_DRIVE_INBOX",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/sync_rt_to_drive.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RT_LOCAL_BASE_URL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/sync_rt_to_drive.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RT_SYNC_STATE_FILE",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/sync_rt_to_drive.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RUN_STARTUP_DATA_REPAIRS",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RUN_STARTUP_INDEX_MIGRATIONS",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "RUN_STARTUP_SEED_DATA",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SCHEDULER_LEASE_SECONDS",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "21600",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SECRET_KEY",
+    "group": "sicurezza",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "app/routers/auth.py",
+      "scripts/e2e_distruttivo_server.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMOKE_ANNO",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/smoke_app.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMOKE_AUTH_TOKEN",
+    "group": "test-tooling",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "scripts/smoke_app.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMOKE_TIMEOUT",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/smoke_app.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMTP_ENABLED",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "bool",
+    "default": "False",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMTP_FROM_EMAIL",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMTP_HOST",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMTP_PASSWORD",
+    "group": "gmail-email",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMTP_PORT",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[int]",
+    "default": "587",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMTP_USER",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SMTP_USERNAME",
+    "group": "gmail-email",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/routers/commercialista.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "STATIC_FILES_DIR",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "Path",
+    "default": "Path('static')",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SUMUP_API_BASE",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "'https://api.sumup.com'",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SUMUP_API_KEY",
+    "group": "integrazioni",
+    "sensitivity": "segreta",
+    "type": "str",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "render.yaml"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "SUMUP_MERCHANT_CODE",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": "str",
+    "default": "''",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "render.yaml"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "TELEGRAM_BOT_TOKEN",
+    "group": "integrazioni",
+    "sensitivity": "segreta",
+    "type": "Optional[str]",
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/config.py",
+      "app/services/telegram_notifications.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "TELEGRAM_CHAT_ID",
+    "group": "integrazioni",
+    "sensitivity": "configurazione",
+    "type": "Optional[str]",
+    "default": "None",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py",
+      "app/services/telegram_notifications.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "TEMPLATES_DIR",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "Path",
+    "default": "Path('templates')",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "UPLOAD_FOLDER",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": "Path",
+    "default": "Path('uploads')",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "VERBALE_TEST_ID",
+    "group": "test-tooling",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "scripts/collaudo_ui.mjs"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "VERBALI_EMAIL_SCAN_HOUR",
+    "group": "feature-job",
+    "sensitivity": "configurazione",
+    "type": "int",
+    "default": "6",
+    "default_redacted": false,
+    "sources": [
+      "app/config.py"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "VITE_BACKEND_URL",
+    "group": "app-runtime",
+    "sensitivity": "configurazione",
+    "type": null,
+    "default": null,
+    "default_redacted": false,
+    "sources": [
+      "frontend/vite.config.js"
+    ],
+    "target": "configure_if_consumed"
+  },
+  {
+    "name": "WHATSAPP_VERIFY_TOKEN",
+    "group": "integrazioni",
+    "sensitivity": "segreta",
+    "type": null,
+    "default": null,
+    "default_redacted": true,
+    "sources": [
+      "app/routers/whatsapp_webhook.py"
+    ],
+    "target": "configure_if_consumed"
+  }
+]
