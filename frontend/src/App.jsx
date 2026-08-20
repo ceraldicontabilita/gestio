@@ -12,18 +12,23 @@ export default function App() {
   const { Componente } = PAGINE[pagina]
 
   return (
-    <div>
-      <nav style={{ display: 'flex', gap: 8, padding: '12px 24px', borderBottom: '1px solid #ddd' }}>
-        {Object.entries(PAGINE).map(([chiave, { etichetta }]) => (
-          <button
-            key={chiave}
-            onClick={() => setPagina(chiave)}
-            style={{ fontWeight: chiave === pagina ? 'bold' : 'normal' }}
-          >
-            {etichetta}
-          </button>
-        ))}
-      </nav>
+    <div className="app-shell">
+      <header className="app-header">
+        <div className="app-brand">
+          Gestio <small>gestionale contabile</small>
+        </div>
+        <nav className="app-nav">
+          {Object.entries(PAGINE).map(([chiave, { etichetta }]) => (
+            <button
+              key={chiave}
+              className={chiave === pagina ? 'active' : ''}
+              onClick={() => setPagina(chiave)}
+            >
+              {etichetta}
+            </button>
+          ))}
+        </nav>
+      </header>
       <Componente />
     </div>
   )

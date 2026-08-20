@@ -60,25 +60,23 @@ export default function PrimaNota() {
   }
 
   return (
-    <main style={{ maxWidth: 720, margin: '0 auto', padding: 24, fontFamily: 'system-ui, sans-serif' }}>
-      <h1>Prima Nota</h1>
+    <main className="page">
+      <h1 className="page-title">Prima Nota</h1>
+      <p className="page-subtitle">Registro cassa e banca, con versamenti e riconciliazioni.</p>
 
-      <nav style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+      <div className="tabs">
         {CONTI.map((c) => (
           <button
             key={c.valore}
+            className={c.valore === conto ? 'active' : ''}
             onClick={() => setConto(c.valore)}
-            style={{ fontWeight: c.valore === conto ? 'bold' : 'normal' }}
           >
             {c.etichetta}
           </button>
         ))}
-      </nav>
+      </div>
 
-      <form
-        onSubmit={inviaVersamento}
-        style={{ marginBottom: 24, display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}
-      >
+      <form onSubmit={inviaVersamento} className="toolbar">
         <input
           type="date"
           required
@@ -100,32 +98,29 @@ export default function PrimaNota() {
           value={form.descrizione}
           onChange={(e) => setForm({ ...form, descrizione: e.target.value })}
         />
-        <button type="submit" disabled={salvataggio}>
+        <button type="submit" className="btn" disabled={salvataggio}>
           {salvataggio ? 'Salvataggio…' : 'Registra versamento in banca'}
         </button>
       </form>
 
-      {errore && <p style={{ color: 'crimson' }}>Errore: {errore}</p>}
-      {loading && <p>Caricamento…</p>}
-      {!loading && giorni.length === 0 && <p>Nessun movimento.</p>}
+      {errore && <p className="alert alert-error">Errore: {errore}</p>}
+      {loading && <p className="state-message">Caricamento…</p>}
+      {!loading && giorni.length === 0 && <p className="state-message">Nessun movimento.</p>}
 
       {giorni.map((giorno) => (
-        <section
-          key={giorno.data}
-          style={{ border: '1px solid #ddd', borderRadius: 8, padding: 12, marginBottom: 12 }}
-        >
-          <header style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }}>
+        <section key={giorno.data} className="card">
+          <header className="card-header">
             <span>{formatData(giorno.data)}</span>
-            <span>Saldo: {formatEuro(giorno.saldo_progressivo)}</span>
+            <span className="muted">Saldo: {formatEuro(giorno.saldo_progressivo)}</span>
           </header>
-          <ul style={{ listStyle: 'none', padding: 0, marginTop: 8 }}>
+          <ul className="movement-list">
             {giorno.movimenti.map((m) => (
-              <li key={m.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
+              <li key={m.id}>
                 <span>
                   {m.descrizione}
-                  {m.stato === 'attesa' && ' (in attesa)'}
+                  {m.stato === 'attesa' && <span className="badge">in attesa</span>}
                 </span>
-                <span style={{ color: m.tipo === 'entrata' ? 'green' : 'crimson' }}>
+                <span className={m.tipo === 'entrata' ? 'amount-in' : 'amount-out'}>
                   {m.tipo === 'entrata' ? '+' : '-'}
                   {formatEuro(m.importo)}
                 </span>
