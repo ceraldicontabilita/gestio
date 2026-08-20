@@ -13,7 +13,7 @@ import hashlib
 import uuid
 from decimal import Decimal
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from app.models import Conto, Corrispettivo, PrimaNotaMovimento, StatoMovimento, TipoMovimento
@@ -97,3 +97,17 @@ def importa_corrispettivo_xml(
         )
 
     return corrispettivo
+
+
+def elimina_corrispettivo(db: Session, *, canonical_id: str) -> bool:
+    """Annulla una giornata importata per errore: rimuove la giornata e le
+    scritture di Prima Nota collegate (stesso operation_id). Ritorna False se
+    la giornata non esiste."""
+    corrispettivo = db.scalar(select(Corrispettivo).where(Corrispettivo.canonical_id == canonical_id))
+    if corrispettivo is None:
+        return False
+
+    db.execute(delete(PrimaNotaMovimento).where(PrimaNotaMovimento.operation_id == corrispettivo.operation_id))
+    db.delete(corrispettivo)
+    db.flush()
+    return True
