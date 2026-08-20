@@ -64,3 +64,33 @@ class PrimaNotaMovimento(Base):
     )
     payload_schema_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
     payload_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+
+
+class Corrispettivo(Base):
+    """Giornata di corrispettivi RT (un XML ufficiale Agenzia Entrate, schema
+    COR10, per dispositivo/data). Vedi docs/spec/03_PAGINE/LOGICA_JSON/06-corrispettivi.json:
+    'Creare una giornata canonica per dispositivo/data e ripartire contanti,
+    carte e altri mezzi senza inventare valori mancanti.'"""
+
+    __tablename__ = "corrispettivi"
+    __table_args__ = (
+        UniqueConstraint("id_dispositivo", "data_rilevazione", name="uq_corrispettivo_dispositivo_data"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    canonical_id: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    operation_id: Mapped[str] = mapped_column(String(64), index=True)
+    id_dispositivo: Mapped[str] = mapped_column(String(32), nullable=False)
+    piva_esercente: Mapped[str] = mapped_column(String(16), nullable=False)
+    data_rilevazione: Mapped[date_] = mapped_column(Date, nullable=False)
+    data_ora_rilevazione: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    data_ora_trasmissione: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    progressivo_trasmissione: Mapped[str] = mapped_column(String(32), nullable=False)
+    numero_doc_commerciali: Mapped[int] = mapped_column(Integer, nullable=False)
+    pagato_contanti: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
+    pagato_elettronico: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
+    riepiloghi_iva: Mapped[list] = mapped_column(JSON, nullable=False)
+    source: Mapped[str] = mapped_column(String(64), nullable=False)
+    source_external_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    file_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)

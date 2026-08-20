@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.database import Base, engine
-from app.routers import prima_nota
+from app.routers import corrispettivi, prima_nota
 
 app = FastAPI(title="Gestio")
 
@@ -11,6 +11,7 @@ app = FastAPI(title="Gestio")
 Base.metadata.create_all(bind=engine)
 
 app.include_router(prima_nota.router)
+app.include_router(corrispettivi.router)
 
 
 @app.get("/api/health")

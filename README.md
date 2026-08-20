@@ -11,7 +11,9 @@ verticale a partire da questa specifica.
 
 ## Stato del codice
 
-Primo modulo verticale completo: **Prima Nota** (Cassa/Banca).
+Due moduli verticali completi.
+
+**Prima Nota** (Cassa/Banca):
 
 - Schema dati e motore unico di scrittura (`app/services/scritture_contabili.py`):
   nessun altro punto del codice può creare movimenti di Prima Nota.
@@ -19,12 +21,25 @@ Primo modulo verticale completo: **Prima Nota** (Cassa/Banca).
   `operation_id`, idempotente, riconciliabile con l'estratto conto.
 - API REST (`app/routers/prima_nota.py`) e pagina React collegata
   (`frontend/src/pages/PrimaNota.jsx`) con saldo progressivo per giorno.
-- Test automatici sul servizio e sull'API (`tests/`, girano su SQLite
-  in-memory per velocità) — **verificati anche dal vivo su Postgres reale**
-  (server locale, non l'istanza Render): schema, versamento, idempotenza,
-  riconciliazione e saldo progressivo, poi l'intera API con `curl`.
-- Verificato anche dal vivo in browser: backend + frontend avviati, form
-  compilato, versamento visibile diviso Cassa/Banca.
+
+**Corrispettivi RT** (import XML ufficiale Agenzia Entrate, schema COR10):
+
+- Parser (`app/parsers/corrispettivi_rt.py`) verificato sulla struttura reale
+  dei file del cliente (ricognizione su Google Drive, radice
+  `1tmVu6fl7qhJbLcGCHT3wEQzrvFAElc9h`).
+- Import idempotente per dispositivo/data (`app/services/corrispettivi.py`):
+  quota contanti → Prima Nota Cassa (confermato); quota elettronico → Prima
+  Nota Banca come credito POS "in attesa" (la riconciliazione con
+  l'accredito reale del gestore è il prossimo modulo, Coerenza POS).
+- API REST (`app/routers/corrispettivi.py`) e pagina React
+  (`frontend/src/pages/Corrispettivi.jsx`) con upload XML.
+
+Entrambi: test automatici sul servizio e sull'API (`tests/`, girano su
+SQLite in-memory per velocità) — **verificati anche dal vivo su Postgres
+reale** (server locale, non l'istanza Render): schema, scritture,
+idempotenza, poi l'intera API con `curl`. Verificati anche dal vivo in
+browser (backend + frontend avviati, upload/form compilato, risultato
+visibile).
 
 Tutti gli altri moduli descritti in `docs/spec/03_PAGINE/` sono ancora da
 costruire, uno alla volta, con lo stesso schema: schema → servizio → API →

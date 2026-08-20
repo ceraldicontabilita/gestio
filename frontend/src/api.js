@@ -22,3 +22,21 @@ export function registraVersamento(payload) {
     body: JSON.stringify(payload),
   })
 }
+
+export function getCorrispettivi() {
+  return request('/corrispettivi')
+}
+
+export async function importaCorrispettivo(file) {
+  const formData = new FormData()
+  formData.append('file', file)
+  const response = await fetch(`${BASE_URL}/corrispettivi/import`, {
+    method: 'POST',
+    body: formData,
+  })
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`${response.status} ${body}`)
+  }
+  return response.json()
+}
